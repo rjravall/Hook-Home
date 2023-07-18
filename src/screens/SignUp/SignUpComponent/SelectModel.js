@@ -22,7 +22,6 @@ function SelectMode({ setSelectedModes, titleStyle, title = null, onPress, selec
   }, []);
 
 
-
   async function onGetModes() {
     setIsLoading(true)
     const result = await getModes()
