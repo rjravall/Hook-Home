@@ -174,11 +174,23 @@ async function getUserProfile(params, id) {
     const result = await getRequest(url, params)
     return result
 }
+async function getUserDetais(params, id) {
+    let url = WEB_SERVICE.user_detais
+    const result = await getRequest(url, params)
+    return result
+}
+async function getSwipeUser(params, id) {
+    let url = WEB_SERVICE.user_swipe
+    const result = await postRequest(url, params)
+    return result
+}
+
 
 
 
 
 export {
+    getSwipeUser,
     signUp,
     sendOtp,
     loginUser,
@@ -206,5 +218,7 @@ export {
     postChangePassword,
     getProfile,
     suggestedUser,
-    getUserProfile
+    getUserProfile,
+    getUserDetais
+
 }

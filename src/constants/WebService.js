@@ -36,6 +36,8 @@ export const WEB_SERVICE = {
     get_profile: BASE_URL + '/api/v1/user/details',
     set_location: BASE_URL + '/api/v1/user/update-profile',
     suggested_user: BASE_URL + '/api/v1/suggested/suggested-users',
-    user_profile: BASE_URL + '/api/v1/suggested/users-profile/'
+    user_profile: BASE_URL + '/api/v1/suggested/users-profile/',
+    user_detais: BASE_URL + '/api/v1/user/details',
+    user_swipe: BASE_URL + '/api/v1/match/swap-user'
 
 }

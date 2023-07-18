@@ -39,10 +39,11 @@ import UserDisplayModeTab from './UserDisplayModeTab';
 import UserSwipe from './UserSwipe';
 import { LogBox } from 'react-native';
 import { strings } from '@/localization';
-import { getProfile, suggestedUser } from '@/api/user';
+import { getModes, getProfile, getUserDetais, getUserProfile, suggestedUser } from '@/api/user';
 import { useEffect } from 'react';
 import { SHOW_SUCCESS_TOAST, SHOW_TOAST } from '@/constants/ShowToast';
 import Geocoder from 'react-native-geocoding';
+import { mode } from 'native-base/lib/typescript/theme/tools';
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
@@ -50,12 +51,14 @@ LogBox.ignoreLogs([
 function HomeScreen({ route }) {
   let [modeSelectionVisible, setModeSelectionVisible] = useState(false);
   let [dataFilterVisible, setDataFilterVisible] = useState(false);
-  let [modeName, SetModeName] = useState('Dating');
+  let [modeName, SetModeName] = useState();
   const [displayMode, SetDisplayMode] = useState(strings.homescreen_container.card);
   let navigation = useNavigation();
   const [IsLoading, setIsLoading] = useState(true)
   const [UserList, setUserList] = useState()
   const [modetype, setmodetype] = useState()
+  const [latitude, setLatitude] = useState()
+  const [longitude, setLongitude] = useState()
 
 
   function getWidthForGridItem(count) {
@@ -174,6 +177,7 @@ function HomeScreen({ route }) {
         SHOW_SUCCESS_TOAST(result.data.message)
         console.log("===========API Calling============")
 
+
         setUserList([]);
         const p1 = result.data.data.suggestions.map(async (data, i) => {
           const loc = data.location.coordinates
@@ -198,19 +202,46 @@ function HomeScreen({ route }) {
   }
 
   async function getdetais(lat, lng) {
-    console.log("hello I am Calling")
-    const result = await getProfile()
-    const mode = result.data.data[0]
-    console.log("MOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOde :", mode)
-    getSuggestedUser(lat, lng, mode)
-    setmodetype(mode)
+
+    const result = await getUserDetais({})
+    if (result.status) {
+      if (result?.data?.success) {
+        const mode = result.data.data.result[0].mode
+        console.log("MODD=================", mode)
+        getSuggestedUser(lat, lng, mode)
+
+        const respons = await getModes()
+        if (respons.data.success) {
+          respons.data.data.map((item) => {
+            if (item.id == mode) {
+              setmodetype(item.orderNo)
+              SetModeName(item.title)
+            }
+          })
+
+        } else {
+          SHOW_TOAST(result.data.message)
+        }
+
+        SHOW_SUCCESS_TOAST(result.data.message)
+
+      } else {
+        SHOW_TOAST(result?.data?.message)
+      }
+    } else {
+      SHOW_TOAST(result.error)
+    }
+
   }
 
-  useEffect(() => {
 
+
+  useEffect(() => {
     Geolocation.getCurrentPosition(
       (position) => {
         getdetais(position.coords.latitude, position.coords.longitude)
+        setLatitude(position.coords.latitude)
+        setLongitude(position.coords.longitude)
       },
       (error) => {
         console.warn("Error " + error.code, error.message);
@@ -246,16 +277,16 @@ function HomeScreen({ route }) {
                 borderBottomLeftRadius: 30,
                 borderBottomRightRadius: 30,
               }}>
-              <SelectMode
+              {modetype && (<SelectMode
                 title={strings.homescreen_dating.title}
                 titleStyle={{ alignSelf: 'center' }}
                 onPress={title => {
                   SetModeName(title);
                   setModeSelectionVisible(false);
                 }}
-                setSelectedModes={() => { }}
+                setSelectedModes={(mode) => { latitude && longitude ? getSuggestedUser(latitude, longitude, mode) : null }}
                 selectmode={modetype}
-              />
+              />)}
 
             </SafeAreaView>
           </Slide>
@@ -298,7 +329,7 @@ function HomeScreen({ route }) {
             />
           </View>
 
-          {displayMode == strings.homescreen_container.card &&
+          {displayMode == strings.homescreen_container.card && !IsLoading &&
 
             <UserSwipe
               users={UserList}

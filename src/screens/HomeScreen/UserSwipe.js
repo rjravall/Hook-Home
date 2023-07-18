@@ -88,6 +88,7 @@ export default class UserSwipe extends React.Component {
               this.position.setValue({ x: 0, y: 0 });
             });
             this.props.onRemove();
+            console.log("Like..................")
           });
         } else if (gestureState.dx < -120) {
           Animated.spring(this.position, {
@@ -98,6 +99,7 @@ export default class UserSwipe extends React.Component {
               this.position.setValue({ x: 0, y: 0 });
             });
             this.props.onRemove();
+            console.log("Dislike..................")
           });
         } else {
           Animated.spring(this.position, {
@@ -131,6 +133,7 @@ export default class UserSwipe extends React.Component {
       });
     });
   };
+
 
   renderUsers = () => {
     return this.state.users

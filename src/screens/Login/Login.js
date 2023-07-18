@@ -94,6 +94,7 @@ export function Login({ route }) {
     setIsLoading(false)
     if (result.status) {
       if (result?.data?.success) {
+        // console.log(result.data);
         setToken(`Bearer ${result?.data?.data.Token}`)
         SHOW_SUCCESS_TOAST(result?.data?.message)
         setUserEmail(email)
