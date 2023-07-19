@@ -48,6 +48,8 @@ function DetailScreen({ route }) {
   const [items, setItems] = useState([]);
   const [IsLoading, setIsLoading] = useState(true);
 
+  console.log("items=====================", user._id)
+
 
   const detailist = [
     {
@@ -168,7 +170,6 @@ function DetailScreen({ route }) {
     detailist.map((data) => {
       if (Data[data.Field] != undefined) {
         const apifield = Data[data.Field.toString()];
-        // console.log("@@@@@@@@@#########@@@@@", Array.isArray(apifield));
         if (Array.isArray(apifield)) {
           console.log(apifield)
           temp.push({ apifield, ...data })
@@ -178,6 +179,7 @@ function DetailScreen({ route }) {
         }
       }
     })
+    console.log("Temp : ", temp)
     setItems(temp);
   }
   React.useEffect(() => {
@@ -258,6 +260,7 @@ function DetailScreen({ route }) {
 
     return (
 
+
       <View>
         <StatusBar hidden={false} backgroundColor={'rgba(52, 52, 52, 0.8)'} />
         <View style={styles.render_content_container}>
@@ -308,14 +311,13 @@ function DetailScreen({ route }) {
               }}
             />
           </View>
-          {/* {
-            console.log("items=====================", items)
-          } */}
+
 
           {
             items.map((data, i) => {
               const isDisable = data["apifield"] ? data["apifield"]?.length < 3 : true;
               return (
+
                 <View style={{ borderBottomWidth: 1, borderColor: "#D6D6D6" }}>
                   <View style={{
                     flexDirection: 'row',
@@ -335,7 +337,7 @@ function DetailScreen({ route }) {
                         resizeMode='contain'
                         source={data.icon} />
 
-                      <Text style={{ marginLeft: 10 }}>{data.title}</Text>
+                      <Text style={{ marginLeft: 10, color: '#9B9197', }}>{data.title}</Text>
                     </View>
                     <TouchableOpacity
                       disabled={isDisable}
@@ -360,7 +362,7 @@ function DetailScreen({ route }) {
 
                           })
 
-                          : data.name || data.value}
+                          : data.name || data.values}
                       </Text>
                     </TouchableOpacity>
                   </View>

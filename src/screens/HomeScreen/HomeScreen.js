@@ -166,7 +166,7 @@ function HomeScreen({ route }) {
   async function getSuggestedUser(lat, lan, mode) {
     const params = {
       "location": [lat, lan],
-      "distanceRange": 80,
+      "distanceRange": 100000,
       "mode": mode
     }
     setIsLoading(true)

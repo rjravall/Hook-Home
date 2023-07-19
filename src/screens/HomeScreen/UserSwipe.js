@@ -141,13 +141,19 @@ export default class UserSwipe extends React.Component {
   };
 
   userswipe = async (data) => {
-    swipeuserid = this.state.users[0]._id
+    swipeuserid = this.state.users[this.state.currentIndex]._id
     params = {
       swipeUserId: swipeuserid,
       type: data
     }
     const result = await getSwipeUser(params)
+    // this.state.users.map((item) => {
+    //   swipeuserid = item._id
+    //   return swipeuserid
+    // })
     console.log("RESULT============================================>", result)
+    // console.log("Users ======================================================== >>", this.state.users)
+    console.log("ID ======================================================== >>", this.state.users[this.state.currentIndex]._id)
   }
 
 

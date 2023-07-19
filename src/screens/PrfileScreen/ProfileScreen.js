@@ -31,6 +31,10 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 import { Rating } from 'react-native-ratings';
 import { strings } from '@/localization';
+import { useEffect } from 'react';
+import { getUserDetais, getUserProfile } from '@/api/user';
+
+
 
 function ProfileScreen({ route }) {
   const navigation = useNavigation();
@@ -38,6 +42,12 @@ function ProfileScreen({ route }) {
 
 
   const [showRating, setShowRating] = useState(false);
+  const [IsLoading, setIsLoading] = useState(true)
+  const [Fname, setFName] = useState()
+  const [Lname, setLName] = useState()
+  const [Data, setData] = useState()
+  const [ProfileComplet, setProfileComplet] = useState()
+  const [img, setImg] = useState()
   function switchScreen(index) {
     switch (index) {
       case 0:
@@ -58,6 +68,29 @@ function ProfileScreen({ route }) {
       // return alert(index);
     }
   }
+
+  const getDetails = async () => {
+    setIsLoading(true)
+    const result = await getUserDetais({})
+
+    setData(result)
+    setProfileComplet(result.data.data[0].completeProfile)
+    setFName(result?.data?.data[0]?.firstName)
+    setLName(result?.data?.data[0]?.lastName)
+    setImg(result?.data?.data[0]?.userPhotos.publicPhotos[0])
+    setIsLoading(false)
+
+    console.log("MAIN  :===========================: ", result?.data?.data[0])
+    console.log("ProfileComplet :=========:  ", ProfileComplet)
+    console.log("ProfileComplet :=========:  ", Fname)
+    console.log("ProfileComplet :=========:  ", Lname)
+    console.log("IAMGES :=========:  ", img)
+
+  }
+
+  useEffect(() => {
+    getDetails()
+  }, [])
 
   return (
     <NativeBaseProvider>
@@ -124,7 +157,7 @@ function ProfileScreen({ route }) {
                     <AnimatedCircularProgress
                       size={152}
                       width={4}
-                      fill={80}
+                      fill={ProfileComplet}
                       tintColor={COLOR.PRIMARY}
                       padding={10}
                       style={{ transform: [{ rotate: '130deg' }] }}
@@ -140,13 +173,13 @@ function ProfileScreen({ route }) {
                     />
                   </View>
                   <Image
-                    source={require('@/assets/other/person.png')}
+                    source={{ uri: img }}
                     style={styles.person_image_container}
                     resizeMode="cover"
                   />
                   <View style={styles.process_text_container}>
                     <Title
-                      title={strings.profile_screen.profile_compeleted}
+                      title={ProfileComplet + "%" + " completed"}
                       style={styles.process_text}
                     />
                   </View>
@@ -179,7 +212,7 @@ function ProfileScreen({ route }) {
             </View>
             <View style={styles.person_name}>
               <Title
-                title={strings.profile_screen.person_name}
+                title={Fname + Lname}
                 style={{ fontSize: 22 }}
               />
               <Image

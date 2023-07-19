@@ -174,7 +174,7 @@ async function getUserProfile(params, id) {
     const result = await getRequest(url, params)
     return result
 }
-async function getUserDetais(params, id) {
+async function getUserDetais(params) {
     let url = WEB_SERVICE.user_detais
     const result = await getRequest(url, params)
     return result
