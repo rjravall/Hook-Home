@@ -206,8 +206,8 @@ function HomeScreen({ route }) {
     const result = await getUserDetais({})
     if (result.status) {
       if (result?.data?.success) {
-        const mode = result.data.data.result[0].mode
-        console.log("MODD=================", mode)
+        const mode = result.data.data[0].mode
+        console.log("MODD=================*****************", mode)
         getSuggestedUser(lat, lng, mode)
 
         const respons = await getModes()

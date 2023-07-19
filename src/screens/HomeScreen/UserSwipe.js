@@ -144,7 +144,7 @@ export default class UserSwipe extends React.Component {
     swipeuserid = this.state.users[0]._id
     params = {
       swipeUserId: swipeuserid,
-      type: "dislike"
+      type: data
     }
     const result = await getSwipeUser(params)
     console.log("RESULT============================================>", result)
