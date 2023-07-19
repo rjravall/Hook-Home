@@ -1,3 +1,4 @@
+import { getSwipeUser } from '@/api/user';
 import {
   CloseIcon,
   GalleryIcon,
@@ -20,6 +21,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { Value } from 'react-native-reanimated';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -88,7 +90,9 @@ export default class UserSwipe extends React.Component {
               this.position.setValue({ x: 0, y: 0 });
             });
             this.props.onRemove();
-            console.log("Like..................")
+            data = "like"
+            console.log(data)
+            this.userswipe(data)
           });
         } else if (gestureState.dx < -120) {
           Animated.spring(this.position, {
@@ -99,7 +103,9 @@ export default class UserSwipe extends React.Component {
               this.position.setValue({ x: 0, y: 0 });
             });
             this.props.onRemove();
-            console.log("Dislike..................")
+            data = "dislike"
+            console.log(data)
+            this.userswipe(data)
           });
         } else {
           Animated.spring(this.position, {
@@ -133,6 +139,16 @@ export default class UserSwipe extends React.Component {
       });
     });
   };
+
+  userswipe = async (data) => {
+    swipeuserid = this.state.users[0]._id
+    params = {
+      swipeUserId: swipeuserid,
+      type: "dislike"
+    }
+    const result = await getSwipeUser(params)
+    console.log("RESULT============================================>", result)
+  }
 
 
   renderUsers = () => {

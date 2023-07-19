@@ -179,7 +179,7 @@ async function getUserDetais(params, id) {
     const result = await getRequest(url, params)
     return result
 }
-async function getSwipeUser(params, id) {
+async function getSwipeUser(params) {
     let url = WEB_SERVICE.user_swipe
     const result = await postRequest(url, params)
     return result
