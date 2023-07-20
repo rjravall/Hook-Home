@@ -33,6 +33,7 @@ import { Rating } from 'react-native-ratings';
 import { strings } from '@/localization';
 import { useEffect } from 'react';
 import { getUserDetais, getUserProfile } from '@/api/user';
+import { SHOW_SUCCESS_TOAST, SHOW_TOAST } from '@/constants/ShowToast';
 
 
 
@@ -43,10 +44,10 @@ function ProfileScreen({ route }) {
 
   const [showRating, setShowRating] = useState(false);
   const [IsLoading, setIsLoading] = useState(true)
-  const [Fname, setFName] = useState()
-  const [Lname, setLName] = useState()
+  const [Fname, setFName] = useState('')
+  const [Lname, setLName] = useState('')
   const [Data, setData] = useState()
-  const [ProfileComplet, setProfileComplet] = useState()
+  const [ProfileComplet, setProfileComplet] = useState(0)
   const [img, setImg] = useState()
   function switchScreen(index) {
     switch (index) {
@@ -72,21 +73,29 @@ function ProfileScreen({ route }) {
   const getDetails = async () => {
     setIsLoading(true)
     const result = await getUserDetais({})
-
-    setData(result)
-    setProfileComplet(result.data.data[0].completeProfile)
-    setFName(result?.data?.data[0]?.firstName)
-    setLName(result?.data?.data[0]?.lastName)
-    setImg(result?.data?.data[0]?.userPhotos.publicPhotos[0])
     setIsLoading(false)
+    if (result.status) {
+      if (result?.data?.success) {
+        SHOW_SUCCESS_TOAST(result?.data?.message)
+        setData(result)
+        setProfileComplet(result.data.data[0].completeProfile)
+        setFName(result?.data?.data[0]?.firstName)
+        setLName(result?.data?.data[0]?.lastName)
+        setImg(result?.data?.data[0]?.userPhotos.publicPhotos[0])
 
-    console.log("MAIN  :===========================: ", result?.data?.data[0])
-    console.log("ProfileComplet :=========:  ", ProfileComplet)
-    console.log("ProfileComplet :=========:  ", Fname)
-    console.log("ProfileComplet :=========:  ", Lname)
-    console.log("IAMGES :=========:  ", img)
+
+      } else {
+        SHOW_TOAST(result?.data?.message)
+      }
+    } else {
+      SHOW_TOAST(result.error)
+    }
 
   }
+  console.log("ProfileComplet :=========:  ", ProfileComplet)
+  console.log("ProfileComplet :=========:  ", Fname)
+  console.log("ProfileComplet :=========:  ", Lname)
+  console.log("IAMGES :=========:  ", img)
 
   useEffect(() => {
     getDetails()
@@ -134,6 +143,8 @@ function ProfileScreen({ route }) {
                     alignItems: 'center',
                   },
                 ]}>
+
+
                 <View
                   style={[
                     styles.roundShape,
@@ -154,6 +165,7 @@ function ProfileScreen({ route }) {
                         width: 200,
                       },
                     ]}>
+
                     <AnimatedCircularProgress
                       size={152}
                       width={4}

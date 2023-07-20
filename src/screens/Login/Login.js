@@ -24,6 +24,7 @@ import { sendOtp, loginUser } from '@/api';
 import ProgressView from '@/components/ProgressView';
 import { setToken, setUserEmail, setUserPassword } from '@/Utils/PrefrenceData';
 import { NAV_SIGNUP } from '@/constants/navigation';
+import { getUserDetais } from '@/api/user';
 // import {shadow} from '@/theme';
 
 export function Login({ route }) {
@@ -83,6 +84,67 @@ export function Login({ route }) {
     }
   }
 
+  async function CheckDetails() {
+    const result = await getUserDetais({})
+    if (result.status) {
+      if (result?.data?.success) {
+        const data = result.data.data[0]
+        if (data.firstName == "") {
+          console.log("Index : ", 0);
+        } else if (data.mode == "") {
+          console.log("Index : ", 1);
+        }
+        else if (data.userPhotos.publicPhotos.length == 0) {
+          console.log("Index : ", 2);
+        }
+        else if (
+          !data.userMeta.ethnicity ||
+          !data.userMeta.religion ||
+          !data.userMeta.politicalBeliefs) {
+          console.log("Index : ", 3)
+        }
+        else if (
+          !data.userMeta.genders ||
+          !data.userMeta.bodyTypes ||
+          !data.userMeta.sexualOrientations ||
+          !data.userMeta.sexualPreference) {
+          console.log("Index : ", 4)
+        }
+        else if (data.userMeta.interests.length == 0) {
+          console.log("Index : ", 5);
+        }
+        else if (data.userMeta.kinks.length == 0) {
+          console.log("Index : ", 6);
+        }
+        else if (
+          !data.userMeta.drink ||
+          !data.userMeta.exercise ||
+          !data.userMeta.marijuana ||
+          data.userMeta.pets.length ||
+          !data.userMeta.smoke) {
+          console.log("Index : ", 7)
+        }
+        else if (
+          !data.userMeta.languages ||
+          !data.userMeta.zodiacSigns ||
+          !data.userMeta.tribes) {
+          console.log("Index : ", 8)
+        }
+        else if (data.userMeta.personalityTypes.length == 0) {
+          console.log("Index : ", 9);
+        }
+        else if (
+          !data.userMeta.jobTitle ||
+          !data.userMeta.work ||
+          !data.userMeta.study) {
+          console.log("Index : ", 10)
+        } else {
+          navigation.navigate(NAVIGATION.set_locaion_screen)
+        }
+      }
+    }
+  }
+
   async function loginRegister() {
     const params = {
       email: email,
@@ -101,13 +163,9 @@ export function Login({ route }) {
         setUserPassword(password)
         setEmail('')
         setPassword('')
-        navigation.navigate(NAVIGATION.set_locaion_screen)
+        // navigation.navigate(NAVIGATION.set_locaion_screen)
 
-        // if (!result?.data?.data.ProfileSetup) {
-        //   navigation.navigate(NAV_SIGNUP.information)
-        // } else {
-        //   navigation.navigate(NAVIGATION.set_locaion_screen)
-        // }
+        CheckDetails();
 
       } else {
         SHOW_TOAST(result?.data?.message)

@@ -388,7 +388,9 @@ export default function Information() {
   async function onupdateProfile() {
     const formData = new FormData();
 
+    formData.append('index', index + 1);
     if (index == 0) {
+
       formData.append('firstName', firstName);
       formData.append('firstNameVisible', true);
       formData.append('lastName', lastName);
