@@ -52,7 +52,7 @@ function Email_Verification(props) {
         setToken(`Bearer ${result.data.data.token}`)
         setUserEmail(props.route.params.email)
         setUserPassword(props.route.params.password)
-        navigation.navigate(NAV_SIGNUP.information)
+        navigation.navigate(NAV_SIGNUP.information, { index: 0 })
       } else {
         SHOW_TOAST(result?.data?.message)
       }

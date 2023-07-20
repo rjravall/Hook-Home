@@ -65,7 +65,7 @@ export default function Landing() {
 
         <Button
           title={strings.landing.login}
-          onPress={() => navigation.navigate(NAVIGATION.login, { login: true })}
+          onPress={() => navigation.replace(NAVIGATION.login, { login: true })}
         />
 
         <Button
@@ -73,7 +73,7 @@ export default function Landing() {
           flag={true}
           shadow={false}
           style={{ marginBottom: 40, marginTop: 16 }}
-          onPress={() => navigation.navigate(NAVIGATION.login, { login: false })}
+          onPress={() => navigation.replace(NAVIGATION.login, { login: false })}
         />
       </View>
     </View>

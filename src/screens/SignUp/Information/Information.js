@@ -32,14 +32,15 @@ import { setFName, setLName, setPrefreName, setDOB, setHeightvalue, setWeightval
 import { postUpdateProfile } from '@/api';
 import ProgressView from '@/components/ProgressView';
 
-export default function Information() {
+export default function Information({ route }) {
   const [getPhotoAccess, SetGetPhotoAccess] = useState(false);
   const navigation = useNavigation();
   const { colors } = useTheme();
   const [selectedQuestionnaireOption, setSelectedQuestionnaireOption] = useState({});
   const [typeVisibleOnProfile, setTypeVisibleOnProfile] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(parseInt(route.params?.index));
   const [isLoading, setIsLoading] = useState(false)
+  const [isFirst, setIsFirst] = useState(false);
 
   //personal information
   const [firstName, setFirstname] = useState('');
@@ -532,7 +533,7 @@ export default function Information() {
           }}
         />
         <View style={styles.bottomNavigation}>
-          {index != 0 && (
+          {index != parseInt(route.params.index) && (
             <BackButton
               onPress={() => {
                 setIndex(index - 1);

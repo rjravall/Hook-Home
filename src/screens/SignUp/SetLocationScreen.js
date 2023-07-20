@@ -27,7 +27,7 @@ import { SHOW_SUCCESS_TOAST, SHOW_TOAST } from '@/constants/ShowToast';
 
 
 function SetLocationScreen(props) {
-  Geocoder.init(API_KEY);
+
   const [address, setaddress] = useState()
   const _search = useRef();
   const [isSearch, setIsSearch] = useState(false);
@@ -130,7 +130,7 @@ function SetLocationScreen(props) {
       if (result?.data?.success) {
         SHOW_SUCCESS_TOAST(result.data.message)
         if (props.route.params?.setting == undefined) {
-          navigation.navigate(NAVIGATION.home)
+          navigation.replace(NAVIGATION.home)
         } else {
           navigation.pop(1);
         }

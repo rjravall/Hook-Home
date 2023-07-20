@@ -90,56 +90,92 @@ export function Login({ route }) {
       if (result?.data?.success) {
         const data = result.data.data[0]
         if (data.firstName == "") {
-          console.log("Index : ", 0);
+          navigation.navigate(NAV_SIGNUP.information, { index: 0 })
         } else if (data.mode == "") {
-          console.log("Index : ", 1);
+          navigation.navigate(NAV_SIGNUP.information, { index: 1 })
+          // console.log("Index : ", 1);
         }
         else if (data.userPhotos.publicPhotos.length == 0) {
-          console.log("Index : ", 2);
-        }
-        else if (
-          !data.userMeta.ethnicity ||
-          !data.userMeta.religion ||
+          navigation.navigate(NAV_SIGNUP.information, { index: 2 })
+          // console.log("Index : ", 2);
+        } else if (
+          data.userPhotos.publicPhotos.length > 0 &&
+          !data.userMeta.ethnicity &&
+          !data.userMeta.religion &&
           !data.userMeta.politicalBeliefs) {
-          console.log("Index : ", 3)
+          navigation.navigate(NAV_SIGNUP.information, { index: 3 })
         }
         else if (
-          !data.userMeta.genders ||
-          !data.userMeta.bodyTypes ||
-          !data.userMeta.sexualOrientations ||
-          !data.userMeta.sexualPreference) {
-          console.log("Index : ", 4)
-        }
-        else if (data.userMeta.interests.length == 0) {
-          console.log("Index : ", 5);
-        }
-        else if (data.userMeta.kinks.length == 0) {
-          console.log("Index : ", 6);
-        }
-        else if (
-          !data.userMeta.drink ||
-          !data.userMeta.exercise ||
-          !data.userMeta.marijuana ||
-          data.userMeta.pets.length ||
-          !data.userMeta.smoke) {
-          console.log("Index : ", 7)
+          (data.userMeta.ethnicity ||
+            data.userMeta.religion ||
+            data.userMeta.politicalBeliefs) &&
+          !data.userMeta.genders &&
+          !data.userMeta.bodyTypes &&
+          !data.userMeta.sexualOrientations &&
+          !data.userMeta.sexualPreference
+        ) {
+          navigation.navigate(NAV_SIGNUP.information, { index: 4 })
+          // console.log("Index : ", 3)
         }
         else if (
-          !data.userMeta.languages ||
-          !data.userMeta.zodiacSigns ||
+          (data.userMeta.genders ||
+            data.userMeta.bodyTypes ||
+            data.userMeta.sexualOrientations ||
+            data.userMeta.sexualPreference) &&
+          data.userMeta.interests.length == 0
+        ) {
+          navigation.navigate(NAV_SIGNUP.information, { index: 5 })
+          // console.log("Index : ", 4)
+        }
+        else if (data.userMeta.interests.length > 0 && data.userMeta.kinks.length == 0) {
+          navigation.navigate(NAV_SIGNUP.information, { index: 6 })
+          // console.log("Index : ", 5);
+        }
+        else if (data.userMeta.kinks.length > 0 &&
+          !data.userMeta.drink &&
+          !data.userMeta.exercise &&
+          !data.userMeta.marijuana &&
+          !data.userMeta.pets.length > 0 &&
+          !data.userMeta.smoke
+        ) {
+          navigation.navigate(NAV_SIGNUP.information, { index: 7 })
+          // console.log("Index : ", 6);
+        }
+        else if (
+          (data.userMeta.drink ||
+            data.userMeta.exercise ||
+            data.userMeta.marijuana ||
+            data.userMeta.pets.length > 0 ||
+            data.userMeta.smoke) &&
+          !data.userMeta.languages &&
+          !data.userMeta.zodiacSigns &&
           !data.userMeta.tribes) {
-          console.log("Index : ", 8)
-        }
-        else if (data.userMeta.personalityTypes.length == 0) {
-          console.log("Index : ", 9);
+          navigation.navigate(NAV_SIGNUP.information, { index: 8 })
+          // console.log("Index : ", 7)
         }
         else if (
-          !data.userMeta.jobTitle ||
-          !data.userMeta.work ||
-          !data.userMeta.study) {
-          console.log("Index : ", 10)
-        } else {
-          navigation.navigate(NAVIGATION.set_locaion_screen)
+          (data.userMeta.languages ||
+            data.userMeta.zodiacSigns ||
+            data.userMeta.tribes) &&
+          data.userMeta.personalityTypes.length == 0) {
+          navigation.navigate(NAV_SIGNUP.information, { index: 9 })
+          // console.log("Index : ", 8)
+        }
+        else if (
+          data.userMeta.personalityTypes.length > 0 &&
+          !data.userMeta.jobTitle &&
+          !data.userMeta.work &&
+          !data.userMeta.study
+        ) {
+          navigation.navigate(NAV_SIGNUP.information, { index: 10 })
+          // console.log("Index : ", 9);
+        }
+        else if (
+          data.userMeta.jobTitle ||
+          data.userMeta.work ||
+          data.userMeta.study) {
+          navigation.replace(NAVIGATION.set_locaion_screen)
+          // console.log("Index : ", 10)
         }
       }
     }
@@ -306,7 +342,7 @@ export function Login({ route }) {
               styles.account_conformation,
               {
                 marginHorizontal: 8,
-                color: colors.primary,
+                color: "#E6256F",
               },
             ]}>
             {getFlag(!flag)}

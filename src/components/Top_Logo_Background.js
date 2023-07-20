@@ -19,7 +19,7 @@ function Top_Logo_Background(props) {
     app_Icon: {
       height: 100,
       width: 100,
-      tintColor: colors.primary,
+      tintColor: "#E6256F",//colors.primary,
       opacity: 1,
       position: 'absolute',
       alignSelf: 'center',
@@ -29,7 +29,7 @@ function Top_Logo_Background(props) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        tintColor={colors.primary}
+        tintColor="#E6256F"
         source={BgAppIcon}
         style={styles.background_Image}
       />

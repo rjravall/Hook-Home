@@ -20,9 +20,18 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import ExploreScreen from '../ExploreScreen/ExploreScreen';
 import NotificationScreen from '../NotificationScreen/NotificationScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Login } from '../Login/Login';
+import { NAVIGATION } from '@/constants';
+import Information from '../SignUp/Information/Information';
+import Email_Verification from '../Login/Email_Verification';
+import ForgotScreen from '../Login/ForgotScreen';
+import SetLocationScreen from '../SignUp/SetLocationScreen';
+import { NAV_SIGNUP } from '@/constants/navigation';
 
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 function Tabs(props) {
   const { colors } = useTheme();
 
@@ -97,4 +106,37 @@ function Tabs(props) {
   );
 }
 
-export default Tabs;
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="profileTab" component={Tabs} />
+      <Stack.Screen
+        component={Information}
+        name={NAV_SIGNUP.information}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={Login}
+        name={NAVIGATION.login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={Email_Verification}
+        name={NAVIGATION.email}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={ForgotScreen}
+        name={NAVIGATION.forgotpw}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={SetLocationScreen}
+        name={NAVIGATION.set_locaion_screen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  )
+}
+
+export default ProfileStack;

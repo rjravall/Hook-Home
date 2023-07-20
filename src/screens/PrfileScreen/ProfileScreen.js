@@ -34,6 +34,8 @@ import { strings } from '@/localization';
 import { useEffect } from 'react';
 import { getUserDetais, getUserProfile } from '@/api/user';
 import { SHOW_SUCCESS_TOAST, SHOW_TOAST } from '@/constants/ShowToast';
+import { setToken } from '@/Utils/PrefrenceData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -65,7 +67,9 @@ function ProfileScreen({ route }) {
       case 4:
         return navigation.navigate(NAVIGATION.ReportApp_screen);
       case 6:
-        return route.params.setLogout();
+        return (
+          AsyncStorage.clear().then(() => { navigation.replace(NAVIGATION.login, { login: true }) })
+        );
       // return alert(index);
     }
   }
