@@ -91,7 +91,7 @@ export function Login({ route }) {
         const data = result.data.data[0]
         if (data.firstName == "") {
           navigation.navigate(NAV_SIGNUP.information, { index: 0 })
-        } else if (data.mode == "") {
+        } else if (!data.mode) {
           navigation.navigate(NAV_SIGNUP.information, { index: 1 })
           // console.log("Index : ", 1);
         }

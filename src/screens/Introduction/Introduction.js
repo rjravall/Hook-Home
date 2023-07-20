@@ -12,6 +12,8 @@ import { strings } from '@/localization';
 import { useEffect } from 'react';
 import { API_KEY } from '../SignUp/Map/API_KEY';
 import Geocoder from 'react-native-geocoding';
+import { getUserDetais } from '@/api/user';
+import { NAV_SIGNUP } from '@/constants/navigation';
 
 export default function Introduction() {
   const navigation = useNavigation();
@@ -23,10 +25,38 @@ export default function Introduction() {
       if (Data == null) {
         navigation.replace(NAVIGATION.landing);
       } else {
-        navigation.replace(NAVIGATION.home);
+        Checkdata()
+        // navigation.replace(NAVIGATION.home);
       }
     }, 2000)
 
+  }
+
+  const Checkdata = async () => {
+
+
+    const result = await getUserDetais({})
+    if (result.status) {
+      if (result?.data?.success) {
+        const data = result.data.data[0]
+        if (data.firstName == "") {
+          navigation.navigate(NAV_SIGNUP.information, { index: 0 })
+        } else if (!data.mode) {
+          navigation.navigate(NAV_SIGNUP.information, { index: 1 })
+          // console.log("Index : ", 1);
+        }
+        else if (data.userPhotos.publicPhotos.length == 0) {
+          navigation.navigate(NAV_SIGNUP.information, { index: 2 })
+          // console.log("Index : ", 2);
+        } else if (data.location.coordinates.length > 0) {
+          navigation.replace(NAVIGATION.home);
+        }
+        else {
+          navigation.replace(NAVIGATION.set_locaion_screen)
+        }
+
+      }
+    }
   }
 
   useEffect(() => {
