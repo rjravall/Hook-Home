@@ -62,6 +62,19 @@ function Email_Verification(props) {
 
   }
 
+  // const TimeSet = ()=> {
+
+  //   if (timer == 0) {
+  //     <Title title={'00:00'} style={styles.timer_text} />
+  //     if (timer < 10) {
+  //       <Title timer title={'00:' + "0" + timer} style={styles.timer_text} />
+  //     } else {
+  //       <Title timer title={'00:' + timer} style={styles.timer_text} />
+  //     }
+  //   }
+
+  // }
+
   return (
     <KeyboardAwareScrollView
       style={{ backgroundColor: 'white' }}
@@ -86,21 +99,39 @@ function Email_Verification(props) {
             title={strings.email_verification.resend_code_text}
             style={styles.resend_text}
           />
+
           {
+
             timer == 0 ?
               <Title title={'00:00'} style={styles.timer_text} />
               :
-              <Title title={'00:' + timer} style={styles.timer_text} />
+              timer >= 10 ?
+                <Title timer title={'00:' + timer} style={styles.timer_text} />
+                :
+                <Title timer title={'00:' + "0" + timer} style={styles.timer_text} />
           }
+
 
         </View>
 
-        <Button
-          style={{ marginTop: 32 }}
-          onPress={() => onValidationRegistration()}
-          title={strings.email_verification.button}
-          flag={true}
-        />
+
+
+        {
+          timer == 0 ?
+            <Button
+              style={{ marginTop: 32 }}
+              onPress={() => onValidationRegistration()}
+              title={strings.email_verification.sendotp}
+              flag={true}
+            /> :
+            <Button
+              style={{ marginTop: 32 }}
+              onPress={() => onValidationRegistration()}
+              title={strings.email_verification.button}
+              flag={true}
+            />
+        }
+
       </View>
       {isLoading && <ProgressView />}
     </KeyboardAwareScrollView>

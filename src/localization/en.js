@@ -106,6 +106,7 @@ export const en = {
     subtitle: 'Enter 6 digit OTP to verify your Email',
     resend_code_text: 'Resend code in ',
     button: 'Verify',
+    sendotp: 'Resend OTP'
   },
   data_filter_Screen: {
     title: 'Data Filter',

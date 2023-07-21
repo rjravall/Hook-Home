@@ -28,6 +28,7 @@ import { getProfile, postUpdateProfile } from '@/api';
 import { SHOW_SUCCESS_TOAST, SHOW_TOAST } from '@/constants/ShowToast';
 import ProgressView from '@/components/ProgressView';
 import { NativeBaseProvider } from 'native-base';
+import { getUserDetais } from '@/api/user';
 
 function EditProfileScreen({ route }) {
   const about_data =
@@ -51,6 +52,7 @@ function EditProfileScreen({ route }) {
   const navigation = useNavigation();
   const flag = false;
   const [getPrfileList, setGetProfileList] = useState([]);
+  // const [personalInfo, setpersonalInfo] = useState([])
 
   const [firstName, setFirstname] = useState('');
   const [lastName, setLastname] = useState('');
@@ -123,10 +125,131 @@ function EditProfileScreen({ route }) {
   const [work, setWork] = useState('');
   const [workVisible, setWorkVisible] = useState(false);
   const [study, setStudy] = useState('');
+  const [items, setItems] = useState([]);
   const [studyVisible, setStudyVisible] = useState(false);
 
+  const detailist = [
+    {
+      Field: "ethnicity",
+      title: "Ethnicity",
+      icon: require('../../assets/userDetails/Ethnicity.png'),
+    },
+    {
+      Field: "religion",
+      title: "Religion",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "politicalBeliefs",
+      title: "Political Beliefs",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "genders",
+      title: "Genders",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "bodyType",
+      title: "Body Type",
+      icon: require('../../assets/userDetails/Body.png'),
+    },
+    {
+      Field: "sexualOrientations",
+      title: "Sexual Orientations",
+      icon: require('../../assets/userDetails/Sexsual.png'),
+    },
+    {
+      Field: "sexualPreference",
+      title: "Sexual Preference",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "interests",
+      title: "Interests",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "kinks",
+      title: "Kinks",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "drink",
+      title: "Drink",
+      icon: require('../../assets/userDetails/Drinking.png'),
+    },
+    {
+      Field: "exercise",
+      title: "Exercise",
+      icon: require('../../assets/userDetails/Exercise.png'),
+    },
+    {
+      Field: "marijuana",
+      title: "Marijuana",
+      icon: require('../../assets/userDetails/Marijuana.png'),
+    },
+    {
+      Field: "smoke",
+      title: "Smoke",
+      icon: require('../../assets/userDetails/Smoking.png'),
+    },
+    {
+      Field: "pet",
+      title: "Pet",
+      icon: require('../../assets/userDetails/Pets.png'),
+    },
+    {
+      Field: "language",
+      title: "Language",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "zodiacSigns",
+      title: "Zodiac Signs",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "tribes",
+      title: "Tribes",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "personalityTypes",
+      title: "Personality Types",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "jobTitle",
+      title: "Job Title",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "work",
+      title: "Work",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+    {
+      Field: "study",
+      title: "Study",
+      icon: require('../../assets/userDetails/Gender.png'),
+    },
+  ]
+
+  // //API Calling
+  // const [personalInfo, setpersonalInfo] = useState([])
+
+  // const Checkdata = async () => {
+
+  //   const result = await getUserDetais({})
+  //   const data = result.data.data[0]
+  //   setpersonalInfo(data)
+  //   console.log("All Data =========================== : ", data)
+
+  // }
 
   useEffect(() => {
+    // Checkdata()
     onGetProfile()
   }, []);
 
@@ -139,6 +262,23 @@ function EditProfileScreen({ route }) {
     if (result.status) {
       if (result?.data?.success) {
         setGetProfileList(result.data.data)
+        const Data = result.data.data[0].userMeta;
+        let temp = []
+
+        detailist.map((data) => {
+          if (Data[data.Field] != undefined) {
+            const apifield = Data[data.Field.toString()];
+            if (Array.isArray(apifield)) {
+              console.log(apifield)
+              temp.push({ apifield, ...data })
+              setIsLoading(false)
+            } else {
+              temp.push({ ...apifield, ...data })
+            }
+          }
+        })
+        console.log("Temp : ", temp)
+        setItems(temp);
         // setFirstname(result.data.data[0].firstName)
         // setLastname(result.data.data[0].lastName)
         // setPreferredName(result.data.data[0].preferredName)
@@ -203,7 +343,9 @@ function EditProfileScreen({ route }) {
 
   }
 
+
   useEffect(() => {
+    // Checkdata()
     route.params.setShowTabBar(false);
     return () => {
       route.params.setShowTabBar(true);
@@ -294,6 +436,7 @@ function EditProfileScreen({ route }) {
     }
 
   }
+
 
   return (
     // console.log("dsakhdsah")
@@ -568,23 +711,70 @@ function EditProfileScreen({ route }) {
                       </View>
                     </View>
                   </TouchableOpacity>
+
+                  {
+                    items.map((data, i) => {
+                      return (
+                        <TouchableOpacity onPress={() =>
+                          navigation.navigate(NAVIGATION.edit_information, {
+                            title: data.title,
+                            value: data["apifield"] ? data["apifield"][0].name : data.name || data.values,
+                            flag: data.visible,
+                          })
+                        } key={i}>
+                          <View
+                            style={styles.personalInfoContainerStyle}>
+                            <View style={{ flex: 1 }}>
+                              <Text style={styles.titleTxtStyle}>{data.title}</Text>
+                              <Text style={styles.subTitleTxtStyle}>
+                                {Array.isArray(data["apifield"]) ?
+                                  data["apifield"].map((item, i) => {
+                                    if (i == (data["apifield"].length - 1)) {
+                                      return item.name
+                                    } else {
+                                      const str = item.name + ", ";
+                                      return (str)
+                                    }
+                                  })
+
+                                  : data.name || data.values}
+                              </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <Text style={[styles.flagStyle, { color: data.visible == true ? COLOR.PRIMARY : COLOR.GRAY_800 }]}>
+                                {data.visible == true ? 'Visible' : 'Hidden'}
+                              </Text>
+                              <Image
+                                source={RightIcon}
+                                style={{ height: 16, width: 16 }}
+                                resizeMode={'contain'}
+                              />
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                      )
+                    })
+                  }
+
                   {/* {personalInfo.map((value, index) => {
-                  return (
-                    <PersonalInfoItem
-                      onPress={() =>
-                        navigation.navigate(NAVIGATION.edit_information, {
-                          title: value.title,
-                          value: value.value,
-                          flag: value.flag,
-                        })
-                      }
-                      title={value.title}
-                      value={value.value}
-                      flag={value.flag}
-                      key={index}
-                    />
-                  );
-                })} */}
+
+                    console.log("HELLO OKKKKKK")
+                    return (
+                      <PersonalInfoItem
+                        onPress={() =>
+                          navigation.navigate(NAVIGATION.edit_information, {
+                            title: value.title,
+                            value: value.value,
+                            flag: value.flag,
+                          })
+                        }
+                        title={value.title}
+                        value={value.value}
+                        flag={value.flag}
+                        key={index}
+                      />
+                    );
+                  })} */}
                 </View>
               </View>
             </ScrollView>

@@ -13,7 +13,7 @@ function CustomSwitch({ containerStyle, onChange, isOn }) {
         thumbColor={'white'}
         ios_backgroundColor={COLOR.GRAY_500}
         onValueChange={() => {
-          toggleSwitch();
+          setIsEnabled(!isEnabled)
           onChange(!isEnabled);
         }}
         value={isEnabled}

@@ -51,7 +51,7 @@ function EditInfo({ route }) {
                 alignItems: 'center',
                 marginTop: 24,
               }}>
-              <CustomSwitch isOn={flag} onChange={() => ''} />
+              <CustomSwitch isOn={flag} onChange={(value) => console.log(value)} />
               <Title
                 title={strings.editinfo_screen.profile_visibilty_text}
                 touchableStyle={{ marginStart: 8 }}
