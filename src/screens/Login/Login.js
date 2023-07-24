@@ -9,6 +9,7 @@ import {
   AppleIcon,
   GoogleIcon,
   PwIcon,
+  HidePasswordIcon
 } from '@/assets';
 import { COLOR } from '@/theme/theme';
 import { Button } from '@/components';
@@ -56,9 +57,12 @@ export function Login({ route }) {
     } else if (!password) {
       SHOW_TOAST(strings.toast_success_message.enter_password)
     }
+    // else if (password.length !== 8) {
+    //   SHOW_TOAST(strings.toast_success_message.enter_eight_digit)
+    // }
     // else if (REGEX.passwordRegex.test(password) == false) {
     //   SHOW_TOAST(strings.toast_success_message.enter_valid_password)
-    // } 
+    // }
     else {
       loginRegister()
     }
@@ -72,12 +76,17 @@ export function Login({ route }) {
     } else if (!password) {
       SHOW_TOAST(strings.toast_success_message.enter_password)
     }
-    // else if (REGEX.passwordRegex.test(password) == false) {
-    //   SHOW_TOAST(strings.toast_success_message.enter_valid_password)
-    // } 
+    else if (REGEX.passwordRegex.test(password) == false) {
+      SHOW_TOAST(strings.toast_success_message.enter_valid_password)
+    }
     else if (!confirmPassword) {
       SHOW_TOAST(strings.toast_success_message.enter_confirmPassword)
-    } else if (confirmPassword != password) {
+
+    }
+    else if (password.length !== 8) {
+      SHOW_TOAST(strings.toast_success_message.enter_eight_digit)
+    }
+    else if (confirmPassword != password) {
       SHOW_TOAST(strings.toast_success_message.enter_passwordmishmatch)
     } else {
       sendOtpUser()
@@ -268,10 +277,17 @@ export function Login({ route }) {
           secureTextEntry={showPassWord}
           placeholder={strings.common.password}
           right={
-            <TextInput.Icon
-              icon={PwIcon}
-              onPress={() => setShowPassword(!showPassWord)}
-            />
+
+            showPassWord == false ?
+              <TextInput.Icon
+                icon={PwIcon}
+                onPress={() => setShowPassword(!showPassWord)}
+              /> :
+
+              <TextInput.Icon
+                icon={HidePasswordIcon}
+                onPress={() => setShowPassword(!showPassWord)}
+              />
           }
         />
         {data == strings.login.title && (
@@ -290,10 +306,17 @@ export function Login({ route }) {
             extraStyle={[styles.extraStyle]}
             placeholder={strings.common.cnf_password}
             right={
-              <TextInput.Icon
-                icon={PwIcon}
-                onPress={() => setShowCnfPassword(!showCnfPassWord)}
-              />
+
+              showCnfPassWord == false ?
+                <TextInput.Icon
+                  icon={PwIcon}
+                  onPress={() => setShowCnfPassword(!showCnfPassWord)}
+                /> :
+
+                <TextInput.Icon
+                  icon={HidePasswordIcon}
+                  onPress={() => setShowCnfPassword(!showCnfPassWord)}
+                />
             }
           />
         )}

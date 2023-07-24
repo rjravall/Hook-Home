@@ -55,7 +55,7 @@ function OptionQuestionnair({ flag = false, text, onPress, icon }) {
             // tintColor: flag ? colors.primary : COLOR.BLACK90,
 
           )}
-          <Text style={{ color: COLOR.GRAY_800 }}>{text}</Text>
+          <Text style={{ color: flag ? getBorderColor(flag) : COLOR.GRAY_800 }}>{text}</Text>
         </View>
       </View>
     </TouchableWithoutFeedback>

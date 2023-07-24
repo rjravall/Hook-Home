@@ -80,6 +80,7 @@ function PersonalInformation({
         setText={setDateOfBirth}
         extraStyle={{ marginTop: 10 }}
         placeholder={strings.personal_information_signup.date_of_birth}
+        editable={false}
         right={
           <TextInput.Icon
             icon={CalenderIcon}

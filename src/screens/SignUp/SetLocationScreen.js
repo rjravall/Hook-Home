@@ -77,6 +77,8 @@ function SetLocationScreen(props) {
           ...stat.region,
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
+          latitudeDelta: 0.009,
+          longitudeDelta: 0.009,
         })
         Geocoder.from({ lat: position.coords.latitude, lng: position.coords.longitude })
           .then(response => {
@@ -245,11 +247,11 @@ function SetLocationScreen(props) {
         contentInsetAdjustmentBehavior="automatic">
         <SafeAreaView style={{ flex: 1 }}>
           <View style={{ flex: 1, paddingBottom: 30 }}>
-            <Text
+            {/* <Text
               onPress={() => navigation.navigate(NAVIGATION.home)}
               style={styles.skip_btn}>
               {strings.set_your_location.skip}
-            </Text>
+            </Text> */}
             <View style={styles.map_view_container} />
             <View style={styles.title_container}>
               <Title
@@ -305,13 +307,13 @@ function SetLocationScreen(props) {
   );
 }
 const styles = StyleSheet.create({
-  skip_btn: {
-    alignSelf: 'flex-end',
-    marginEnd: 16,
-    marginTop: Platform.OS == 'android' ? 5 : 0,
-    textDecorationLine: 'underline',
-    color: COLOR.BLACK90,
-  },
+  // skip_btn: {
+  //   alignSelf: 'flex-end',
+  //   marginEnd: 16,
+  //   marginTop: Platform.OS == 'android' ? 5 : 0,
+  //   textDecorationLine: 'underline',
+  //   color: COLOR.BLACK90,
+  // },
   title: {
     marginTop: 12,
     fontSize: fontSize.xmedium,

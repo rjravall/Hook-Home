@@ -191,7 +191,7 @@ export default function Information({ route }) {
 
   const QuestionnaireRoute2 = index => (
     <QuestionnaireScreen2
-      setInterestsId={setInterestsId}
+      setInteresQuestionnaireScreen2tsId={setInterestsId}
       setInterestsVisible={setInterestsVisible}
       index={index}
       selectedTypesData={{

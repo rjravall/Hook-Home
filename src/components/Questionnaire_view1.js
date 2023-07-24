@@ -35,6 +35,11 @@ function QuestionnaireScreen1({
   const [bodytypesList, setBodytypesList] = useState([]);
   const [sexualOrientationList, setSexualOrientationList] = useState([]);
   const [sexualPreferenceList, setSexualPreferenceList] = useState([]);
+  const [Visible1, setvisible1] = useState(false)
+  const [Visible2, setvisible2] = useState(false)
+  const [Visible3, setvisible3] = useState(false)
+  const [Visible4, setvisible4] = useState(false)
+  const [Visible5, setvisible5] = useState(false)
 
   useEffect(() => {
     onGetRelationshipStatus()
@@ -125,13 +130,20 @@ function QuestionnaireScreen1({
           />
           <View style={{ flexDirection: 'row' }}>
             <Title
-              title={'visible on Profile'}
-              style={{
+              title={'Visible on Profile'}
+              style={[{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-                color: COLOR.BLACK80,
-              }}
+                color: "#9B9197",
+              },
+              item.index == 0 && Visible1 && { color: COLOR.BLACK80 },
+              item.index == 1 && Visible2 && { color: COLOR.BLACK80 },
+              item.index == 2 && Visible3 && { color: COLOR.BLACK80 },
+              item.index == 3 && Visible4 && { color: COLOR.BLACK80 },
+              item.index == 4 && Visible5 && { color: COLOR.BLACK80 },
+
+              ]}
             />
 
             <CustomSwitch
@@ -139,19 +151,24 @@ function QuestionnaireScreen1({
               onChange={isOn => {
                 {
                   item.item == "relationship_status" ?
-                    setRelationshipStatuVisible(isOn)
+                    [setvisible1(isOn),
+                    setRelationshipStatuVisible(isOn)]
+
                     :
                     item.item == "gender" ?
-                      setGenderIdentityVisible(isOn)
+                      [setvisible2(isOn),
+                      setGenderIdentityVisible(isOn)]
                       :
                       item.item == "body_type" ?
-                        setBodytypesVisible(isOn)
+                        [setvisible3(isOn),
+                        setBodytypesVisible(isOn)]
                         :
                         item.item == "sexual_orientation" ?
-                          setSexualOrientationVisible(isOn)
+                          [setvisible4(isOn),
+                          setSexualOrientationVisible(isOn)]
                           :
-                          setSexualPreferenceVisible(isOn)
-
+                          [setvisible5(isOn),
+                          setSexualPreferenceVisible(isOn)]
                 }
                 handleVisibleOnProfileSelection(item.item, isOn);
               }}

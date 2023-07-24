@@ -22,6 +22,7 @@ function QuestionnaireScreen3({
   const [data, setData] = useState(QuestionnaireData[index]);
   const [localselectedItems, setLocalSelectedItems] = useState({});
   const [getKinksList, setgetKinksList] = useState([]);
+  const [Visible, setvisible] = useState(false)
 
   var kinksArray = []
 
@@ -73,12 +74,14 @@ function QuestionnaireScreen3({
           />
           <View style={{ flexDirection: 'row' }}>
             <Title
-              title={'visible on Profile'}
+              title={'Visible on Profile'}
               style={{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-                color: COLOR.BLACK80,
+
+                color: Visible == true ? COLOR.BLACK80 : 'pink'
+
               }}
             />
 
@@ -86,6 +89,7 @@ function QuestionnaireScreen3({
               containerStyle={{ marginTop: 3, marginLeft: 5 }}
               onChange={isOn => {
                 {
+                  setvisible(true)
                   item.item == "kinks" &&
                     setKinksVisible(isOn)
                 }

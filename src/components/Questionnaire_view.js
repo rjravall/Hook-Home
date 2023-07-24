@@ -13,7 +13,6 @@ import Title from './Title';
 import { getEthnicity, getPoliticalBeliefs, getReligions } from '@/api';
 import { SHOW_TOAST } from '@/constants/ShowToast';
 import ProgressView from './ProgressView';
-
 function QuestionnaireScreen({
   setEthnicityId,
   setReligionId,
@@ -33,6 +32,9 @@ function QuestionnaireScreen({
   const [getEthnicityList, setGetEthnicityList] = useState([]);
   const [getReligionList, setGetReligionList] = useState([]);
   const [getBeliefsList, setGetBeliefsList] = useState([]);
+  const [Visible1, setvisible1] = useState(false)
+  const [Visible2, setvisible2] = useState(false)
+  const [Visible3, setvisible3] = useState(false)
 
   useEffect(() => {
     onGetEthnicity()
@@ -103,71 +105,65 @@ function QuestionnaireScreen({
     <View>
       <FlatList
         data={data.types}
-        renderItem={item => (
-          <View style={{ marginTop: item.index == 0 ? 0 : 24 }}>
-            <Title
-              title={data[item.item].title}
-              style={{ fontSize: fontSize.xlarge, fontFamily: fontFamily.Medium }}
-            />
-            <View style={{ flexDirection: 'row' }}>
+        renderItem={item => {
+          let isCheck = false;
+
+          return (
+            <View style={{ marginTop: item.index == 0 ? 0 : 24 }}>
               <Title
-                title={'visible on Profile'}
-                style={{
-                  marginTop: 12,
-                  fontSize: fontSize.small,
-                  fontFamily: fontFamily.Medium,
-                  color: COLOR.BLACK80,
-                }}
+                title={data[item.item].title}
+                style={{ fontSize: fontSize.xlarge, fontFamily: fontFamily.Medium }}
               />
+              <View style={{ flexDirection: 'row' }}>
+                <Title
+                  title={'Visible on Profile'}
+                  style={[{
+                    marginTop: 12,
+                    fontSize: fontSize.small,
+                    fontFamily: fontFamily.Medium,
+                    color: '#9B9197'
+                  }, item.index == 0 && Visible1 && { color: COLOR.BLACK80 },
+                  item.index == 1 && Visible2 && { color: COLOR.BLACK80 },
+                  item.index == 2 && Visible3 && { color: COLOR.BLACK80 },
+                  ]}
+                />
 
-              <CustomSwitch
-                containerStyle={{ marginTop: 3, marginLeft: 5 }}
-                onChange={isOn => {
-                  {
-                    item.item == "ethnicity" ?
-                      setEthnicityVisible(isOn)
-                      :
-                      item.item == "religion" ?
-                        setReligionVisible(isOn)
+                {
+                  //  == true ? console.log("I am On ") : console.log("i am OFF")
+                }
+
+                <CustomSwitch
+                  containerStyle={{ marginTop: 3, marginLeft: 5 }}
+                  onChange={isOn => {
+                    {
+
+                      item.item == "ethnicity" ?
+                        [setvisible1(isOn),
+                        setEthnicityVisible(isOn)]
                         :
-                        setPoliticalVisible(isOn)
 
-                  }
-                  handleVisibleOnProfileSelection(item.item, isOn);
-                }}
-                isOn={Object.values(
-                  selectedTypesData['typeVisibleOnProfile'],
-                ).includes(item.item)}
-              />
-            </View>
+                        item.item == "religion" ?
+                          [setvisible2(isOn),
+                          setReligionVisible(isOn)]
+                          :
+                          [setPoliticalVisible(isOn),
+                          setvisible3(isOn)]
 
-            <View style={StyleSheet.flatten([styles.tagsView])}>
-              {
-                data[item.item].title == "What’s your ethnicity?" ?
-                  getEthnicityList.data != undefined &&
-                  getEthnicityList.data.map((data, index) => {
-                    return (
-                      <OptionQuestionnair
-                        key={index}
-                        text={data.name}
-                        flag={
-                          Object.keys(localselectedItems).includes(item.item) &&
-                          Object.values(localselectedItems[item.item]).includes(
-                            data.name,
-                          )
-                        }
-                        onPress={() => {
-                          setEthnicityId(data._id)
-                          changelocalSelectedItems(item.item, data.name);
-                        }}
-                      />
-                    );
-                  })
-                  :
-                  data[item.item].title == "What is your religion?" ?
 
-                    getReligionList.data != undefined &&
-                    getReligionList.data.map((data, index) => {
+                    }
+                    handleVisibleOnProfileSelection(item.item, isOn);
+                  }}
+                  isOn={Object.values(
+                    selectedTypesData['typeVisibleOnProfile'],
+                  ).includes(item.item)}
+                />
+              </View>
+
+              <View style={StyleSheet.flatten([styles.tagsView])}>
+                {
+                  data[item.item].title == "What’s your ethnicity?" ?
+                    getEthnicityList.data != undefined &&
+                    getEthnicityList.data.map((data, index) => {
                       return (
                         <OptionQuestionnair
                           key={index}
@@ -179,36 +175,59 @@ function QuestionnaireScreen({
                             )
                           }
                           onPress={() => {
-                            setReligionId(data._id)
+                            setEthnicityId(data._id)
                             changelocalSelectedItems(item.item, data.name);
                           }}
                         />
                       );
                     })
                     :
-                    getBeliefsList.data != undefined &&
-                    getBeliefsList.data.map((data, index) => {
-                      return (
-                        <OptionQuestionnair
-                          key={index}
-                          text={data.name}
-                          flag={
-                            Object.keys(localselectedItems).includes(item.item) &&
-                            Object.values(localselectedItems[item.item]).includes(
-                              data.name,
-                            )
-                          }
-                          onPress={() => {
-                            setPoliticalId(data._id)
-                            changelocalSelectedItems(item.item, data.name);
-                          }}
-                        />
-                      );
-                    })
-              }
+                    data[item.item].title == "What is your religion?" ?
+
+                      getReligionList.data != undefined &&
+                      getReligionList.data.map((data, index) => {
+                        return (
+                          <OptionQuestionnair
+                            key={index}
+                            text={data.name}
+                            flag={
+                              Object.keys(localselectedItems).includes(item.item) &&
+                              Object.values(localselectedItems[item.item]).includes(
+                                data.name,
+                              )
+                            }
+                            onPress={() => {
+                              setReligionId(data._id)
+                              changelocalSelectedItems(item.item, data.name);
+                            }}
+                          />
+                        );
+                      })
+                      :
+                      getBeliefsList.data != undefined &&
+                      getBeliefsList.data.map((data, index) => {
+                        return (
+                          <OptionQuestionnair
+                            key={index}
+                            text={data.name}
+                            flag={
+                              Object.keys(localselectedItems).includes(item.item) &&
+                              Object.values(localselectedItems[item.item]).includes(
+                                data.name,
+                              )
+                            }
+                            onPress={() => {
+                              setPoliticalId(data._id)
+                              changelocalSelectedItems(item.item, data.name);
+                            }}
+                          />
+                        );
+                      })
+                }
+              </View>
             </View>
-          </View>
-        )}
+          )
+        }}
       />
       {isLoading && <ProgressView />}
     </View>

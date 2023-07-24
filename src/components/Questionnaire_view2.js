@@ -9,6 +9,7 @@ import CustomSwitch from './Switch';
 import Title from './Title';
 import { getInterests } from '@/api';
 import { SHOW_TOAST } from '@/constants/ShowToast';
+import { color } from 'react-native-reanimated';
 
 function QuestionnaireScreen2({
   setInterestsId,
@@ -23,8 +24,10 @@ function QuestionnaireScreen2({
   const [localselectedItems, setLocalSelectedItems] = useState({});
 
   const [interestsList, setInterestsList] = useState([]);
+  const [Visible, setvisible] = useState()
+  const [interesteArray, setinteresteArray] = useState([])
 
-  var interesteArray = []
+
 
   useEffect(() => {
     onGetInterests()
@@ -74,13 +77,14 @@ function QuestionnaireScreen2({
           />
           <View style={{ flexDirection: 'row' }}>
             <Title
-              title={'visible on Profile'}
-              style={{
+              title={'Visible on Profile'}
+              style={[{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-                color: COLOR.BLACK80,
-              }}
+                color: "#9B9197",
+              }, item.index == 0 && Visible && { color: COLOR.BLACK80 }
+              ]}
             />
 
             <CustomSwitch
@@ -88,7 +92,8 @@ function QuestionnaireScreen2({
               onChange={isOn => {
                 {
                   item.item == "Interests" &&
-                    setInterestsVisible(isOn)
+                    [setvisible(isOn),
+                    setInterestsVisible(isOn)]
                 }
                 handleVisibleOnProfileSelection(item.item, isOn);
               }}
@@ -115,7 +120,7 @@ function QuestionnaireScreen2({
                       )
                     }
                     onPress={() => {
-                      interesteArray.push(data._id)
+                      setinteresteArray.push(data.id)
                       setInterestsId(interesteArray)
                       changelocalSelectedItems(item.item, data.name);
                     }}

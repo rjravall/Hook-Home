@@ -126,7 +126,7 @@ function QuestionnaireScreen4({
           />
           <View style={{ flexDirection: 'row' }}>
             <Title
-              title={'visible on Profile'}
+              title={'Visible on Profile'}
               style={{
                 marginTop: 12,
                 fontSize: fontSize.small,

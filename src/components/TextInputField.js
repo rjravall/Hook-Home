@@ -5,7 +5,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-function TextInputField({ text, setText, keyboardType, extraStyle, placeholder = '', ...rest }) {
+function TextInputField({ text, setText, keyboardType, extraStyle, placeholder = '', editable = true, ...rest }) {
   return (
     <View style={[extraStyle]}>
       <TextInput
@@ -23,6 +23,7 @@ function TextInputField({ text, setText, keyboardType, extraStyle, placeholder =
         placeholder={placeholder}
         label={placeholder}
         value={text}
+        editable={editable}
         onChangeText={text => setText(text)}
         {...rest}
       />
