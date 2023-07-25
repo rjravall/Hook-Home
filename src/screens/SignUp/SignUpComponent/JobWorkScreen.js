@@ -5,6 +5,7 @@ import { strings } from '@/localization';
 import { COLOR } from '@/theme/theme';
 import { fontFamily, fontSize } from '@/Utils/Constant';
 import React from 'react';
+import { useState } from 'react';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -18,6 +19,9 @@ function JobWorkScreen({
   setJobTitleVisible,
   setWorkVisible,
   setStudyVisible }) {
+  const [Visible, setvisible] = useState(false)
+  const [Visible1, setvisible1] = useState(false)
+  const [Visible2, setvisible2] = useState(false)
   return (
     <KeyboardAwareScrollView contentInsetAdjustmentBehavior="automatic">
       <View>
@@ -29,18 +33,20 @@ function JobWorkScreen({
           <View style={{ flexDirection: 'row' }}>
             <Title
               title={strings.job_work_screen.profile_visibilty}
-              style={{
+              style={[{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-                color: COLOR.BLACK80,
-              }}
+                color: "#9B9197",
+              },
+              Visible && { color: COLOR.BLACK80 }]}
             />
 
             <CustomSwitch
               containerStyle={{ marginTop: 3, marginLeft: 5 }}
               onChange={isOn => {
-                setJobTitleVisible(isOn)
+                [setJobTitleVisible(isOn),
+                setvisible(isOn)]
               }}
 
             />
@@ -50,6 +56,7 @@ function JobWorkScreen({
             setText={setJobTitle}
             extraStyle={{ marginTop: 10 }}
             placeholder={strings.job_work_screen.jobtitle_placeholder}
+            placeholderTextColor={"#9B9197"}
           />
         </View>
         <View style={{ marginTop: 24 }}>
@@ -60,18 +67,20 @@ function JobWorkScreen({
           <View style={{ flexDirection: 'row' }}>
             <Title
               title={strings.job_work_screen.profile_visibilty}
-              style={{
+              style={[{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-                color: COLOR.BLACK80,
-              }}
+                color: "#9B9197",
+              }, Visible1 && { color: COLOR.BLACK80 }]
+              }
             />
 
             <CustomSwitch
               containerStyle={{ marginTop: 3, marginLeft: 5 }}
               onChange={isOn => {
-                setWorkVisible(isOn)
+                setWorkVisible(isOn),
+                  setvisible1(isOn)
               }}
 
             />
@@ -80,7 +89,9 @@ function JobWorkScreen({
             text={work}
             setText={setWork}
             extraStyle={{ marginTop: 10 }}
-            placeholder={strings.job_work_screen.study_title}
+            placeholder={strings.job_work_screen.workplace_placeholder}
+            placeholderTextColor="#9B9197"
+
           />
         </View>
 
@@ -92,18 +103,21 @@ function JobWorkScreen({
           <View style={{ flexDirection: 'row' }}>
             <Title
               title={strings.job_work_screen.profile_visibilty}
-              style={{
+              style={[{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-                color: COLOR.BLACK80,
-              }}
+                color: "#9B9197",
+              },
+              Visible2 && { color: COLOR.BLACK80 }]
+              }
             />
 
             <CustomSwitch
               containerStyle={{ marginTop: 3, marginLeft: 5 }}
               onChange={isOn => {
-                setStudyVisible(isOn)
+                [setStudyVisible(isOn),
+                setvisible2(isOn)]
               }}
 
             />
@@ -113,6 +127,7 @@ function JobWorkScreen({
             setText={setStudy}
             extraStyle={{ marginTop: 10 }}
             placeholder={strings.job_work_screen.study_placeholder}
+            placeholderTextColor={"#9B9197"}
           />
         </View>
       </View>

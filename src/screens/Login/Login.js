@@ -98,6 +98,7 @@ export function Login({ route }) {
     if (result.status) {
       if (result?.data?.success) {
         const data = result.data.data[0]
+
         if (data.firstName == "") {
           navigation.navigate(NAV_SIGNUP.information, { index: 0 })
         } else if (!data.mode) {

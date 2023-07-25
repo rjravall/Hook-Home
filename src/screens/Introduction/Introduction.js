@@ -39,7 +39,7 @@ export default function Introduction() {
     if (result.status) {
       if (result?.data?.success) {
         const data = result.data.data[0]
-        if (data.firstName == "") {
+        if (!data.firstName || data.firstName == "") {
           navigation.navigate(NAV_SIGNUP.information, { index: 0 })
         } else if (!data.mode) {
           navigation.navigate(NAV_SIGNUP.information, { index: 1 })
@@ -50,6 +50,7 @@ export default function Introduction() {
           // console.log("Index : ", 2);
         } else if (data.location.coordinates.length > 0) {
           navigation.replace(NAVIGATION.home);
+          // navigation.replace(NAVIGATION.landing);
         }
         else {
           navigation.replace(NAVIGATION.set_locaion_screen)

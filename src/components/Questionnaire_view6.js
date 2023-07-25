@@ -22,6 +22,8 @@ function QuestionnaireScreen6({
   const [data, setData] = useState(QuestionnaireData[index]);
   const [localselectedItems, setLocalSelectedItems] = useState({});
   const [getPersonalityTypeList, setgetPersonalityTypeList] = useState([]);
+  const [Visible, setvisible] = useState(false)
+
 
   useEffect(() => {
     onGetPersonalityType()
@@ -73,12 +75,15 @@ function QuestionnaireScreen6({
           <View style={{ flexDirection: 'row' }}>
             <Title
               title={'Visible on Profile'}
-              style={{
+              style={[{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-                color: COLOR.BLACK80,
-              }}
+                color: "#9B9197"
+              },
+              item.index == 0 && Visible && { color: COLOR.BLACK80 },
+
+              ]}
             />
 
             <CustomSwitch
@@ -86,7 +91,8 @@ function QuestionnaireScreen6({
               onChange={isOn => {
                 {
                   item.item == "personality" &&
-                    setPersonalityTypeVisible(isOn)
+                    [setPersonalityTypeVisible(isOn),
+                    setvisible(isOn)]
                 }
                 handleVisibleOnProfileSelection(item.item, isOn);
               }}

@@ -34,6 +34,12 @@ function QuestionnaireScreen4({
   const [getMarijuanaList, setgetMarijuanaList] = useState([]);
   const [getSmokeList, setgetSmokeList] = useState([]);
   const [getPetsList, setgetPetsList] = useState([]);
+  const [Visible, setvisible] = useState()
+  const [Visible1, setvisible1] = useState()
+  const [Visible2, setvisible2] = useState()
+  const [Visible3, setvisible3] = useState()
+  const [Visible4, setvisible4] = useState()
+
 
   useEffect(() => {
     onGetDrinks()
@@ -127,12 +133,18 @@ function QuestionnaireScreen4({
           <View style={{ flexDirection: 'row' }}>
             <Title
               title={'Visible on Profile'}
-              style={{
+              style={[{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-                color: COLOR.BLACK80,
-              }}
+                color: "#9B9197",
+              },
+              item.index == 0 && Visible && { color: COLOR.BLACK80 },
+              item.index == 1 && Visible1 && { color: COLOR.BLACK80 },
+              item.index == 2 && Visible2 && { color: COLOR.BLACK80 },
+              item.index == 3 && Visible3 && { color: COLOR.BLACK80 },
+              item.index == 4 && Visible4 && { color: COLOR.BLACK80 },
+              ]}
             />
 
             <CustomSwitch
@@ -140,19 +152,23 @@ function QuestionnaireScreen4({
               onChange={isOn => {
                 {
                   item.item == "drink" ?
-                    setDrinksVisible(isOn)
+                    [setDrinksVisible(isOn),
+                    setvisible(isOn)]
                     :
                     item.item == "exercise" ?
-                      setExerciseVisible(isOn)
+                      [setExerciseVisible(isOn),
+                      setvisible1(isOn)]
                       :
                       item.item == "marijuana" ?
-                        setMarijuanaVisible(isOn)
+                        [setMarijuanaVisible(isOn),
+                        setvisible2(isOn)]
                         :
                         item.item == "smoke" ?
-                          setSmokeVisible(isOn)
+                          [setSmokeVisible(isOn),
+                          setvisible3(isOn)]
                           :
-                          setPetsVisible(isOn)
-
+                          [setPetsVisible(isOn),
+                          setvisible4(isOn)]
                 }
                 handleVisibleOnProfileSelection(item.item, isOn);
               }}

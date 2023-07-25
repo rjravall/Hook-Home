@@ -28,6 +28,9 @@ function QuestionnaireScreen5({
   const [getLanguageList, setgetLanguageList] = useState([]);
   const [getzodiacSignList, setgetzodiacSignList] = useState([]);
   const [getTribesList, setgetTribesList] = useState([]);
+  const [Visible, setvisible] = useState()
+  const [Visible1, setvisible1] = useState()
+  const [Visible2, setvisible2] = useState()
 
   useEffect(() => {
     onGetLanguage()
@@ -100,12 +103,16 @@ function QuestionnaireScreen5({
           <View style={{ flexDirection: 'row' }}>
             <Title
               title={'Visible on Profile'}
-              style={{
+              style={[{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-                color: COLOR.BLACK80,
-              }}
+                color: "#9B9197",
+              },
+              item.index == 0 && Visible && { color: COLOR.BLACK80 },
+              item.index == 1 && Visible1 && { color: COLOR.BLACK80 },
+              item.index == 2 && Visible2 && { color: COLOR.BLACK80 },
+              ]}
             />
 
             <CustomSwitch
@@ -113,12 +120,15 @@ function QuestionnaireScreen5({
               onChange={isOn => {
                 {
                   item.item == "language" ?
-                    setLanguageVisible(isOn)
+                    [setLanguageVisible(isOn),
+                    setvisible(isOn)]
                     :
                     item.item == "zodiac_sign" ?
-                      setZodiacSignVisible(isOn)
+                      [setZodiacSignVisible(isOn),
+                      setvisible1(isOn)]
                       :
-                      setTribesVisible(isOn)
+                      [setTribesVisible(isOn),
+                      setvisible2(isOn)]
 
                 }
                 handleVisibleOnProfileSelection(item.item, isOn);

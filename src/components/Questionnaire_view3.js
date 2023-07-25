@@ -75,23 +75,24 @@ function QuestionnaireScreen3({
           <View style={{ flexDirection: 'row' }}>
             <Title
               title={'Visible on Profile'}
-              style={{
+              style={[{
                 marginTop: 12,
                 fontSize: fontSize.small,
                 fontFamily: fontFamily.Medium,
-
-                color: Visible == true ? COLOR.BLACK80 : 'pink'
-
-              }}
+                color: "#9B9197"
+              },
+              item.index == 0 && Visible && { color: COLOR.BLACK80 }
+              ]}
             />
 
             <CustomSwitch
               containerStyle={{ marginTop: 3, marginLeft: 5 }}
               onChange={isOn => {
                 {
-                  setvisible(true)
+
                   item.item == "kinks" &&
-                    setKinksVisible(isOn)
+                    [setKinksVisible(isOn),
+                    setvisible(isOn)]
                 }
                 handleVisibleOnProfileSelection(item.item, isOn);
               }}

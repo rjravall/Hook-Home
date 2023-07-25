@@ -115,8 +115,6 @@ export default function Information({ route }) {
   const [workVisible, setWorkVisible] = useState(false);
   const [study, setStudy] = useState('');
   const [studyVisible, setStudyVisible] = useState(false);
-
-
   const [routes] = useState([
     { key: 'PersonalInformation' },
     { key: 'Mode' },
@@ -355,19 +353,21 @@ export default function Information({ route }) {
 
   function onNextClick() {
     if (index == 0) {
-      if (!firstName) {
+      const validName = new RegExp('^[a-zA-Z]+$');
+      const floatingPoint = new RegExp('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$');
+      if (!validName.test(firstName)) {
         SHOW_TOAST(strings.toast_success_message.enter_fName)
-      } else if (!lastName) {
+      } else if (!validName.test(lastName)) {
         SHOW_TOAST(strings.toast_success_message.enter_LName)
       } else if (!dateOfBirth) {
         SHOW_TOAST(strings.toast_success_message.enter_dob)
-      } else if (!weight) {
+      } else if (!height || parseInt(height.split(".")[0]) > 8 || parseInt(height.split(".")[1]) > 11 || !floatingPoint.test(height)) {
+        // 1 kilogram (kg) is equal to 2.20462262185 pounds (lbs)
         SHOW_TOAST(strings.toast_success_message.enter_height)
-      } else if (!height) {
+      } else if (!weight || parseFloat(weight) > 500 || !floatingPoint.test(weight)) {
         SHOW_TOAST(strings.toast_success_message.enter_weight)
       } else {
         onupdateProfile()
-
       }
     } else if (index == 1) {
       if (!selectedModes) {
@@ -391,6 +391,7 @@ export default function Information({ route }) {
 
     formData.append('index', index + 1);
     if (index == 0) {
+
 
       formData.append('firstName', firstName);
       formData.append('firstNameVisible', true);
@@ -436,7 +437,9 @@ export default function Information({ route }) {
       formData.append('sexualPreference', sexualPreferenceId);
       formData.append('sexualPreferenceVisible', sexualPreferenceVisible);
     } else if (index == 5) {
-      formData.append('interests', interestsId);
+      interestsId.map((id, i) => {
+        formData.append('interests', id);
+      })
       formData.append('interestsVisible', interestsVisible);
     } else if (index == 6) {
       formData.append('kinks', kinksId);
@@ -646,6 +649,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginEnd: 16,
     marginTop: 48,
+    fontWeight: 'bold',
     textDecorationLine: 'underline',
     color: COLOR.BLACK90,
     alignSelf: 'flex-end',
@@ -671,7 +675,7 @@ const styles = StyleSheet.create({
     marginVertical: 32,
   },
   current_index_number: {
-    color: COLOR.GRAY_800,
+    color: COLOR.BLACK80,
     fontSize: fontSize.xlarge,
     fontFamily: fontFamily.SemiBold,
   },

@@ -28,7 +28,7 @@ function OptionQuestionnair({ flag = false, text, onPress, icon }) {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableWithoutFeedback onPress={() => onPress(!flag)}>
       <View style={{ flexDirection: 'row', marginRight: 8, marginTop: 8 }}>
         <View
           style={{

@@ -89,16 +89,16 @@ function PersonalInformation({
       />
       <View style={styles.height_Weight_container}>
         <TextInputField
-          text={weight}
-          setText={setWeight}
+          text={height}
+          setText={setHeight}
           keyboardType={"numeric"}
           extraStyle={styles.flex}
           placeholder={strings.personal_information_signup.height}
         />
         <View style={{ width: 20 }} />
         <TextInputField
-          text={height}
-          setText={setHeight}
+          text={weight}
+          setText={setWeight}
           keyboardType={"numeric"}
           extraStyle={styles.flex}
           placeholder={strings.personal_information_signup.weight}

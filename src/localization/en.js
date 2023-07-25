@@ -42,7 +42,7 @@ export const en = {
   },
   information_screen: {
     button: 'Next',
-    skip: 'skip',
+    skip: 'Skip',
   },
   personal_information_signup: {
     title: 'Personal information',
@@ -50,8 +50,8 @@ export const en = {
     last_name: 'Last Name',
     Preferred_name: 'Preferred Name (Optional)',
     date_of_birth: 'Date of Birth',
-    height: 'Height',
-    weight: 'Weight',
+    height: 'Height (Feets)',
+    weight: 'Weight (LBS)',
   },
   select_dating_mode: {
     title: 'Choose a mode to get started?',
@@ -90,7 +90,7 @@ export const en = {
   },
   job_work_screen: {
     job_title: 'What is your job title?',
-    profile_visibilty: 'visible on Profile',
+    profile_visibilty: 'Visible on Profile',
     jobtitle_placeholder: 'Ex. Product Manager',
     workplace_title: 'Where do you work?',
     workplace_placeholder: 'Company name',
@@ -356,11 +356,11 @@ export const en = {
     enter_confirmPassword: "Please enter confirm password address",
     enter_passwordmishmatch: "Password and ConfirmPassword mismatch",
     enter_six_digit_code: "Please enter 8 digit code",
-    enter_fName: "Please enter firstname",
-    enter_LName: "Please enter lastname",
+    enter_fName: "Please enter vaild firstname",
+    enter_LName: "Please enter vaild lastname",
     enter_dob: "Please enter DOB",
-    enter_height: "Please enter height",
-    enter_weight: "Please enter weight",
+    enter_height: "Please enter vaild height",
+    enter_weight: "Please enter vaild weight",
     select_modes: "Please select modes",
     select_photo: "Please select at list 2 photo",
 

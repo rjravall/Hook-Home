@@ -12,7 +12,7 @@ import { SHOW_TOAST } from '@/constants/ShowToast';
 import { color } from 'react-native-reanimated';
 
 function QuestionnaireScreen2({
-  setInterestsId,
+  setInteresQuestionnaireScreen2tsId,
   setInterestsVisible,
   index,
   selectedTypesData = {},
@@ -42,6 +42,7 @@ function QuestionnaireScreen2({
   async function onGetInterests() {
     const result = await getInterests()
     if (result.data.success) {
+      // console.log("RESULT========================== : ", result.data[0])
       setInterestsList(result.data)
     } else {
       SHOW_TOAST(result.data.message)
@@ -107,22 +108,28 @@ function QuestionnaireScreen2({
             {
               data[item.item].title == "What is your interests?" &&
               interestsList.data != undefined &&
-              interestsList.data.map((data, index) => {
+
+              interestsList.data.map((Data, index) => {
+                // console.log("DATA ICON ", Data)
                 return (
                   <OptionQuestionnair
-                    icon={data.icon}
+                    icon={Data.icon}
                     key={index}
-                    text={data.name}
+                    text={Data.name}
                     flag={
                       Object.keys(localselectedItems).includes(item.item) &&
                       Object.values(localselectedItems[item.item]).includes(
-                        data.name,
+                        Data.name,
                       )
                     }
-                    onPress={() => {
-                      setinteresteArray.push(data.id)
-                      setInterestsId(interesteArray)
-                      changelocalSelectedItems(item.item, data.name);
+                    onPress={(flag) => {
+                      let temp = [...interesteArray.filter(id => id != Data.id)]
+                      if (flag) {
+                        temp.push(Data.id);
+                      }
+                      setinteresteArray(temp)
+                      setInteresQuestionnaireScreen2tsId(temp)
+                      changelocalSelectedItems(item.item, Data.name);
                     }}
                   />
                 );
