@@ -83,9 +83,9 @@ export function Login({ route }) {
       SHOW_TOAST(strings.toast_success_message.enter_confirmPassword)
 
     }
-    else if (password.length !== 8) {
-      SHOW_TOAST(strings.toast_success_message.enter_eight_digit)
-    }
+    // else if (password.length !== 8) {
+    //   SHOW_TOAST(strings.toast_success_message.enter_eight_digit)
+    // }
     else if (confirmPassword != password) {
       SHOW_TOAST(strings.toast_success_message.enter_passwordmishmatch)
     } else {
@@ -361,6 +361,9 @@ export function Login({ route }) {
           <Text
             onPress={() => {
               setData(getFlag(!flag)), setFlag(!flag);
+              setConfirmpassword("");
+              setPassword("");
+              setEmail("");
             }}
             style={[
               styles.account_conformation,

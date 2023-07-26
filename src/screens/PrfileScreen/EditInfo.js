@@ -1,3 +1,4 @@
+import { getProfile, postUpdateProfile } from '@/api';
 import { Button } from '@/components';
 import ScreenName from '@/components/ScreenName';
 import CustomSwitch from '@/components/Switch';
@@ -17,7 +18,27 @@ function EditInfo({ route }) {
   const navigation = useNavigation();
   updateMasterState = value => { };
   const [text, setText] = useState(value);
+  const [isLoading, setIsLoading] = useState(true)
 
+  console.log(route.params)
+  console.log("Rout :=================: ", route.params.id)
+  console.log("Rout :=================: ", route.params.title)
+  console.log("Rout :=================: ", route.params)
+
+
+  async function onGetProfile() {
+
+    params = {
+      firstName: "JAy",
+      firstNameVisible: "true / false"
+    }
+
+    setIsLoading(true)
+    const result = await postUpdateProfile(params)
+    setIsLoading(false)
+    console.log(" :===================: ", result)
+    navigation.goBack()
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <View style={{ flex: 1 }}>
@@ -51,7 +72,11 @@ function EditInfo({ route }) {
                 alignItems: 'center',
                 marginTop: 24,
               }}>
-              <CustomSwitch isOn={flag} onChange={(value) => console.log(value)} />
+              <CustomSwitch isOn={flag} />
+
+              {
+                console.log("")
+              }
               <Title
                 title={strings.editinfo_screen.profile_visibilty_text}
                 touchableStyle={{ marginStart: 8 }}
@@ -63,7 +88,7 @@ function EditInfo({ route }) {
             <Button
               title={strings.editinfo_screen.button}
               flag={true}
-              onPress={() => navigation.replace(NAVIGATION.edit_profile)}
+              onPress={() => onGetProfile()}
             />
           </View>
         </View>

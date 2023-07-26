@@ -128,6 +128,12 @@ function EditProfileScreen({ route }) {
   const [items, setItems] = useState([]);
   const [studyVisible, setStudyVisible] = useState(false);
 
+
+  items.map((data) => {
+    console.log("items.ID :============: ", data._id)
+  })
+
+
   const detailist = [
     {
       Field: "ethnicity",
@@ -446,11 +452,12 @@ function EditProfileScreen({ route }) {
         <SafeAreaView style={{
           backgroundColor: 'white',
           paddingBottom: 40,
-          marginTop: StatusBar.currentHeight + 4,
+          //  marginTop: StatusBar.currentHeight + 4,
         }}>
           <View
             style={{
-              paddingTop: StatusBar.currentHeight + 4,
+              marginTop: 20,
+              // paddingTop: StatusBar.currentHeight + 4,
               backgroundColor: 'white',
             }}>
             <ScreenName
@@ -561,7 +568,7 @@ function EditProfileScreen({ route }) {
                   </Text>
                   <TouchableOpacity onPress={() =>
                     navigation.navigate(NAVIGATION.edit_information, {
-                      title: 'FirstName',
+                      title: 'First Name',
                       value: getPrfileList[0].firstName,
                       flag: getPrfileList[0].firstNameVisible,
                     })
@@ -712,14 +719,17 @@ function EditProfileScreen({ route }) {
                     </View>
                   </TouchableOpacity>
 
+
                   {
                     items.map((data, i) => {
+
                       return (
                         <TouchableOpacity onPress={() =>
                           navigation.navigate(NAVIGATION.edit_information, {
                             title: data.title,
                             value: data["apifield"] ? data["apifield"][0].name : data.name || data.values,
                             flag: data.visible,
+                            id: data._id
                           })
                         } key={i}>
                           <View
