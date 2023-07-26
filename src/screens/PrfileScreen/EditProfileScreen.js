@@ -9,7 +9,7 @@ import WhiteButton from '@/components/WhiteButton';
 import { NAVIGATION } from '@/constants';
 import { COLOR } from '@/theme/theme';
 import { fontSize, fontFamily } from '@/Utils/Constant';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-virtualized-view';
 import {
@@ -47,6 +47,8 @@ function EditProfileScreen({ route }) {
     { title: 'Star Sign ', value: 'Libra', flag: false },
     { title: 'kids', value: 'Undecided', flag: false },
   ];
+
+  const isFocused = useIsFocused();
 
   const [isLoading, setIsLoading] = useState(false)
   const navigation = useNavigation();
@@ -257,7 +259,7 @@ function EditProfileScreen({ route }) {
   useEffect(() => {
     // Checkdata()
     onGetProfile()
-  }, []);
+  }, [navigation, isFocused]);
 
   async function onGetProfile() {
 
@@ -566,13 +568,21 @@ function EditProfileScreen({ route }) {
                   <Text style={styles.title_text_container}>
                     {strings.edit_profile_screen.personal_info}
                   </Text>
-                  <TouchableOpacity onPress={() =>
+                  <TouchableOpacity onPress={() => {
+                    // var parmas = {
+                    //   firstNameVisible: getPrfileList[0].firstNameVisible,
+                    // }
+                    // parmas["firstName"] = "Dharmik Sonani"
+                    // console.log(parmas);
                     navigation.navigate(NAVIGATION.edit_information, {
                       title: 'First Name',
                       value: getPrfileList[0].firstName,
                       flag: getPrfileList[0].firstNameVisible,
+                      keys: "firstName",
+                      keysvisibale: "firstNameVisible"
                     })
-                  }>
+                  }}
+                  >
                     <View
                       style={styles.personalInfoContainerStyle}>
                       <View style={{ flex: 1 }}>
@@ -598,6 +608,8 @@ function EditProfileScreen({ route }) {
                       title: 'Last Name',
                       value: getPrfileList[0].lastName,
                       flag: getPrfileList[0].lastNameVisible,
+                      keys: "lastName",
+                      keysvisibale: "lastNameVisible"
                     })
                   }>
                     <View
@@ -623,6 +635,9 @@ function EditProfileScreen({ route }) {
                       title: 'Preffered Name',
                       value: getPrfileList[0].preferredName,
                       flag: getPrfileList[0].preferredNameVisible,
+                      keys: "preferredName",
+                      keysvisibale: "preferredNameVisible"
+
                     })
                   }>
                     <View
@@ -648,6 +663,8 @@ function EditProfileScreen({ route }) {
                       title: 'Date of Birth',
                       value: getPrfileList[0].dateOfBirth,
                       flag: getPrfileList[0].dateOfBirthVisible,
+                      keys: "dateOfBirth",
+                      keysvisibale: "dateOfBirthVisible"
                     })
                   }>
                     <View
@@ -673,6 +690,8 @@ function EditProfileScreen({ route }) {
                       title: 'Height',
                       value: getPrfileList[0].height,
                       flag: getPrfileList[0].firstNameVisible,
+                      keys: "height",
+                      keysvisibale: "firstNameVisible"
                     })
                   }>
                     <View
@@ -698,6 +717,8 @@ function EditProfileScreen({ route }) {
                       title: 'Weight',
                       value: getPrfileList[0].weight,
                       flag: getPrfileList[0].weightVisible,
+                      keys: "weight",
+                      keysvisibale: "weightVisible"
                     })
                   }>
                     <View
@@ -729,7 +750,9 @@ function EditProfileScreen({ route }) {
                             title: data.title,
                             value: data["apifield"] ? data["apifield"][0].name : data.name || data.values,
                             flag: data.visible,
-                            id: data._id
+                            id: data._id,
+                            keys: data.Field,
+                            keysvisibale: data.Field + "Visible"
                           })
                         } key={i}>
                           <View

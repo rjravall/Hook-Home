@@ -3,10 +3,11 @@ import TextInputField from '@/components/TextInputField';
 import Title from '@/components/Title';
 import { TextInput } from 'react-native-paper';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { strings } from '@/localization';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment"
+import { subYears } from 'date-fns';
 
 function PersonalInformation({
   firstName,
@@ -55,19 +56,27 @@ function PersonalInformation({
       <Title title={strings.personal_information_signup.title} />
 
       <View style={styles.container}>
+
         <TextInputField
           text={firstName}
           setText={setFirstname}
           extraStyle={styles.flex}
           placeholder={strings.personal_information_signup.first_name}
         />
+
         <View style={{ width: 20 }} />
+
         <TextInputField
           text={lastName}
           setText={setLastname}
           extraStyle={styles.flex}
           placeholder={strings.personal_information_signup.last_name}
         />
+      </View>
+
+      <View style={{ flexDirection: 'row', marginTop: 5, justifyContent: 'space-between' }}>
+        <Text style={{}}> this field is required </Text>
+        <Text style={{}}> this field is required </Text>
       </View>
       <TextInputField
         text={preferredName}
@@ -109,6 +118,8 @@ function PersonalInformation({
         isVisible={show}
         mode={mode}
         is24Hour={true}
+        maximumDate={new Date(subYears(new Date(), 10))}
+        minimumDate={new Date(subYears(new Date(), 100))}
         display='inline'
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}

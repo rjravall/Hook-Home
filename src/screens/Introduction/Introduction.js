@@ -36,10 +36,12 @@ export default function Introduction() {
 
 
     const result = await getUserDetais({})
+    console.log(result);
     if (result.status) {
       if (result?.data?.success) {
         const data = result.data.data[0]
-        if (!data.firstName || data.firstName == "") {
+        console.log(data)
+        if (!data.firstName || data.firstName == "" || !data) {
           navigation.navigate(NAV_SIGNUP.information, { index: 0 })
         } else if (!data.mode) {
           navigation.navigate(NAV_SIGNUP.information, { index: 1 })
@@ -57,6 +59,9 @@ export default function Introduction() {
         }
 
       }
+    } else {
+      // navigation.replace(NAVIGATION.landing);
+      navigation.navigate(NAV_SIGNUP.information, { index: 0 })
     }
   }
 

@@ -353,7 +353,7 @@ export default function Information({ route }) {
 
   function onNextClick() {
     if (index == 0) {
-      const validName = new RegExp('^[a-zA-Z]+$');
+      const validName = new RegExp('^[a-z A-Z]+$');
       const floatingPoint = new RegExp('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$');
       if (!validName.test(firstName)) {
         SHOW_TOAST(strings.toast_success_message.enter_fName)

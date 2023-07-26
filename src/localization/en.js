@@ -50,7 +50,7 @@ export const en = {
     last_name: 'Last Name',
     Preferred_name: 'Preferred Name (Optional)',
     date_of_birth: 'Date of Birth',
-    height: 'Height (Feets)',
+    height: 'Height (Ft)',
     weight: 'Weight (LBS)',
   },
   select_dating_mode: {

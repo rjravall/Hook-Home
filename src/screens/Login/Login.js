@@ -188,6 +188,8 @@ export function Login({ route }) {
           // console.log("Index : ", 10)
         }
       }
+    } else {
+      navigation.navigate(NAV_SIGNUP.information, { index: 0 })
     }
   }
 

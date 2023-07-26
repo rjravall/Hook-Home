@@ -18,26 +18,41 @@ function EditInfo({ route }) {
   const navigation = useNavigation();
   updateMasterState = value => { };
   const [text, setText] = useState(value);
+  const [visble, setVisible] = useState(flag ? flag : false);
   const [isLoading, setIsLoading] = useState(true)
+  const [values, setvalues] = useState()
 
-  console.log(route.params)
-  console.log("Rout :=================: ", route.params.id)
-  console.log("Rout :=================: ", route.params.title)
-  console.log("Rout :=================: ", route.params)
+  // async function onGetProfiledetais() {
+  //   setIsLoading(true)
+  //   const result = await getProfile()
+  //   console.log("DONE : <<<<<<<<<<<<<<<  : ", result)
+  //   setIsLoading(false)
+  // }
+
+  console.log(" ++++++++++++++++++++++++++++++ :", route.params)
+  // console.log("Rout :=================: ", route.params.id)
+  // console.log("Rout :=================: ", route.params.title)
+  // console.log("Rout KEYS  :=================: ", route.params.keys)
+  // console.log("Rout :=================: ", route.params.value)
+  // console.log("Rout :=================: ", route.params.keysvisibale)
+  let key = route.params.keys
+  let keysvisibale = route.params.keysvisibale
+
+
 
 
   async function onGetProfile() {
+    let params = {};
+    params[key] = text;
+    params[keysvisibale] = visble;
 
-    params = {
-      firstName: "JAy",
-      firstNameVisible: "true / false"
-    }
-
+    console.log("PARAMS :=======================: =>", params)
     setIsLoading(true)
     const result = await postUpdateProfile(params)
     setIsLoading(false)
-    console.log(" :===================: ", result)
+
     navigation.goBack()
+    // onGetProfiledetais()
   }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
@@ -72,11 +87,7 @@ function EditInfo({ route }) {
                 alignItems: 'center',
                 marginTop: 24,
               }}>
-              <CustomSwitch isOn={flag} />
-
-              {
-                console.log("")
-              }
+              <CustomSwitch isOn={flag} onChange={(value) => { setVisible(value) }} />
               <Title
                 title={strings.editinfo_screen.profile_visibilty_text}
                 touchableStyle={{ marginStart: 8 }}
