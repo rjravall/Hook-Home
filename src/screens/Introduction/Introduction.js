@@ -33,24 +33,21 @@ export default function Introduction() {
   }
 
   const Checkdata = async () => {
-
-
     const result = await getUserDetais({})
-    console.log(result);
     if (result.status) {
       if (result?.data?.success) {
-        const data = result.data.data[0]
+        const data = result.data.data
         console.log(data)
-        if (!data.firstName || data.firstName == "" || !data) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 0 })
-        } else if (!data.mode) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 1 })
+        if (!data.firstName || data.firstName == "") {
+          navigation.replace(NAV_SIGNUP.information, { index: 0 })
+        } else if (!data?.mode) {
+          navigation.replace(NAV_SIGNUP.information, { index: 1 })
           // console.log("Index : ", 1);
         }
-        else if (data.userPhotos.publicPhotos.length == 0) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 2 })
+        else if (data.userPhotos.publicPhotos?.length == 0) {
+          navigation.replace(NAV_SIGNUP.information, { index: 2 })
           // console.log("Index : ", 2);
-        } else if (data.location.coordinates.length > 0) {
+        } else if (data.location.coordinates?.length > 0) {
           navigation.replace(NAVIGATION.home);
           // navigation.replace(NAVIGATION.landing);
         }
@@ -59,9 +56,6 @@ export default function Introduction() {
         }
 
       }
-    } else {
-      // navigation.replace(NAVIGATION.landing);
-      navigation.navigate(NAV_SIGNUP.information, { index: 0 })
     }
   }
 

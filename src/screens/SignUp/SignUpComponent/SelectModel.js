@@ -28,7 +28,7 @@ function SelectMode({ setSelectedModes, titleStyle, title = null, onPress, selec
     setIsLoading(false)
     if (result.data.success) {
       setGetModelList(result.data.data)
-      uid = result.data.data[0]
+      uid = result.data.data
       console.log("CID ++++++================================+++", uid)
       setuserid(uid)
     } else {

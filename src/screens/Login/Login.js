@@ -95,25 +95,28 @@ export function Login({ route }) {
 
   async function CheckDetails() {
     const result = await getUserDetais({})
+    console.log(" :++++++++++++++++++++: =>", result.data.data)
+
     if (result.status) {
       if (result?.data?.success) {
-        const data = result.data.data[0]
+        const data = result.data.data
+
 
         if (data.firstName == "") {
-          navigation.navigate(NAV_SIGNUP.information, { index: 0 })
+          navigation.replace(NAV_SIGNUP.information, { index: 0 })
         } else if (!data.mode) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 1 })
+          navigation.replace(NAV_SIGNUP.information, { index: 1 })
           // console.log("Index : ", 1);
         }
-        else if (data.userPhotos.publicPhotos.length == 0) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 2 })
+        else if (data.userPhotos.publicPhotos?.length == 0) {
+          navigation.replace(NAV_SIGNUP.information, { index: 2 })
           // console.log("Index : ", 2);
         } else if (
-          data.userPhotos.publicPhotos.length > 0 &&
+          data.userPhotos.publicPhotos?.length > 0 &&
           !data.userMeta.ethnicity &&
           !data.userMeta.religion &&
           !data.userMeta.politicalBeliefs) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 3 })
+          navigation.replace(NAV_SIGNUP.information, { index: 3 })
         }
         else if (
           (data.userMeta.ethnicity ||
@@ -124,7 +127,7 @@ export function Login({ route }) {
           !data.userMeta.sexualOrientations &&
           !data.userMeta.sexualPreference
         ) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 4 })
+          navigation.replace(NAV_SIGNUP.information, { index: 4 })
           // console.log("Index : ", 3)
         }
         else if (
@@ -132,52 +135,52 @@ export function Login({ route }) {
             data.userMeta.bodyTypes ||
             data.userMeta.sexualOrientations ||
             data.userMeta.sexualPreference) &&
-          data.userMeta.interests.length == 0
+          data.userMeta.interests?.length == 0
         ) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 5 })
+          navigation.replace(NAV_SIGNUP.information, { index: 5 })
           // console.log("Index : ", 4)
         }
-        else if (data.userMeta.interests.length > 0 && data.userMeta.kinks.length == 0) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 6 })
+        else if (data.userMeta.interests?.length > 0 && data.userMeta.kinks.length == 0) {
+          navigation.replace(NAV_SIGNUP.information, { index: 6 })
           // console.log("Index : ", 5);
         }
-        else if (data.userMeta.kinks.length > 0 &&
+        else if (data.userMeta.kinks?.length > 0 &&
           !data.userMeta.drink &&
           !data.userMeta.exercise &&
           !data.userMeta.marijuana &&
-          !data.userMeta.pets.length > 0 &&
+          !data.userMeta.pets?.length > 0 &&
           !data.userMeta.smoke
         ) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 7 })
+          navigation.replace(NAV_SIGNUP.information, { index: 7 })
           // console.log("Index : ", 6);
         }
         else if (
           (data.userMeta.drink ||
             data.userMeta.exercise ||
             data.userMeta.marijuana ||
-            data.userMeta.pets.length > 0 ||
+            data.userMeta.pets?.length > 0 ||
             data.userMeta.smoke) &&
           !data.userMeta.languages &&
           !data.userMeta.zodiacSigns &&
           !data.userMeta.tribes) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 8 })
+          navigation.replace(NAV_SIGNUP.information, { index: 8 })
           // console.log("Index : ", 7)
         }
         else if (
           (data.userMeta.languages ||
             data.userMeta.zodiacSigns ||
             data.userMeta.tribes) &&
-          data.userMeta.personalityTypes.length == 0) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 9 })
+          data.userMeta.personalityTypes?.length == 0) {
+          navigation.replace(NAV_SIGNUP.information, { index: 9 })
           // console.log("Index : ", 8)
         }
         else if (
-          data.userMeta.personalityTypes.length > 0 &&
+          data.userMeta.personalityTypes?.length > 0 &&
           !data.userMeta.jobTitle &&
           !data.userMeta.work &&
           !data.userMeta.study
         ) {
-          navigation.navigate(NAV_SIGNUP.information, { index: 10 })
+          navigation.replace(NAV_SIGNUP.information, { index: 10 })
           // console.log("Index : ", 9);
         }
         else if (
@@ -188,9 +191,10 @@ export function Login({ route }) {
           // console.log("Index : ", 10)
         }
       }
-    } else {
-      navigation.navigate(NAV_SIGNUP.information, { index: 0 })
     }
+    // else {
+    //   navigation.replace(NAV_SIGNUP.information, { index: 0 })
+    // }
   }
 
   async function loginRegister() {

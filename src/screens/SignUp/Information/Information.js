@@ -44,11 +44,16 @@ export default function Information({ route }) {
 
   //personal information
   const [firstName, setFirstname] = useState('');
+  const [firstNameNull, setFirstnameNull] = useState(false);
   const [lastName, setLastname] = useState('');
+  const [lastNameNull, setLastnameNull] = useState(false);
   const [preferredName, setPreferredName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
+  const [isDateSelected, setIsDateSelected] = useState(false);
   const [weight, setWeight] = useState('');
+  const [weightNull, setWeightNull] = useState(false);
   const [height, setHeight] = useState('');
+  const [heightNull, setHeightNull] = useState(false);
 
   // modes
   const [selectedModes, setSelectedModes] = useState('');
@@ -280,16 +285,27 @@ export default function Information({ route }) {
         return <PersonalInformation
           firstName={firstName}
           setFirstname={setFirstname}
+          isFirstNameNull={firstNameNull}
+          setIsFirstNameNull={setFirstnameNull}
           lastName={lastName}
           setLastname={setLastname}
+          isLastNameNull={lastNameNull}
+          setIsLastNameNull={setLastnameNull}
           preferredName={preferredName}
           setPreferredName={setPreferredName}
           dateOfBirth={dateOfBirth}
           setDateOfBirth={setDateOfBirth}
+          isDateSelected={isDateSelected}
+          setIsDateSelected={setIsDateSelected}
           weight={weight}
           setWeight={setWeight}
+          isWeightNull={weightNull}
+          setIsWeightNull={setWeightNull}
           height={height}
-          setHeight={setHeight} />;
+          setHeight={setHeight}
+          isHeightNull={heightNull}
+          setIsHeightNull={setHeightNull}
+        />;
       case 'Mode':
         return (
           <SelectMode
@@ -355,6 +371,14 @@ export default function Information({ route }) {
     if (index == 0) {
       const validName = new RegExp('^[a-z A-Z]+$');
       const floatingPoint = new RegExp('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$');
+
+      !firstName && setFirstnameNull(true)
+      !lastName && setLastnameNull(true)
+      !dateOfBirth && setIsDateSelected(true)
+      !height && setHeightNull(true)
+      !weight && setWeightNull(true)
+
+
       if (!validName.test(firstName)) {
         SHOW_TOAST(strings.toast_success_message.enter_fName)
       } else if (!validName.test(lastName)) {

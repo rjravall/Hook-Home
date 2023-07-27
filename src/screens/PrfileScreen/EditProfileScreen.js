@@ -31,110 +31,16 @@ import { NativeBaseProvider } from 'native-base';
 import { getUserDetais } from '@/api/user';
 
 function EditProfileScreen({ route }) {
+
   const about_data =
     ' Interested in app development and reasearching a dating/networking app. Single and open to date or to be friends. Only interested in  guys.';
-  const personalInfo = [
-    { title: 'FirstName', value: 'Eric', flag: true },
-    { title: 'Last Name', value: 'Gomez', flag: false },
-    { title: 'Preffered Name', value: 'EG', flag: false },
-    { title: 'Date of Birth', value: '29 jun, 1995', flag: true },
-    { title: 'Gender', value: 'Male', flag: true },
-    { title: 'Height', value: '5’10”', flag: true },
-    { title: 'Weight', value: 'Male', flag: true },
-    { title: 'Body Type', value: 'Stocky', flag: true },
-    { title: 'Sexual Orientation', value: 'Gay', flag: true },
-    { title: 'Education Level ', value: 'MBA', flag: false },
-    { title: 'Star Sign ', value: 'Libra', flag: false },
-    { title: 'kids', value: 'Undecided', flag: false },
-  ];
 
   const isFocused = useIsFocused();
-
   const [isLoading, setIsLoading] = useState(false)
   const navigation = useNavigation();
   const flag = false;
   const [getPrfileList, setGetProfileList] = useState([]);
-  // const [personalInfo, setpersonalInfo] = useState([])
-
-  const [firstName, setFirstname] = useState('');
-  const [lastName, setLastname] = useState('');
-  const [preferredName, setPreferredName] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
-
-  // modes
-  const [selectedModes, setSelectedModes] = useState('');
-
-  // add photos
-  const [pickerPhoto, setPickerPhoto] = useState([]);
-
-  // screen 1
-  const [ethnicityId, setEthnicityId] = useState('');
-  const [ethnicityVisible, setEthnicityVisible] = useState(false);
-  const [religionId, setReligionId] = useState('');
-  const [religionVisible, setReligionVisible] = useState(false);
-  const [politicalId, setPoliticalId] = useState('');
-  const [politicalVisible, setPoliticalVisible] = useState(false);
-
-  // screen 2
-  const [relationshipStatusId, setRelationshipStatusId] = useState('');
-  const [relationshipStatuVisible, setRelationshipStatuVisible] = useState(false);
-  const [genderIdentityId, setGenderIdentityId] = useState('');
-  const [genderIdentityVisible, setGenderIdentityVisible] = useState(false);
-  const [bodytypesId, setBodytypesId] = useState('');
-  const [bodytypesVisible, setBodytypesVisible] = useState(false);
-  const [sexualOrientationId, setSexualOrientationId] = useState('');
-  const [sexualOrientationVisible, setSexualOrientationVisible] = useState(false);
-  const [sexualPreferenceId, setSexualPreferenceId] = useState('');
-  const [sexualPreferenceVisible, setSexualPreferenceVisible] = useState(false);
-
-  // screen 3
-  const [interestsId, setInterestsId] = useState([]);
-  const [interestsVisible, setInterestsVisible] = useState(false);
-
-  // screen 4
-  const [kinksId, setKinksId] = useState([]);
-  const [kinksVisible, setKinksVisible] = useState(false);
-
-  // screen 5
-  const [drinksId, setDrinksId] = useState('');
-  const [drinksVisible, setDrinksVisible] = useState(false);
-  const [exerciseId, setExerciseId] = useState('');
-  const [exerciseVisible, setExerciseVisible] = useState(false);
-  const [marijuanaId, setMarijuanaId] = useState('');
-  const [marijuanaVisible, setMarijuanaVisible] = useState(false);
-  const [smokeId, setSmokeId] = useState('');
-  const [smokeVisible, setSmokeVisible] = useState(false);
-  const [petsId, setPetsId] = useState('');
-  const [petsVisible, setPetsVisible] = useState(false);
-
-  // screen 6
-  const [languageId, setLanguageId] = useState('');
-  const [languageVisible, setLanguageVisible] = useState(false);
-  const [zodiacSignId, setZodiacSignId] = useState('');
-  const [zodiacSignVisible, setZodiacSignVisible] = useState(false);
-  const [tribesId, setTribesId] = useState('');
-  const [tribesVisible, setTribesVisible] = useState(false);
-
-  // screen 7
-  const [personalityTypeId, setPersonalityTypeId] = useState('');
-  const [personalityTypeVisible, setPersonalityTypeVisible] = useState(false);
-
-  // job work
-  const [jobTitle, setJobTitle] = useState('');
-  const [jobTitleVisible, setJobTitleVisible] = useState(false);
-  const [work, setWork] = useState('');
-  const [workVisible, setWorkVisible] = useState(false);
-  const [study, setStudy] = useState('');
   const [items, setItems] = useState([]);
-  const [studyVisible, setStudyVisible] = useState(false);
-
-
-  items.map((data) => {
-    console.log("items.ID :============: ", data._id)
-  })
-
 
   const detailist = [
     {
@@ -244,20 +150,8 @@ function EditProfileScreen({ route }) {
     },
   ]
 
-  // //API Calling
-  // const [personalInfo, setpersonalInfo] = useState([])
-
-  // const Checkdata = async () => {
-
-  //   const result = await getUserDetais({})
-  //   const data = result.data.data[0]
-  //   setpersonalInfo(data)
-  //   console.log("All Data =========================== : ", data)
-
-  // }
-
   useEffect(() => {
-    // Checkdata()
+
     onGetProfile()
   }, [navigation, isFocused]);
 
@@ -266,79 +160,22 @@ function EditProfileScreen({ route }) {
     setIsLoading(true)
     const result = await getProfile()
 
+
     setIsLoading(false)
     if (result.status) {
       if (result?.data?.success) {
-        setGetProfileList(result.data.data)
-        const Data = result.data.data[0].userMeta;
+        setGetProfileList([result.data.data])
+        const Data = result.data.data.userMeta;
         let temp = []
 
         detailist.map((data) => {
           if (Data[data.Field] != undefined) {
             const apifield = Data[data.Field.toString()];
-            if (Array.isArray(apifield)) {
-              console.log(apifield)
-              temp.push({ apifield, ...data })
-              setIsLoading(false)
-            } else {
-              temp.push({ ...apifield, ...data })
-            }
+            temp.push({ ...apifield, ...data })
           }
         })
-        console.log("Temp : ", temp)
         setItems(temp);
-        // setFirstname(result.data.data[0].firstName)
-        // setLastname(result.data.data[0].lastName)
-        // setPreferredName(result.data.data[0].preferredName)
-        // setDateOfBirth(result.data.data[0].dateOfBirth)
-        // setWeight(result.data.data[0].weight)
-        // setHeight(result.data.data[0].height)
-        // setSelectedModes(result.data.data[0].mode)
-        // setPickerPhoto(result.data.data[0].userPhotos.publicPhotos)
-        // setEthnicityId(result.data.data[0].userMeta.ethnicity._id)
-        // setEthnicityVisible(result.data.data[0].firstName)
-        // setReligionId(result.data.data[0].firstName)
-        // setReligionVisible(result.data.data[0].firstName)
-        // setPoliticalId(result.data.data[0].firstName)
-        // setPoliticalVisible(result.data.data[0].firstName)
-        // setRelationshipStatusId(result.data.data[0].firstName)
-        // setRelationshipStatuVisible(result.data.data[0].firstName)
-        // setGenderIdentityId(result.data.data[0].firstName)
-        // setGenderIdentityVisible(result.data.data[0].firstName)
-        // setBodytypesId(result.data.data[0].firstName)
-        // setBodytypesVisible(result.data.data[0].firstName)
-        // setSexualOrientationId(result.data.data[0].firstName)
-        // setSexualOrientationVisible(result.data.data[0].firstName)
-        // setSexualPreferenceId(result.data.data[0].firstName)
-        // setSexualPreferenceVisible(result.data.data[0].firstName)
-        // setInterestsId(result.data.data[0].firstName)
-        // setInterestsVisible(result.data.data[0].firstName)
-        // setKinksId(result.data.data[0].firstName)
-        // setKinksVisible(result.data.data[0].firstName)
-        // setDrinksId(result.data.data[0].firstName)
-        // setDrinksVisible(result.data.data[0].firstName)
-        // setExerciseId(result.data.data[0].firstName)
-        // setExerciseVisible(result.data.data[0].firstName)
-        // setMarijuanaId(result.data.data[0].firstName)
-        // setMarijuanaVisible(result.data.data[0].firstName)
-        // setSmokeId(result.data.data[0].firstName)
-        // setSmokeVisible(result.data.data[0].firstName)
-        // setPetsId(result.data.data[0].firstName)
-        // setPetsVisible(result.data.data[0].firstName)
-        // setLanguageId(result.data.data[0].firstName)
-        // setLanguageVisible(result.data.data[0].firstName)
-        // setZodiacSignId(result.data.data[0].firstName)
-        // setZodiacSignVisible(result.data.data[0].firstName)
-        // setTribesId(result.data.data[0].firstName)
-        // setTribesVisible(result.data.data[0].firstName)
-        // setPersonalityTypeId(result.data.data[0].firstName)
-        // setPersonalityTypeVisible(result.data.data[0].firstName)
-        // setJobTitle(result.data.data[0].firstName)
-        // setJobTitleVisible(result.data.data[0].firstName)
-        // setWork(result.data.data[0].firstName)
-        // setWorkVisible(result.data.data[0].firstName)
-        // setStudy(result.data.data[0].firstName)
-        // setStudyVisible(result.data.data[0].firstName)
+
         SHOW_SUCCESS_TOAST(result.data.message)
       }
       else {
@@ -360,106 +197,19 @@ function EditProfileScreen({ route }) {
     };
   }, []);
 
-  async function onupdateProfile() {
-
-    const formData = new FormData();
-    formData.append('firstName', firstName);
-    formData.append('firstNameVisible', true);
-    formData.append('lastName', lastName);
-    formData.append('lastNameVisible', true);
-    formData.append('preferredName', preferredName);
-    formData.append('preferredNameVisible', true);
-    formData.append('about', 'This is my first account in hook');
-    formData.append('aboutVisible', true);
-    formData.append('height', height);
-    formData.append('heightVisible', true);
-    formData.append('weight', weight);
-    formData.append('weightVisible', true);
-    formData.append('dateOfBirth', dateOfBirth);
-    formData.append('dateOfBirthVisible', true);
-    formData.append('mode', selectedModes);
-    pickerPhoto.forEach((item, i) => {
-      formData.append("publicPhotos", {
-        uri: item,
-        type: "image/jpeg",
-        name: `filename${i}.jpg`,
-      });
-    });
-    formData.append('publicPhotosVisible', true);
-    formData.append('privatePhotos', ["xyz.jpg"]);
-    formData.append('privatePhotosVisible', true);
-    formData.append('ethnicity', ethnicityId);
-    formData.append('ethnicityVisible', ethnicityVisible);
-    formData.append('religion', religionId);
-    formData.append('religionVisible', religionVisible);
-    formData.append('politicalBeliefs', politicalId);
-    formData.append('politicalBeliefsVisible', politicalVisible);
-    formData.append('genders', genderIdentityId);
-    formData.append('gendersVisible', genderIdentityVisible);
-    formData.append('bodyTypes', bodytypesId);
-    formData.append('bodyTypesVisible', bodytypesVisible);
-    formData.append('sexualOrientations', sexualOrientationId);
-    formData.append('sexualOrientationsVisible', sexualOrientationVisible);
-    formData.append('sexualPreference', sexualPreferenceId);
-    formData.append('sexualPreferenceVisible', sexualPreferenceVisible);
-    formData.append('interests', interestsId);
-    formData.append('interestsVisible', interestsVisible);
-    formData.append('kinks', kinksId);
-    formData.append('kinksVisible', kinksVisible);
-    formData.append('drink', drinksId);
-    formData.append('drinkVisible', drinksVisible);
-    formData.append('exercise', exerciseId);
-    formData.append('exerciseVisible', exerciseVisible);
-    formData.append('marijuana', marijuanaId);
-    formData.append('marijuanaVisible', marijuanaVisible);
-    formData.append('smoke', smokeId);
-    formData.append('smokeVisible', smokeVisible);
-    formData.append('pets', petsId);
-    formData.append('petsVisible', petsVisible);
-    formData.append('languages', languageId);
-    formData.append('languagesVisible', languageVisible);
-    formData.append('zodiacSigns', zodiacSignId);
-    formData.append('zodiacSignsVisible', zodiacSignVisible);
-    formData.append('tribes', tribesId);
-    formData.append('tribesVisible', tribesVisible);
-    formData.append('personalityTypes', personalityTypeId);
-    formData.append('personalityTypesVisible', personalityTypeVisible);
-    formData.append('jobTitle', jobTitle);
-    formData.append('jobTitleVisible', jobTitleVisible);
-    formData.append('work', work);
-    formData.append('workVisible', workVisible);
-    formData.append('study', study);
-    formData.append('studyVisible', studyVisible);
-    setIsLoading(true)
-    const result = await postUpdateProfile(formData)
-    setIsLoading(false)
-    if (result.status) {
-      if (result.data.success) {
-        SHOW_TOAST(result.data.message)
-      } else {
-        SHOW_TOAST(result.data.message)
-      }
-    } else {
-      SHOW_TOAST(result.error)
-    }
-
-  }
-
-
   return (
-    // console.log("dsakhdsah")
+
     <NativeBaseProvider>
       {getPrfileList.length > 0 &&
 
         <SafeAreaView style={{
           backgroundColor: 'white',
           paddingBottom: 40,
-          //  marginTop: StatusBar.currentHeight + 4,
+
         }}>
           <View
             style={{
               marginTop: 20,
-              // paddingTop: StatusBar.currentHeight + 4,
               backgroundColor: 'white',
             }}>
             <ScreenName
@@ -569,11 +319,7 @@ function EditProfileScreen({ route }) {
                     {strings.edit_profile_screen.personal_info}
                   </Text>
                   <TouchableOpacity onPress={() => {
-                    // var parmas = {
-                    //   firstNameVisible: getPrfileList[0].firstNameVisible,
-                    // }
-                    // parmas["firstName"] = "Dharmik Sonani"
-                    // console.log(parmas);
+
                     navigation.navigate(NAVIGATION.edit_information, {
                       title: 'First Name',
                       value: getPrfileList[0].firstName,
@@ -748,10 +494,11 @@ function EditProfileScreen({ route }) {
                         <TouchableOpacity onPress={() =>
                           navigation.navigate(NAVIGATION.edit_information, {
                             title: data.title,
-                            value: data["apifield"] ? data["apifield"][0].name : data.name || data.values,
+                            value: Array.isArray(data.values) ? data.values[0].name : data.name || data.values,
                             flag: data.visible,
-                            id: data._id,
-                            keys: data.Field,
+                            id: Array.isArray(data.values) ? data.values[0]._id : data._id,
+                            keys: "userMeta",
+                            innerKey: data.Field,
                             keysvisibale: data.Field + "Visible"
                           })
                         } key={i}>
@@ -760,9 +507,9 @@ function EditProfileScreen({ route }) {
                             <View style={{ flex: 1 }}>
                               <Text style={styles.titleTxtStyle}>{data.title}</Text>
                               <Text style={styles.subTitleTxtStyle}>
-                                {Array.isArray(data["apifield"]) ?
-                                  data["apifield"].map((item, i) => {
-                                    if (i == (data["apifield"].length - 1)) {
+                                {Array.isArray(data.values) ?
+                                  data.values.map((item, i) => {
+                                    if (i == (data.values.length - 1)) {
                                       return item.name
                                     } else {
                                       const str = item.name + ", ";
@@ -789,25 +536,6 @@ function EditProfileScreen({ route }) {
                     })
                   }
 
-                  {/* {personalInfo.map((value, index) => {
-
-                    console.log("HELLO OKKKKKK")
-                    return (
-                      <PersonalInfoItem
-                        onPress={() =>
-                          navigation.navigate(NAVIGATION.edit_information, {
-                            title: value.title,
-                            value: value.value,
-                            flag: value.flag,
-                          })
-                        }
-                        title={value.title}
-                        value={value.value}
-                        flag={value.flag}
-                        key={index}
-                      />
-                    );
-                  })} */}
                 </View>
               </View>
             </ScrollView>

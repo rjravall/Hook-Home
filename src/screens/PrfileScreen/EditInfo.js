@@ -38,13 +38,15 @@ function EditInfo({ route }) {
   let key = route.params.keys
   let keysvisibale = route.params.keysvisibale
 
-
-
-
   async function onGetProfile() {
     let params = {};
-    params[key] = text;
-    params[keysvisibale] = visble;
+    if (key == "userMeta") {
+      params[route.params.innerKey] = route.params.id
+      params[keysvisibale] = visble;
+    } else {
+      params[key] = text;
+      params[keysvisibale] = visble;
+    }
 
     console.log("PARAMS :=======================: =>", params)
     setIsLoading(true)

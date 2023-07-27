@@ -13,7 +13,7 @@ import { NAVIGATION } from '@/constants';
 import CommonStyle from '@/theme/CommonStyle';
 import { COLOR } from '@/theme/theme';
 import { fontFamily, fontSize } from '@/Utils/Constant';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { NativeBaseProvider, Slide } from 'native-base';
 import { Circle } from 'react-native-svg';
 
@@ -36,11 +36,13 @@ import { getUserDetais, getUserProfile } from '@/api/user';
 import { SHOW_SUCCESS_TOAST, SHOW_TOAST } from '@/constants/ShowToast';
 import { setToken } from '@/Utils/PrefrenceData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProgressView from '@/components/ProgressView';
 
 
 
 function ProfileScreen({ route }) {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
 
 
@@ -77,22 +79,25 @@ function ProfileScreen({ route }) {
   const getDetails = async () => {
     setIsLoading(true)
     const result = await getUserDetais({})
-    setIsLoading(false)
     if (result.status) {
       if (result?.data?.success) {
+        console.log("RESULT  ========", result)
         SHOW_SUCCESS_TOAST(result?.data?.message)
         setData(result)
-        setProfileComplet(result.data.data[0].completeProfile)
-        setFName(result?.data?.data[0]?.firstName)
-        setLName(result?.data?.data[0]?.lastName)
-        setImg(result?.data?.data[0]?.userPhotos.publicPhotos[0])
+        setProfileComplet(result.data.data.completeProfile)
+        setFName(result?.data?.data?.firstName)
+        setLName(result?.data?.data?.lastName)
+        setImg(result?.data?.data?.userPhotos.publicPhotos[0])
+        setIsLoading(false)
 
 
       } else {
         SHOW_TOAST(result?.data?.message)
+        setIsLoading(false)
       }
     } else {
       SHOW_TOAST(result.error)
+      setIsLoading(false)
     }
 
   }
@@ -103,11 +108,14 @@ function ProfileScreen({ route }) {
 
   useEffect(() => {
     getDetails()
-  }, [])
+  }, [navigation, isFocused])
 
   return (
     <NativeBaseProvider>
       <ScrollView style={{ backgroundColor: 'white' }}>
+        {
+          IsLoading && <ProgressView />
+        }
         <View style={{ top: -74 }}>
           <LinearGradient_primary style={styles.background_profile_container}>
             <Image
@@ -228,7 +236,7 @@ function ProfileScreen({ route }) {
             </View>
             <View style={styles.person_name}>
               <Title
-                title={Fname + Lname}
+                title={Fname + "  " + Lname}
                 style={{ fontSize: 22 }}
               />
               <Image
