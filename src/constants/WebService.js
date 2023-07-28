@@ -38,6 +38,7 @@ export const WEB_SERVICE = {
     suggested_user: BASE_URL + '/api/v1/suggested/suggested-users',
     user_profile: BASE_URL + '/api/v1/suggested/users-profile/',
     user_detais: BASE_URL + '/api/v1/user/details',
-    user_swipe: BASE_URL + '/api/v1/match/swap-user'
+    user_swipe: BASE_URL + '/api/v1/match/swap-user',
+    match_user: BASE_URL + '/api/v1/match/get-match-users'
 
 }

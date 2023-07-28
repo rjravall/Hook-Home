@@ -10,6 +10,7 @@ import {
 import CommonStyle from '@/theme/CommonStyle';
 import { fontFamily, fontSize, width } from '@/Utils/Constant';
 import React from 'react';
+import { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -22,6 +23,8 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Value } from 'react-native-reanimated';
+
+
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -81,39 +84,7 @@ export default class UserSwipe extends React.Component {
         this.position.setValue({ x: gestureState.dx, y: gestureState.dy });
       },
       onPanResponderRelease: (evt, gestureState) => {
-        if (gestureState.dx > 120) {
-          Animated.spring(this.position, {
-            toValue: { x: SCREEN_WIDTH + 100, y: gestureState.dy },
-            useNativeDriver: true,
-          }).start(() => {
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-              this.position.setValue({ x: 0, y: 0 });
-            });
-            this.props.onRemove();
-            data = "like"
-            console.log(data)
-            this.userswipe(data)
-          });
-        } else if (gestureState.dx < -120) {
-          Animated.spring(this.position, {
-            toValue: { x: -SCREEN_WIDTH - 100, y: gestureState.dy },
-            useNativeDriver: true,
-          }).start(() => {
-            this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
-              this.position.setValue({ x: 0, y: 0 });
-            });
-            this.props.onRemove();
-            data = "dislike"
-            console.log(data)
-            this.userswipe(data)
-          });
-        } else {
-          Animated.spring(this.position, {
-            toValue: { x: 0, y: 0 },
-            friction: 4,
-            useNativeDriver: true,
-          }).start();
-        }
+        this.SwipeCard(gestureState)
       },
     });
   }
@@ -140,6 +111,63 @@ export default class UserSwipe extends React.Component {
     });
   };
 
+  SwipeCard = async (gestureState) => {
+    if (gestureState.dx > 120) {
+      data = "like"
+      console.log(data)
+      const limitOver = await this.userswipe(data)
+      if (limitOver) {
+        Animated.spring(this.position, {
+          toValue: { x: SCREEN_WIDTH + 200, y: 0 },
+          useNativeDriver: true,
+        }).start(() => {
+          this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+            this.position.setValue({ x: 0, y: 0 });
+          });
+          this.props.onRemove();
+        });
+      } else {
+        Animated.spring(this.position, {
+          toValue: { x: 0, y: 0 },
+          friction: 4,
+          useNativeDriver: true,
+        }).start(
+          //Pop Up
+        );
+      }
+
+    } else if (gestureState.dx < -120) {
+      data = "dislike"
+      console.log(data)
+      this.userswipe(data)
+      const limitOver = await this.userswipe(data)
+      // if (limitOver) {
+      Animated.spring(this.position, {
+        toValue: { x: -SCREEN_WIDTH - 200, y: 0 },
+        useNativeDriver: true,
+      }).start(() => {
+        this.setState({ currentIndex: this.state.currentIndex + 1 }, () => {
+          this.position.setValue({ x: 0, y: 0 });
+        });
+        this.props.onRemove();
+      });
+      // } else {
+      //   Animated.spring(this.position, {
+      //     toValue: { x: 0, y: 0 },
+      //     friction: 4,
+      //     useNativeDriver: true,
+      //   }).start();
+      // }
+    } else {
+      Animated.spring(this.position, {
+        toValue: { x: 0, y: 0 },
+        friction: 4,
+        useNativeDriver: true,
+      }).start();
+    }
+  }
+
+
   userswipe = async (data) => {
     swipeuserid = this.state.users[this.state.currentIndex]._id
     params = {
@@ -147,13 +175,14 @@ export default class UserSwipe extends React.Component {
       type: data
     }
     const result = await getSwipeUser(params)
-    // this.state.users.map((item) => {
-    //   swipeuserid = item._id
-    //   return swipeuserid
-    // })
-    console.log("RESULT============================================>", result)
-    // console.log("Users ======================================================== >>", this.state.users)
-    console.log("ID ======================================================== >>", this.state.users[this.state.currentIndex]._id)
+    if (result.status) {
+      if (result?.data?.success) {
+        console.log("Result.ststus", result.status)
+      }
+    } else {
+      console.log("Result.ststus", result.status)
+    }
+    return result.status
   }
 
 
@@ -201,61 +230,63 @@ export default class UserSwipe extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         {this.state.users && this.renderUsers()}
-        <View style={style.actionWrapper}>
-          <View
-            style={{
-              flexDirection: 'row',
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.autoLeft();
-              }}
-              style={[
-                style.flexCenterV,
-                {
-                  alignItems: 'flex-end',
-                },
-              ]}>
-              <View
-                style={[style.actionButtonContainer, style.closeIconContainer]}>
-                <Image source={CloseIcon} />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.matchClick();
-              }}
-              style={style.flexCenterV}>
-              <View
-                style={{
-                  alignItems: 'center',
-                }}>
+        {this.state.currentIndex < this.state.users.length &&
+          <View style={style.actionWrapper}>
+            <View
+              style={{
+                flexDirection: 'row',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.autoLeft();
+                }}
+                style={[
+                  style.flexCenterV,
+                  {
+                    alignItems: 'flex-end',
+                  },
+                ]}>
                 <View
-                  style={[
-                    style.actionButtonContainer,
-                    style.likeIconContainer,
-                  ]}>
-                  <Image source={BigLikeIcon} />
+                  style={[style.actionButtonContainer, style.closeIconContainer]}>
+                  <Image source={CloseIcon} />
                 </View>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                this.autoRight();
-              }}
-              style={[
-                style.flexCenterV,
-                {
-                  alignItems: 'flex-start',
-                },
-              ]}>
-              <View
-                style={[style.actionButtonContainer, style.swipeIconContainer]}>
-                <Image source={SwipeIcon} />
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.matchClick();
+                }}
+                style={style.flexCenterV}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={[
+                      style.actionButtonContainer,
+                      style.likeIconContainer,
+                    ]}>
+                    <Image source={BigLikeIcon} />
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.autoRight();
+                }}
+                style={[
+                  style.flexCenterV,
+                  {
+                    alignItems: 'flex-start',
+                  },
+                ]}>
+                <View
+                  style={[style.actionButtonContainer, style.swipeIconContainer]}>
+                  <Image source={SwipeIcon} />
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        }
       </View>
     );
   }

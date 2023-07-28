@@ -163,23 +163,16 @@ function DetailScreen({ route }) {
     setIsLoading(true)
     const result = await getUserProfile({}, user._id)
 
-    const Data = result.data.data[0].userMeta;
+    const Data = result.data.data.userMeta;
 
     let temp = []
 
     detailist.map((data) => {
       if (Data[data.Field] != undefined) {
         const apifield = Data[data.Field.toString()];
-        if (Array.isArray(apifield)) {
-          console.log(apifield)
-          temp.push({ apifield, ...data })
-          setIsLoading(false)
-        } else {
-          temp.push({ ...apifield, ...data })
-        }
+        temp.push({ ...apifield, ...data })
       }
     })
-    console.log("Temp : ", temp)
     setItems(temp);
   }
   React.useEffect(() => {
@@ -259,8 +252,6 @@ function DetailScreen({ route }) {
 
 
     return (
-
-
       <View>
         <StatusBar hidden={false} backgroundColor={'rgba(52, 52, 52, 0.8)'} />
         <View style={styles.render_content_container}>
@@ -315,59 +306,62 @@ function DetailScreen({ route }) {
 
           {
             items.map((data, i) => {
-              const isDisable = data["apifield"] ? data["apifield"]?.length < 3 : true;
-              return (
+              const isDisable = data.values ? data.values.length < 3 : true;
+              if (data.visible) {
+                return (
 
-                <View style={{ borderBottomWidth: 1, borderColor: "#D6D6D6" }}>
-                  <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: 10,
-                    marginTop: 10,
-                  }}>
+                  <View style={{ borderBottomWidth: 1, borderColor: "#D6D6D6" }}>
                     <View style={{
-                      flexDirection: 'row'
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: 10,
+                      marginTop: 10,
                     }}>
-                      <Image
-                        style={{
-                          height: 20,
-                          width: 20
-                        }}
-                        resizeMode='contain'
-                        source={data.icon} />
-
-                      <Text style={{ marginLeft: 10, color: '#9B9197', }}>{data.title}</Text>
-                    </View>
-                    <TouchableOpacity
-                      disabled={isDisable}
-                      onPress={() => { }}
-                    >
-                      <Text style={{
-                        color: "#000",
-                        fontWeight: '600',
+                      <View style={{
+                        flexDirection: 'row'
                       }}>
-                        {Array.isArray(data["apifield"]) ?
-                          data["apifield"].slice(0, 3).map((item, i) => {
-                            if (i < 2) {
-                              if (i == (data["apifield"].length - 1)) {
-                                return item.name
+                        <Image
+                          style={{
+                            height: 20,
+                            width: 20
+                          }}
+                          resizeMode='contain'
+                          source={data.icon} />
+
+                        <Text style={{ marginLeft: 10, color: '#9B9197', }}>{data.title}</Text>
+                      </View>
+                      <TouchableOpacity
+                        disabled={isDisable}
+                        onPress={() => { }}
+                      >
+                        <Text style={{
+                          color: "#000",
+                          fontWeight: '600',
+                        }}>
+                          {Array.isArray(data.values) ?
+                            data.values.slice(0, 3).map((item, i) => {
+                              if (i < 2) {
+                                if (i == (data.values.length - 1)) {
+                                  return item.name
+                                } else {
+                                  const str = item.name + ", ";
+                                  return (str)
+                                }
                               } else {
-                                const str = item.name + ", ";
-                                return (str)
+                                return "...";
                               }
-                            } else {
-                              return "...";
-                            }
 
-                          })
+                            })
 
-                          : data.name || data.values}
-                      </Text>
-                    </TouchableOpacity>
+                            : data.name || data.values}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-              )
+                )
+              }
+
             })
           }
 
@@ -447,9 +441,9 @@ function DetailScreen({ route }) {
         backgroundImage={{ uri: user.userPhotos?.publicPhotos[0] }}
         renderNavBar={renderNavBar}
         renderContent={renderContent}
-        containerStyle={{
-          marginTop: StatusBar.currentHeight,
-        }}
+        // containerStyle={{
+        //   marginTop: StatusBar.currentHeight,
+        // }}
         contentContainerStyle={{}}
         innerContainerStyle={{}}
         scrollViewProps={{

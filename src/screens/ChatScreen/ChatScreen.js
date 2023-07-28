@@ -1,3 +1,4 @@
+import { getMatchUser } from '@/api/user';
 import { PersonPlaceholder } from '@/assets';
 import AlbumList from '@/components/AlbumList';
 import ChatItem from '@/components/ChatItem';
@@ -10,6 +11,7 @@ import { COLOR } from '@/theme/theme';
 import { fontFamily, fontSize } from '@/Utils/Constant';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
 
@@ -17,6 +19,34 @@ function ChatScreen({ route }) {
   const TABS = ['chat', 'InactiveChat'];
   const [activeTab, SetActiveTab] = useState(TABS[1]);
   const navigation = useNavigation();
+  const [Isloding, setIsLoding] = useState(true)
+  const [Icon, setIcon] = useState('')
+  const [Data, setData] = useState('')
+  const [Image, setImage] = useState('')
+
+  const getDetails = async () => {
+    params = {
+      skip: 0,
+      limit: 10
+    }
+    setIsLoding(true)
+    const result = await getMatchUser(params)
+    setIsLoding(false)
+    if (result.status) {
+      if (result?.data?.success) {
+        setIcon(result.data.data[0].chatUser.mode.icon)
+        setData(result.data.data[0])
+        setImage(result.data.data[0].userPhotos.publicPhotos[0])
+
+      } else {
+        console.log("ERROR")
+      }
+    }
+  }
+
+  useEffect(() => {
+    getDetails()
+  }, [])
 
   return (
     <View
@@ -39,7 +69,7 @@ function ChatScreen({ route }) {
             }}>
             {strings.chat_screen.new_matches}
           </Text>
-          <AlbumList privacy={false} />
+          <AlbumList privacy={false} Data={Data} />
 
           <View style={{ marginTop: 16 }}>
             <View style={styles.tab_container}>
@@ -71,7 +101,7 @@ function ChatScreen({ route }) {
       </View>
 
       <ScrollView style={{ flex: 1, marginTop: 18 }}>
-        {[0, 1, 2, 3, 4, 5].map((item, index) => {
+        {[0].map((item, index) => {
           return (
             <View key={index}>
               <ChatItem
@@ -79,8 +109,9 @@ function ChatScreen({ route }) {
                 tab={activeTab}
                 time={'2:00 PM'}
                 message={'Hello'}
-                person_name={'Person Name'}
-                photosource={PersonPlaceholder}
+                Data={Data}
+                person_name={Data?.chatUser?.firstName + Data?.chatUser?.lastName}
+                photosource={{ uri: Data?.userPhotos?.publicPhotos[0] }}
                 numberOfMsg={1}
                 onItemPress={() => {
                   navigation.navigate(NAVIGATION.coversation_screen);

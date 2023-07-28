@@ -184,7 +184,11 @@ async function getSwipeUser(params) {
     const result = await postRequest(url, params)
     return result
 }
-
+async function getMatchUser(params) {
+    let url = WEB_SERVICE.match_user
+    const result = await postRequest(url, params)
+    return result
+}
 
 
 
@@ -219,6 +223,7 @@ export {
     getProfile,
     suggestedUser,
     getUserProfile,
-    getUserDetais
+    getUserDetais,
+    getMatchUser
 
 }

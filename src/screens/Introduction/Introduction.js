@@ -56,6 +56,8 @@ export default function Introduction() {
         }
 
       }
+    } else {
+      // navigation.replace(NAVIGATION.home);
     }
   }
 

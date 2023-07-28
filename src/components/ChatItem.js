@@ -17,6 +17,7 @@ function ChatItem({
   time,
   tab,
   onItemPress,
+  Data
 }) {
   function getStartColor(index) {
     switch (index) {
@@ -50,7 +51,7 @@ function ChatItem({
           </LinearGradient_primary>
         </View>
         <View style={[CommonStyle.absoluteView, styles.logo_img_container]}>
-          <Image style={styles.logo_image} source={ImageList[index]} />
+          <Image style={styles.logo_image} source={{ uri: Data?.chatUser?.mode?.icon }} />
         </View>
       </View>
 

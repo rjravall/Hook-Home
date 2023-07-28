@@ -1,13 +1,17 @@
 import { LockIcon } from '@/assets';
 import CommonStyle from '@/theme/CommonStyle';
 import React from 'react';
+import { useState } from 'react';
 import { FlatList, View, Image } from 'react-native';
 
-function AlbumList({ privacy = true }) {
+function AlbumList({ privacy = true, Data }) {
+  // const [Photo, setPhoto] = useState()
+  // setPhoto(Images)
+
   return (
     <FlatList
       style={{ marginTop: 8 }}
-      data={[0, 1, 2, 4, 5, 6]}
+      data={[0]}
       horizontal
       pagingEnabled={true}
       showsHorizontalScrollIndicator={false}
@@ -25,7 +29,7 @@ function AlbumList({ privacy = true }) {
           }}>
           <Image
             resizeMode="contain"
-            source={require('@/assets/sample.png')}
+            source={{ uri: Data?.userPhotos?.publicPhotos[0] }}
             style={[
               CommonStyle.absoluteView,
               {
