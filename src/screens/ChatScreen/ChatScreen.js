@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
-import { View, StyleSheet, ScrollView, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, FlatList } from 'react-native';
 
 function ChatScreen({ route }) {
   const TABS = ['chat', 'InactiveChat'];
@@ -99,7 +99,31 @@ function ChatScreen({ route }) {
           </View>
         </View>
       </View>
+      {/* <View style={{ flex: 1, marginTop: 18 }}>
+        <FlatList
+          data={Data}
+          renderItem={item => {
+            <View key={index}>
+              <ChatItem
+                index={Math.floor(Math.random() * 3)}
+                tab={activeTab}
+                time={'2:00 PM'}
+                message={'Hello'}
+                Data={Data}
+                person_name={Data?.chatUser?.firstName + Data?.chatUser?.lastName}
+                photosource={{ uri: Data?.userPhotos?.publicPhotos[0] }}
+                numberOfMsg={1}
+                onItemPress={() => {
+                  navigation.navigate(NAVIGATION.coversation_screen);
+                }}
+              />
+              <Divider divider_style={{ marginVertical: 16 }} />
+            </View>
+          }
 
+          }
+        />
+      </View> */}
       <ScrollView style={{ flex: 1, marginTop: 18 }}>
         {[0].map((item, index) => {
           return (
