@@ -4,7 +4,7 @@
 
 //Local
 
-export const BASE_URL = 'http://192.168.1.143:8080'
+export const BASE_URL = 'http://192.168.1.152:8080'
 
 
 export const WEB_SERVICE = {
