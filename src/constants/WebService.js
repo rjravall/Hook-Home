@@ -1,9 +1,7 @@
 //Live
-
 // export const BASE_URL = 'http://34.207.254.140:8080'
 
 //Local
-
 export const BASE_URL = 'http://192.168.1.152:8080'
 
 
