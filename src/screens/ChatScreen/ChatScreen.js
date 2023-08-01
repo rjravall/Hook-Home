@@ -124,6 +124,9 @@ function ChatScreen({ route }) {
           }
         />
       </View> */}
+
+
+
       <ScrollView style={{ flex: 1, marginTop: 18 }}>
         {[0].map((item, index) => {
           return (
@@ -135,7 +138,7 @@ function ChatScreen({ route }) {
                 message={'Hello'}
                 Data={Data}
                 person_name={Data?.chatUser?.firstName + Data?.chatUser?.lastName}
-                photosource={{ uri: Data?.userPhotos?.publicPhotos[0] }}
+                photosource={Data ? { uri: Data?.userPhotos?.publicPhotos[0] } : null}
                 numberOfMsg={1}
                 onItemPress={() => {
                   navigation.navigate(NAVIGATION.coversation_screen);

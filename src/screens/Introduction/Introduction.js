@@ -32,6 +32,7 @@ export default function Introduction() {
 
   }
 
+
   const Checkdata = async () => {
     const result = await getUserDetais({})
     if (result.status) {

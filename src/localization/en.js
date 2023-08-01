@@ -350,7 +350,7 @@ export const en = {
   toast_success_message: {
     enter_email: "Please enter email address",
     enter_valid_email: "Please enter valid email address",
-    enter_password: "Please enter password address",
+    enter_password: "Please enter password",
     enter_valid_password: "Please enter valid password address",
     enter_eight_digit: "Please enter 8 digit code",
     enter_confirmPassword: "Please enter confirm password address",
