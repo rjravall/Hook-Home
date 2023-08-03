@@ -49,7 +49,7 @@ function ForgotScreen(props) {
     if (result.status) {
       if (result?.data?.success) {
         SHOW_SUCCESS_TOAST(result.data.message)
-        navigation.navigate(NAVIGATION.email, { password: password, email: email })
+        navigation.navigate(NAVIGATION.email, { password: password, email: email, Condition: "EMAIL" })
       } else {
         SHOW_TOAST(result?.data?.message)
       }

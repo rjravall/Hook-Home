@@ -355,14 +355,14 @@ export const en = {
     enter_eight_digit: "Please enter 8 digit code",
     enter_confirmPassword: "Please enter confirm password address",
     enter_passwordmishmatch: "Password and ConfirmPassword mismatch",
-    enter_six_digit_code: "Please enter 8 digit code",
+    enter_six_digit_code: "Please enter 6 digit code",
     enter_fName: "Please enter vaild firstname",
     enter_LName: "Please enter vaild lastname",
     enter_dob: "Please enter DOB",
     enter_height: "Please enter vaild height",
     enter_weight: "Please enter vaild weight",
     select_modes: "Please select modes",
-    select_photo: "Please select at list 2 photo",
+    select_photo: "Please upload at least 2 Photos",
 
   },
   prefrenceData: {

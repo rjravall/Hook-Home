@@ -9,6 +9,7 @@ import ForgotScreen from '@/screens/Login/ForgotScreen';
 import Tabs from '@/screens/HomeScreen/Tabs';
 import SetLocationScreen from '@/screens/SignUp/SetLocationScreen';
 import Introduction from '@/screens/Introduction/Introduction';
+import ForgetPassword from '@/screens/Login/ForgetPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,11 @@ export function AppNavigator() {
       <Stack.Screen
         component={SetLocationScreen}
         name={NAVIGATION.set_locaion_screen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={ForgetPassword}
+        name={NAVIGATION.ForgetPassword}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -6,6 +6,7 @@ export const NAVIGATION = {
   signup: 'Signup Screen',
   profile: 'Profile Screen',
   email: 'Email Verification Screen',
+  ForgetPassword: 'ForgetPassword Screen',
   forgotpw: 'Forgot Password Screen',
   person_basic_info: 'Person Info Screen',
   person_details: 'Person Details Screen',
