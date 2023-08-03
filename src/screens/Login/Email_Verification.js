@@ -2,7 +2,7 @@ import { Button } from '@/components';
 import OTPInpute from '@/components/OTPInput';
 import Title from '@/components/Title';
 import Top_Logo_Background from '@/components/Top_Logo_Background';
-import { NAV_SIGNUP } from '@/constants/navigation';
+import { NAVIGATION, NAV_SIGNUP } from '@/constants/navigation';
 import { strings } from '@/localization';
 import { useNavigation } from '@react-navigation/native';
 
@@ -38,28 +38,33 @@ function Email_Verification(props) {
   }
 
   async function onRegistration() {
-    const params = {
-      email: props.route.params.email,
-      password: props.route.params.password,
-      otp: otp
-    }
-    setIsLoading(true)
-    const result = await signUp(params)
-    setIsLoading(false)
-    if (result.status) {
-      if (result?.data?.success) {
-        SHOW_SUCCESS_TOAST(result?.data?.message)
-        setToken(`Bearer ${result.data.data.token}`)
-        setUserEmail(props.route.params.email)
-        setUserPassword(props.route.params.password)
-        navigation.navigate(NAV_SIGNUP.information, { index: 0 })
-      } else {
-        SHOW_TOAST(result?.data?.message)
-      }
-    } else {
-      SHOW_TOAST(result.error)
-    }
 
+    if (!props.route.params.Condition) {
+      const params = {
+        email: props.route.params.email,
+        password: props.route.params.password,
+        otp: otp
+      }
+      setIsLoading(true)
+      const result = await signUp(params)
+      setIsLoading(false)
+      if (result.status) {
+        if (result?.data?.success) {
+          SHOW_SUCCESS_TOAST(result?.data?.message)
+          setToken(`Bearer ${result.data.data.token}`)
+          setUserEmail(props.route.params.email)
+          setUserPassword(props.route.params.password)
+          navigation.navigate(NAV_SIGNUP.information, { index: 0 })
+        } else {
+          SHOW_TOAST(result?.data?.message)
+        }
+      } else {
+        SHOW_TOAST(result.error)
+      }
+
+    } else {
+      navigation.navigate(NAVIGATION.ForgetPassword)
+    }
   }
 
   // const TimeSet = ()=> {
@@ -111,11 +116,7 @@ function Email_Verification(props) {
                 <Title timer title={'00:' + "0" + timer} style={styles.timer_text} />
           }
 
-
         </View>
-
-
-
         {
           timer == 0 ?
             <Button
