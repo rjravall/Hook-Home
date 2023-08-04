@@ -29,13 +29,14 @@ const uuidv4 = () => {
 
 const ConversationScreen = ({ route }) => {
   const [localselectedMessages, setLocalSelectedMessages] = useState([]);
-  const [messages, setMessages] = useState < MessageType.Any > ([])
+  const [messages, setMessages] = useState([])
   const [input, setInput] = useState("")
   const user = { id: '06c33e8b-e835-4736-80f4-63f44b66666c' }
   const navigation = useNavigation();
   const likeMessageArray = [];
   React.useEffect(() => {
-    const textMessage1: MessageType.Text = {
+
+    const textMessage1 = {
       author: { id: "1111", imageUrl: 'https://www.aufini.com/image/222365.jpg' },
       createdAt: Date.now(),
       id: "06c33e8c",
@@ -43,7 +44,8 @@ const ConversationScreen = ({ route }) => {
       type: 'text',
     }
 
-    const textMessage2: MessageType.Text = {
+
+    const textMessage2 = {
       author: user,
       createdAt: Date.now(),
       id: "06c33e8f",
@@ -51,7 +53,7 @@ const ConversationScreen = ({ route }) => {
       type: 'text',
     }
 
-    const textMessage3: MessageType.Text = {
+    const textMessage3 = {
       author: { id: "1111", imageUrl: 'https://www.aufini.com/image/222365.jpg' },
       createdAt: Date.now(),
       id: "06c33e8b",
@@ -70,13 +72,13 @@ const ConversationScreen = ({ route }) => {
   }, []);
 
 
-  const addMessage = (message: MessageType.Any) => {
+  const addMessage = (message) => {
     setMessages([message, ...messages])
   }
 
-  const handleSendPress = (message: String) => {
+  const handleSendPress = (message) => {
     if (message.length == 0) return;
-    const textMessage: MessageType.Text = {
+    const textMessage = {
       author: user,
       createdAt: Date.now(),
       id: uuidv4(),
@@ -99,7 +101,9 @@ const ConversationScreen = ({ route }) => {
             <TouchableOpacity onPress={() => { alert("attach") }} style={styles.input_options_image_container}><Image source={ClipIcon} style={{ width: 20, height: 20 }} /></TouchableOpacity>
             <TextInput placeholderTextColor={COLOR.GRAY_800} fontFamily={fontFamily.Regular} value={input} style={{ flex: 1, paddingLeft: 16, color: COLOR.BLACK90 }} placeholder={'Send a message'} onChangeText={text => setInput(text)} />
           </View>
-          <TouchableOpacity onPress={() => { handleSendPress(input) }}>
+          <TouchableOpacity onPress={() => {
+            handleSendPress(input)
+          }}>
             <LinearGradient_primary style={styles.send_btn_container}>
               <Image style={{ tintColor: 'white', width: 22, height: 22 }} source={SendMessageIcon} resizeMode="contain" />
             </LinearGradient_primary>
@@ -123,11 +127,6 @@ const ConversationScreen = ({ route }) => {
     nextMessageInGroup,
   }
 
-    // : {
-    //   child: ReactNode
-    //   message: MessageType.Any
-    //   nextMessageInGroup: boolean
-    // }
   ) => {
     return (
 
@@ -135,14 +134,12 @@ const ConversationScreen = ({ route }) => {
         <TapGestureHandler
           style={{ position: 'absolute', left: 0, padding: 20, backgroundColor: 'green' }}
           numberOfTaps={2}
-          onHandlerStateChange={(event: any) => {
+          onHandlerStateChange={(event) => {
             if (event.nativeEvent.state === State.ACTIVE) {
               addFavouriteMessage(message.id)
             }
           }}
         >
-
-
           <View>
             <View
               style={{
@@ -180,13 +177,11 @@ const ConversationScreen = ({ route }) => {
   }
 
   return (
-    // Remove this provider if already registered elsewhere
-    // or you have React Navigation set up
-    <SafeAreaProvider style={{ marginTop: StatusBar.currentHeight + 4, marginBottom: 15 }}>
+    <SafeAreaProvider style={{ flex: 1 }}>
+      <StatusBar backgroundColor={"#ffffff"} barStyle='dark-content' />
       <SafeAreaView style={{
         backgroundColor: 'white',
         paddingBottom: 40,
-        marginTop: StatusBar.currentHeight + 4,
       }}>
         <View
           style={styles.headerView_container}>
@@ -232,16 +227,33 @@ const ConversationScreen = ({ route }) => {
   )
 }
 const styles = StyleSheet.create({
-  person_name: { fontFamily: fontFamily.Regular, fontSize: fontSize.medium, color: COLOR.BLACK80 },
+  person_name: {
+    fontFamily: fontFamily.Regular,
+    fontSize: fontSize.medium,
+    color: COLOR.BLACK80
+  },
   headerView_container: {
     flexDirection: 'row',
     alignItems: 'center',
     height: 50,
     width: '100%'
   },
-  goback_icon: { height: 16, width: 16, marginLeft: 16 },
-  person_info_container: { flexDirection: 'row', borderRadius: 20, alignItems: 'center' },
-  person_img: { height: 30, width: 30, marginLeft: 16, borderRadius: 20 },
+  goback_icon: {
+    height: 16,
+    width: 16,
+    marginLeft: 16
+  },
+  person_info_container: {
+    flexDirection: 'row',
+    borderRadius: 20,
+    alignItems: 'center'
+  },
+  person_img: {
+    height: 30,
+    width: 30,
+    marginLeft: 16,
+    borderRadius: 20
+  },
   green_tick: {
     padding: 3,
     marginRight: 3,
@@ -256,15 +268,46 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.Regular,
     color: COLOR.GRAY_700,
   },
-  call_options_container: { borderColor: COLOR.GRAY_500, flex: 1, flexDirection: 'row-reverse', marginLeft: 8 },
-  call_option_image_container: { width: 36, height: 52, alignItems: 'center', justifyContent: 'center' },
-  call_option_image: { width: 20, height: 20 },
+  call_options_container:
+  {
+    borderColor: COLOR.GRAY_500,
+    flex: 1,
+    flexDirection: 'row-reverse',
+    marginLeft: 8
+  },
+  call_option_image_container: {
+    width: 36,
+    height: 52,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  call_option_image: {
+    width: 20,
+    height: 20
+  },
   inputView: {
-    height: 52, marginBottom: 16, marginHorizontal: 16,
+    height: 52,
+    marginBottom: 16,
+    marginHorizontal: 16,
     flexDirection: "row"
   },
-  input_options_container: { borderRadius: 26, paddingLeft: 16, borderColor: COLOR.GRAY_500, borderWidth: 1, flex: 1, flexDirection: 'row-reverse', marginLeft: 8 },
-  input_options_image_container: { width: 36, height: 52, alignItems: 'center', justifyContent: 'center' },
+  input_options_container:
+  {
+    borderRadius: 26,
+    paddingLeft: 16,
+    borderColor: COLOR.GRAY_500,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: 'row-reverse',
+    marginLeft: 8
+  },
+  input_options_image_container:
+  {
+    width: 36,
+    height: 52,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   send_btn_container: {
     width: 52,
     height: 52,

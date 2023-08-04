@@ -14,14 +14,14 @@ import { strings } from '@/localization';
 import { useCallback } from 'react';
 import * as ImagePicker from 'react-native-image-picker';
 
-function AddPhotoSignUp({ SetGetPhotoAccess, setPickerPhoto }) {
+function AddPhotoSignUp({ SetGetPhotoAccess, setPickerPhoto, pickerResponseList, onRemovePress }) {
 
 
-  const [pickerResponse, setPickerResponse] = useState([]);
+  const [pickerResponse, setPickerResponse] = useState(pickerResponseList ? pickerResponseList : []);
   const [NonpickerResponse, setNonPickerResponse] = useState([0, 1, 2, 3, 4, 5]);
 
   const [fileName, setfileName] = useState('');
-  const array = [];
+  const array = pickerResponseList ? pickerResponseList : [];
 
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
@@ -77,6 +77,8 @@ function AddPhotoSignUp({ SetGetPhotoAccess, setPickerPhoto }) {
 
           for (let i = 0; i < response.assets.length; i++) {
             array.push(response.assets[i].uri);
+            console.log("ARRRYYYYYYYYYYYYYYYYYYYYYYYYYY ", response.assets[i].uri)
+
           }
           setPickerResponse(array)
           setPickerPhoto(array)
@@ -105,7 +107,12 @@ function AddPhotoSignUp({ SetGetPhotoAccess, setPickerPhoto }) {
         data={NonpickerResponse}
         numColumns={3}
         renderItem={item =>
-          <AddPhoto item={item} pickerResponse={pickerResponse} style={{ marginRight: 8, marginTop: 8 }} onImageLibraryPress={onImageLibraryPress} />
+          <AddPhoto
+            item={item}
+            pickerResponse={pickerResponse}
+            style={{ marginRight: 8, marginTop: 8 }}
+            onImageLibraryPress={onImageLibraryPress}
+            onRemovePress={(uri) => { onRemovePress(uri) }} />
         }
 
       />

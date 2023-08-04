@@ -47,12 +47,10 @@ function EditInfo({ route }) {
       params[key] = text;
       params[keysvisibale] = visble;
     }
-
     console.log("PARAMS :=======================: =>", params)
     setIsLoading(true)
     const result = await postUpdateProfile(params)
     setIsLoading(false)
-
     navigation.goBack()
     // onGetProfiledetais()
   }

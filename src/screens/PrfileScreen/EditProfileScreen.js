@@ -29,6 +29,7 @@ import { SHOW_SUCCESS_TOAST, SHOW_TOAST } from '@/constants/ShowToast';
 import ProgressView from '@/components/ProgressView';
 import { NativeBaseProvider } from 'native-base';
 import { getUserDetais } from '@/api/user';
+import AddPhotoSignUp from '../SignUp/SignUpComponent/AddPhotoSignUp';
 
 function EditProfileScreen({ route }) {
 
@@ -41,6 +42,11 @@ function EditProfileScreen({ route }) {
   const flag = false;
   const [getPrfileList, setGetProfileList] = useState([]);
   const [items, setItems] = useState([]);
+  const [getPhotoAccess, SetGetPhotoAccess] = useState(false);
+  const [pickerPhoto, setPickerPhoto] = useState([]);
+  const [apiImage, setApiImage] = useState([]);
+
+
 
   const detailist = [
     {
@@ -156,15 +162,13 @@ function EditProfileScreen({ route }) {
   }, [navigation, isFocused]);
 
   async function onGetProfile() {
-
     setIsLoading(true)
     const result = await getProfile()
-
-
     setIsLoading(false)
     if (result.status) {
       if (result?.data?.success) {
         setGetProfileList([result.data.data])
+        setApiImage(result.data.data?.userPhotos.publicPhotos)
         const Data = result.data.data.userMeta;
         let temp = []
 
@@ -188,6 +192,23 @@ function EditProfileScreen({ route }) {
 
   }
 
+  const SaveImage = async () => {
+    const formData = new FormData();
+    setIsLoading(true)
+
+    apiImage.forEach((item, i) => {
+      formData.append("publicPhotos", {
+        uri: item,
+        type: "image/jpeg",
+        name: `filename${i}.jpg`,
+      });
+    });
+    formData.append('publicPhotosVisible', true);
+    const result = await postUpdateProfile(formData)
+    onGetProfile()
+    setIsLoading(false)
+
+  }
 
   useEffect(() => {
     // Checkdata()
@@ -258,7 +279,7 @@ function EditProfileScreen({ route }) {
                     </View>
                   </View>
 
-                  <FlatList
+                  {/* <FlatList
                     style={{ marginTop: 16 }}
                     data={[0, 1, 2, 3, 4, 5]}
                     numColumns={3}
@@ -266,6 +287,14 @@ function EditProfileScreen({ route }) {
                       <AddPhoto item={item} pickerResponse={getPrfileList[0]?.userPhotos.publicPhotos} style={{ marginRight: 8, marginTop: 8 }} />
                     }
 
+                  /> */}
+                  <AddPhotoSignUp
+                    SetGetPhotoAccess={SetGetPhotoAccess}
+                    setPickerPhoto={setPickerPhoto}
+                    pickerResponseList={apiImage}
+                    onRemovePress={(uri) => {
+                      setApiImage(apiImage.filter(item => item != uri))
+                    }}
                   />
                 </View>
                 <Divider divider_style={styles.divider} />
@@ -320,13 +349,14 @@ function EditProfileScreen({ route }) {
                   </Text>
                   <TouchableOpacity onPress={() => {
 
-                    navigation.navigate(NAVIGATION.edit_information, {
-                      title: 'First Name',
-                      value: getPrfileList[0].firstName,
-                      flag: getPrfileList[0].firstNameVisible,
-                      keys: "firstName",
-                      keysvisibale: "firstNameVisible"
-                    })
+                    navigation.navigate(NAVIGATION.edit_information,
+                      {
+                        title: 'First Name',
+                        value: getPrfileList[0].firstName,
+                        flag: getPrfileList[0].firstNameVisible,
+                        keys: "firstName",
+                        keysvisibale: "firstNameVisible"
+                      })
                   }}
                   >
                     <View
@@ -548,6 +578,7 @@ function EditProfileScreen({ route }) {
               <WhiteButton
                 title={strings.edit_profile_screen.save_button}
                 flag={true}
+                onPress={() => { SaveImage() }}
                 viewStyle={{ flex: 1 }}
               />
             </View>

@@ -246,11 +246,6 @@ function DetailScreen({ route }) {
 
   const renderContent = () => {
 
-
-
-
-
-
     return (
       <View>
         <StatusBar hidden={false} backgroundColor={'rgba(52, 52, 52, 0.8)'} />

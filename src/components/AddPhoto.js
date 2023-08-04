@@ -3,7 +3,7 @@ import { COLOR } from '@/theme/theme';
 import React from 'react';
 import { StyleSheet, Image, View, TouchableOpacity } from 'react-native';
 
-function AddPhoto({ item, pickerResponse, style, onImageLibraryPress }) {
+function AddPhoto({ item, pickerResponse, style, onImageLibraryPress, onRemovePress }) {
 
   return (
     <View style={[styles.addphoto_container, style]}>
@@ -16,7 +16,17 @@ function AddPhoto({ item, pickerResponse, style, onImageLibraryPress }) {
               <Image source={AddIcon} style={{ height: 25, width: 25 }} />
             </TouchableOpacity>
             :
-            <Image source={{ uri: pickerResponse[item.index] }} style={{ height: 160, width: 110, borderRadius: 12, borderWidth: 1.5 }} />
+            <View>
+              <Image source={{ uri: pickerResponse[item.index] }} style={{ height: 160, width: 110, borderRadius: 12, borderWidth: 1.5 }} />
+              <TouchableOpacity
+                style={{ position: 'absolute', height: 40, width: 40, right: 0, bottom: 0 }}
+                onPress={() => onRemovePress(pickerResponse[item.index])}
+              >
+                <Image
+                  style={{ resizeMode: "cover", height: "100%", width: "100%" }}
+                  source={require('../../src/assets/RemoveImage.png')} />
+              </TouchableOpacity>
+            </View>
       }
     </View>
   );

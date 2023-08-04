@@ -34,9 +34,9 @@ function ChatScreen({ route }) {
     setIsLoding(false)
     if (result.status) {
       if (result?.data?.success) {
-        setIcon(result.data.data[0].chatUser.mode.icon)
-        setData(result.data.data[0])
-        setImage(result.data.data[0].userPhotos.publicPhotos[0])
+        setIcon(result.data.data[0]?.chatUser.mode.icon)
+        setData(result.data?.data[0])
+        setImage(result.data.data[0]?.userPhotos.publicPhotos[0])
 
       } else {
         console.log("ERROR")
