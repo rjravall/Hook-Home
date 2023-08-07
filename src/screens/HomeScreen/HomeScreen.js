@@ -174,7 +174,7 @@ function HomeScreen({ route }) {
     let list = [];
     if (result.status) {
       if (result?.data?.success) {
-        SHOW_SUCCESS_TOAST(result.data.message)
+        // SHOW_SUCCESS_TOAST(result.data.message)
         console.log("===========API Calling============")
 
 
@@ -223,7 +223,7 @@ function HomeScreen({ route }) {
           SHOW_TOAST(result.data.message)
         }
 
-        SHOW_SUCCESS_TOAST(result.data.message)
+        // SHOW_SUCCESS_TOAST(result.data.message)
 
       } else {
         SHOW_TOAST(result?.data?.message)

@@ -38,24 +38,16 @@ function ForgotScreen(props) {
   }
 
   async function forgotPassword() {
-
     const params = {
       email: email,
-      registration: true,
+      type: "forgetpassword"
     }
     setIsLoading(true)
     const result = await sendOtp(params)
+    navigation.navigate(NAVIGATION.email, { email: email })
     setIsLoading(false)
-    if (result.status) {
-      if (result?.data?.success) {
-        SHOW_SUCCESS_TOAST(result.data.message)
-        navigation.navigate(NAVIGATION.email, { password: password, email: email, Condition: "EMAIL" })
-      } else {
-        SHOW_TOAST(result?.data?.message)
-      }
-    } else {
-      SHOW_TOAST(result.error)
-    }
+
+    console.log(result)
 
   }
 

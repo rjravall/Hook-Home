@@ -15,6 +15,7 @@ import ProgressView from '@/components/ProgressView';
 import { SHOW_SUCCESS_TOAST, SHOW_TOAST } from '@/constants/ShowToast';
 import { styles } from './Email_verification.styles';
 import { setToken, setUserEmail, setUserPassword } from '@/Utils/PrefrenceData';
+import { SendOTP, passwordVerifiction } from '@/api/user';
 
 function Email_Verification(props) {
 
@@ -25,6 +26,7 @@ function Email_Verification(props) {
 
   useEffect(() => {
     timer > 0 && setTimeout(timeOutCallback, 1000);
+    console.log("===============: ", props.route.params)
   }, [timer, timeOutCallback]);
 
   let navigation = useNavigation();
@@ -39,7 +41,7 @@ function Email_Verification(props) {
 
   async function onRegistration() {
 
-    if (!props.route.params.Condition) {
+    if (props.route.params.password) {
       const params = {
         email: props.route.params.email,
         password: props.route.params.password,
@@ -54,7 +56,7 @@ function Email_Verification(props) {
           setToken(`Bearer ${result.data.data.token}`)
           setUserEmail(props.route.params.email)
           setUserPassword(props.route.params.password)
-          navigation.navigate(NAV_SIGNUP.information, { index: 0 })
+          navigation.replace(NAV_SIGNUP.information, { index: 0 })
         } else {
           SHOW_TOAST(result?.data?.message)
         }
@@ -63,23 +65,25 @@ function Email_Verification(props) {
       }
 
     } else {
-      navigation.navigate(NAVIGATION.ForgetPassword)
+      const params = {
+        email: props.route.params.email,
+        otp: otp
+      }
+      setIsLoading(true)
+      const result = await passwordVerifiction(params)
+      setIsLoading(false)
+      if (result.status) {
+        if (result?.data?.success) {
+          navigation.replace(NAVIGATION.ForgetPassword, { EMAIL: props.route.params.email },)
+        } else {
+          SHOW_TOAST(result?.data?.message)
+        }
+      } else {
+        SHOW_TOAST(result.error)
+      }
+
     }
   }
-
-  // const TimeSet = ()=> {
-
-  //   if (timer == 0) {
-  //     <Title title={'00:00'} style={styles.timer_text} />
-  //     if (timer < 10) {
-  //       <Title timer title={'00:' + "0" + timer} style={styles.timer_text} />
-  //     } else {
-  //       <Title timer title={'00:' + timer} style={styles.timer_text} />
-  //     }
-  //   }
-
-  // }
-
   return (
     <KeyboardAwareScrollView
       style={{ backgroundColor: 'white' }}

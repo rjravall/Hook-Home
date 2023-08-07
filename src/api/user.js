@@ -189,11 +189,30 @@ async function getMatchUser(params) {
     const result = await postRequest(url, params)
     return result
 }
+async function SendOTP(params) {
+    let url = WEB_SERVICE.send_otp
+    const result = await postRequest(url, params)
+    return result
+}
+async function setForgetPassword(params) {
+    let url = WEB_SERVICE.setforgetpassword
+    const result = await postRequest(url, params)
+    return result
+}
+async function passwordVerifiction(params) {
+    let url = WEB_SERVICE.passwordverifiction
+    const result = await postRequest(url, params)
+    return result
+}
+
 
 
 
 
 export {
+    passwordVerifiction,
+    setForgetPassword,
+    SendOTP,
     getSwipeUser,
     signUp,
     sendOtp,

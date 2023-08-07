@@ -29,7 +29,7 @@ import { getUserDetais } from '@/api/user';
 // import {shadow} from '@/theme';
 
 export function Login({ route }) {
-  const { login } = route.params;
+  const login = route.params;
   const { colors } = useTheme();
   const styles = Login_styles(colors);
   const navigation = useNavigation();

@@ -37,6 +37,8 @@ export const WEB_SERVICE = {
     user_profile: BASE_URL + '/api/v1/suggested/users-profile/',
     user_detais: BASE_URL + '/api/v1/user/details',
     user_swipe: BASE_URL + '/api/v1/match/swap-user',
-    match_user: BASE_URL + '/api/v1/match/get-match-users'
-
+    match_user: BASE_URL + '/api/v1/match/get-match-users',
+    send_otp: BASE_URL + '/api/v1/user/send-otp',
+    setforgetpassword: BASE_URL + "/api/v1/user/forgot-password",
+    passwordverifiction: BASE_URL + "/api/v1/user/verify-otp"
 }
