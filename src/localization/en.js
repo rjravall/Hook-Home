@@ -351,7 +351,7 @@ export const en = {
     enter_email: "Please enter email address",
     enter_valid_email: "Please enter valid email address",
     enter_password: "Please enter password",
-    enter_valid_password: "Please enter valid password address",
+    enter_valid_password: "Please enter valid password ",
     enter_eight_digit: "Please enter 8 digit code",
     enter_confirmPassword: "Please enter confirm password address",
     enter_passwordmishmatch: "Password and ConfirmPassword mismatch",

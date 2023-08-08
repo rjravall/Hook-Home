@@ -40,5 +40,7 @@ export const WEB_SERVICE = {
     match_user: BASE_URL + '/api/v1/match/get-match-users',
     send_otp: BASE_URL + '/api/v1/user/send-otp',
     setforgetpassword: BASE_URL + "/api/v1/user/forgot-password",
-    passwordverifiction: BASE_URL + "/api/v1/user/verify-otp"
+    passwordverifiction: BASE_URL + "/api/v1/user/verify-otp",
+    get_notification: BASE_URL + "/api/v1/notification/get-notification?limit=5&skip=0"
+
 }

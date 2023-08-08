@@ -37,7 +37,6 @@ import {
   Dimensions,
   StatusBar,
   Text,
-
 } from 'react-native';
 import { strings } from '@/localization';
 import { SafeAreaView } from 'react-native-safe-area-context';

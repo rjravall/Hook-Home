@@ -1,3 +1,4 @@
+import { getnotifiction } from '@/api/user';
 import Divider from '@/components/Divider';
 import NotificationItem from '@/components/NotificationItem';
 import ScreenName from '@/components/ScreenName';
@@ -6,8 +7,25 @@ import { COLOR } from '@/theme/theme';
 import { fontFamily, fontSize } from '@/Utils/Constant';
 
 import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+const detailist = [
+  {
+    notificationType: "like",
+    icon: require('../../assets/notifiction/like.png'),
+  },
+  {
+    notificationType: "Match",
+    icon: require('../../assets/notifiction/dislike.png'),
+  },
+  {
+    notificationType: "dislike",
+    icon: require('../../assets/notifiction/match.png'),
+  }
+]
 
 const notification_data = [
   {
@@ -71,7 +89,30 @@ const notification_data = [
     ],
   },
 ];
+
 function NotificationScreen(props) {
+  const [isLoading, setIsLoading] = useState(false)
+  const [data, setData] = useState([])
+
+  const GetNotifiction = async () => {
+
+    console.log("DATA :==========================: ", data)
+
+    params = {
+      limit: 5,
+      skip: 0
+    }
+    setIsLoading(true)
+    const result = await getnotifiction(params)
+    console.log("Notifiction============ : ", result.data.data.result)
+    setData(result.data.data.result)
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    GetNotifiction()
+  }, [])
+
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
       <ScreenName name={strings.notification_screen.title} mtop={20} />

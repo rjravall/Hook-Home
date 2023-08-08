@@ -33,7 +33,9 @@ function Email_Verification(props) {
 
   function onValidationRegistration() {
     if (otp.length < 6) {
-      SHOW_TOAST(strings.toast_success_message.enter_six_digit_code)
+      timer !== 0 ?
+        SHOW_TOAST(strings.toast_success_message.enter_six_digit_code) :
+        setTimer(59)
     } else {
       onRegistration()
     }
