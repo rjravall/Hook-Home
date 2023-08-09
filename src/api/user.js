@@ -204,8 +204,8 @@ async function passwordVerifiction(params) {
     const result = await postRequest(url, params)
     return result
 }
-async function getnotifiction(params) {
-    let url = WEB_SERVICE.get_notification
+async function getnotifiction(params, skip) {
+    let url = WEB_SERVICE.get_notification + skip
     const result = await getRequest(url, params)
     return result
 }

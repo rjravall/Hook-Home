@@ -204,6 +204,7 @@ function EditProfileScreen({ route }) {
       });
     });
     formData.append('publicPhotosVisible', true);
+    console.log("FROM DATA =======>", formData)
     const result = await postUpdateProfile(formData)
     onGetProfile()
     setIsLoading(false)
@@ -347,17 +348,18 @@ function EditProfileScreen({ route }) {
                   <Text style={styles.title_text_container}>
                     {strings.edit_profile_screen.personal_info}
                   </Text>
-                  <TouchableOpacity onPress={() => {
+                  <TouchableOpacity
+                  // onPress={() => {
 
-                    navigation.navigate(NAVIGATION.edit_information,
-                      {
-                        title: 'First Name',
-                        value: getPrfileList[0].firstName,
-                        flag: getPrfileList[0].firstNameVisible,
-                        keys: "firstName",
-                        keysvisibale: "firstNameVisible"
-                      })
-                  }}
+                  //   navigation.navigate(NAVIGATION.edit_information,
+                  //     {
+                  //       title: 'First Name',
+                  //       value: getPrfileList[0].firstName,
+                  //       flag: getPrfileList[0].firstNameVisible,
+                  //       keys: "firstName",
+                  //       keysvisibale: "firstNameVisible"
+                  //     })
+                  // }}
                   >
                     <View
                       style={styles.personalInfoContainerStyle}>
@@ -369,25 +371,28 @@ function EditProfileScreen({ route }) {
                       </View>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.flagStyle, { color: getPrfileList[0].firstNameVisible ? COLOR.PRIMARY : COLOR.GRAY_800 }]}>
-                          {getPrfileList[0].firstNameVisible ? 'Visible' : 'Hidden'}
+                          {/* {getPrfileList[0].firstNameVisible ? 'Visible' : 'Hidden'} */}
                         </Text>
-                        <Image
+                        {/* <Image
                           source={RightIcon}
                           style={{ height: 16, width: 16 }}
                           resizeMode={'contain'}
-                        />
+                        /> */}
                       </View>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() =>
-                    navigation.navigate(NAVIGATION.edit_information, {
-                      title: 'Last Name',
-                      value: getPrfileList[0].lastName,
-                      flag: getPrfileList[0].lastNameVisible,
-                      keys: "lastName",
-                      keysvisibale: "lastNameVisible"
-                    })
-                  }>
+                  <TouchableOpacity
+                  // onPress={() =>
+
+                  //   navigation.navigate(NAVIGATION.edit_information,
+                  //      {
+                  //     title: 'Last Name',
+                  //     value: getPrfileList[0].lastName,
+                  //     flag: getPrfileList[0].lastNameVisible,
+                  //     keys: "lastName",
+                  //     keysvisibale: "lastNameVisible"
+                  //   })}
+                  >
                     <View
                       style={styles.personalInfoContainerStyle}>
                       <View style={{ flex: 1 }}>
@@ -396,26 +401,28 @@ function EditProfileScreen({ route }) {
                       </View>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.flagStyle, { color: getPrfileList[0].lastNameVisible ? COLOR.PRIMARY : COLOR.GRAY_800 }]}>
-                          {getPrfileList[0].lastNameVisible ? 'Visible' : 'Hidden'}
+                          {/* {getPrfileList[0].lastNameVisible ? 'Visible' : 'Hidden'} */}
                         </Text>
-                        <Image
+                        {/* <Image
                           source={RightIcon}
                           style={{ height: 16, width: 16 }}
                           resizeMode={'contain'}
-                        />
+                        /> */}
                       </View>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() =>
-                    navigation.navigate(NAVIGATION.edit_information, {
-                      title: 'Preffered Name',
-                      value: getPrfileList[0].preferredName,
-                      flag: getPrfileList[0].preferredNameVisible,
-                      keys: "preferredName",
-                      keysvisibale: "preferredNameVisible"
+                  <TouchableOpacity
+                  // onPress={() =>
+                  //   navigation.navigate(NAVIGATION.edit_information, {
+                  //     title: 'Preffered Name',
+                  //     value: getPrfileList[0].preferredName,
+                  //     flag: getPrfileList[0].preferredNameVisible,
+                  //     keys: "preferredName",
+                  //     keysvisibale: "preferredNameVisible"
 
-                    })
-                  }>
+                  //   })
+                  // }
+                  >
                     <View
                       style={styles.personalInfoContainerStyle}>
                       <View style={{ flex: 1 }}>
@@ -424,25 +431,27 @@ function EditProfileScreen({ route }) {
                       </View>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.flagStyle, { color: getPrfileList[0].preferredNameVisible ? COLOR.PRIMARY : COLOR.GRAY_800 }]}>
-                          {getPrfileList[0].preferredNameVisible ? 'Visible' : 'Hidden'}
+                          {/* {getPrfileList[0].preferredNameVisible ? 'Visible' : 'Hidden'} */}
                         </Text>
-                        <Image
+                        {/* <Image
                           source={RightIcon}
                           style={{ height: 16, width: 16 }}
                           resizeMode={'contain'}
-                        />
+                        /> */}
                       </View>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() =>
-                    navigation.navigate(NAVIGATION.edit_information, {
-                      title: 'Date of Birth',
-                      value: getPrfileList[0].dateOfBirth,
-                      flag: getPrfileList[0].dateOfBirthVisible,
-                      keys: "dateOfBirth",
-                      keysvisibale: "dateOfBirthVisible"
-                    })
-                  }>
+                  <TouchableOpacity
+                  //  onPress={() =>
+                  //   navigation.navigate(NAVIGATION.edit_information, {
+                  //     title: 'Date of Birth',
+                  //     value: getPrfileList[0].dateOfBirth,
+                  //     flag: getPrfileList[0].dateOfBirthVisible,
+                  //     keys: "dateOfBirth",
+                  //     keysvisibale: "dateOfBirthVisible"
+                  //   })
+                  // }
+                  >
                     <View
                       style={styles.personalInfoContainerStyle}>
                       <View style={{ flex: 1 }}>
@@ -451,13 +460,13 @@ function EditProfileScreen({ route }) {
                       </View>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.flagStyle, { color: getPrfileList[0].dateOfBirthVisible ? COLOR.PRIMARY : COLOR.GRAY_800 }]}>
-                          {getPrfileList[0].dateOfBirthVisible ? 'Visible' : 'Hidden'}
+                          {/* {getPrfileList[0].dateOfBirthVisible ? 'Visible' : 'Hidden'} */}
                         </Text>
-                        <Image
+                        {/* <Image
                           source={RightIcon}
                           style={{ height: 16, width: 16 }}
                           resizeMode={'contain'}
-                        />
+                        /> */}
                       </View>
                     </View>
                   </TouchableOpacity>

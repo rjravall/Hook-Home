@@ -26,6 +26,7 @@ import ProgressView from '@/components/ProgressView';
 import { setToken, setUserEmail, setUserPassword } from '@/Utils/PrefrenceData';
 import { NAV_SIGNUP } from '@/constants/navigation';
 import { getUserDetais } from '@/api/user';
+import Modal from '@/components/Modal';
 // import {shadow} from '@/theme';
 
 export function Login({ route }) {
@@ -48,21 +49,14 @@ export function Login({ route }) {
   const [isLoading, setIsLoading] = useState(false)
 
   function onLogin() {
-    // navigation.navigate(NAVIGATION.set_locaion_screen)
-    //  navigation.navigate(NAV_SIGNUP.information)
     if (!email) {
+      <Modal text={strings.toast_success_message.enter_email} />
       SHOW_TOAST(strings.toast_success_message.enter_email)
     } else if (REGEX.emailRegex.test(email) == false) {
       SHOW_TOAST(strings.toast_success_message.enter_valid_email)
     } else if (!password) {
       SHOW_TOAST(strings.toast_success_message.enter_password)
     }
-    // else if (password.length !== 8) {
-    //   SHOW_TOAST(strings.toast_success_message.enter_eight_digit)
-    // }
-    // else if (REGEX.passwordRegex.test(password) == false) {
-    //   SHOW_TOAST(strings.toast_success_message.enter_valid_password)
-    // }
     else {
       loginRegister()
     }

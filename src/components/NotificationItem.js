@@ -5,7 +5,7 @@ import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import Title from './Title';
 import { strings } from '@/localization';
-function NotificationItem({ name, index, time = '' }) {
+function NotificationItem({ name, index, time = '', icon }) {
   function getImage(index) {
     switch (index) {
       case 0:
@@ -78,7 +78,7 @@ function NotificationItem({ name, index, time = '' }) {
             style={[styles.person_name, styles.person_other_font]}
           />
         </View>
-        {time && <Title title={time + 'h ago'} style={[styles.time_font]} />}
+        {time && <Title title={time} style={[styles.time_font]} />}
       </View>
     </View>
   );
