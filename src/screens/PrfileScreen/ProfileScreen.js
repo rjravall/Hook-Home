@@ -196,11 +196,16 @@ function ProfileScreen({ route }) {
                       arcSweepAngle={270}
                     />
                   </View>
-                  <Image
-                    source={{ uri: img }}
-                    style={styles.person_image_container}
-                    resizeMode="cover"
-                  />
+                  <View style={styles.person_image_container}>
+                    <Image
+                      source={{ uri: img }}
+                      style={{
+                        width: 126,
+                        aspectRatio: 1 / 1.6,
+                      }}
+                      resizeMode="cover"
+                    />
+                  </View>
                   <View style={styles.process_text_container}>
                     <Title
                       title={ProfileComplet + "%" + " completed"}
@@ -413,6 +418,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
   },
-  person_image_container: { height: 126, width: 126, borderRadius: 63 },
+  person_image_container: { height: 126, width: 126, borderRadius: 63, overflow: 'hidden', },
 });
 export default ProfileScreen;

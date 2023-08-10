@@ -60,6 +60,8 @@ function NotificationItem({ name, index, time = '', icon }) {
     },
     time_font: {
       fontSize: fontSize.xmedium,
+      fontFamily: fontFamily.Regular,
+
       color: COLOR.GRAY_800,
     },
   });

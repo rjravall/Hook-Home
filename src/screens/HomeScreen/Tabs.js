@@ -17,7 +17,7 @@ import { COLOR } from '@/theme/theme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, View, Text } from 'react-native';
 import ExploreScreen from '../ExploreScreen/ExploreScreen';
 import NotificationScreen from '../NotificationScreen/NotificationScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,12 +28,30 @@ import Email_Verification from '../Login/Email_Verification';
 import ForgotScreen from '../Login/ForgotScreen';
 import SetLocationScreen from '../SignUp/SetLocationScreen';
 import { NAV_SIGNUP } from '@/constants/navigation';
-
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { getnotifiction } from '@/api/user';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function Tabs(props) {
   const { colors } = useTheme();
+  const [notifications, setNotifications] = useState(0)
+
+  const GetNumberNotifiction = async () => {
+    params = {
+      limit: 5,
+      skip: 0
+    }
+    const skip = "limit=1&skip=0"
+    const result = await getnotifiction(params, skip)
+    const numbers = result?.data?.data?.unreadNotifications
+    setNotifications(numbers)
+  }
+
+  useEffect(() => {
+    GetNumberNotifiction()
+  }, [])
 
   const styles = StyleSheet.create({
     bottom_icon: { width: 20, height: 20 },
@@ -73,11 +91,39 @@ function Tabs(props) {
               );
             case 'notification':
               return (
-                <Image
-                  source={focused ? NotificationFillIcon : NotificationIcon}
-                  style={[styles.bottom_icon, icon_color]}
-                  tintColor={icon_color}
-                />
+                <View>
+                  <Image
+                    source={focused ? NotificationFillIcon : NotificationIcon}
+                    style={[styles.bottom_icon, icon_color]}
+                    tintColor={icon_color}
+                  />
+                  {
+                    notifications > 0 && !focused &&
+                    < View
+                      style={{
+                        backgroundColor: '#E6256F',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: 16,
+                        borderRadius: 8,
+                        aspectRatio: 1 / 1,
+                        position: 'absolute',
+                        top: -10,
+                        right: -5,
+
+                      }}
+                    >
+
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          color: '#fff',
+                        }}
+                      >{notifications}</Text>
+                    </View>
+                  }
+
+                </View >
               );
             case 'profile':
               return (
@@ -102,7 +148,7 @@ function Tabs(props) {
       {/* <Tab.Screen name="setting" component={SettingScreen} /> */}
       {/* <Tab.Screen name="profile" component={ProfileScreen} />
       <Tab.Screen name="profile" component={ProfileScreen} /> */}
-    </Tab.Navigator>
+    </Tab.Navigator >
   );
 }
 

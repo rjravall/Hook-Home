@@ -1,6 +1,6 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Modal } from 'react-native';
 
 import Title from '@/components/Title';
 import TextInputField from '@/components/TextInputField';
@@ -26,7 +26,7 @@ import ProgressView from '@/components/ProgressView';
 import { setToken, setUserEmail, setUserPassword } from '@/Utils/PrefrenceData';
 import { NAV_SIGNUP } from '@/constants/navigation';
 import { getUserDetais } from '@/api/user';
-import Modal from '@/components/Modal';
+import Modall from '@/components/Modal';
 // import {shadow} from '@/theme';
 
 export function Login({ route }) {
@@ -47,15 +47,20 @@ export function Login({ route }) {
   const [confirmPassword, setConfirmpassword] = useState('');
 
   const [isLoading, setIsLoading] = useState(false)
+  const [modal, setmodal] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   function onLogin() {
     if (!email) {
-      <Modal text={strings.toast_success_message.enter_email} />
-      SHOW_TOAST(strings.toast_success_message.enter_email)
+      setErrorMessage(strings.toast_success_message.enter_email)
+      setmodal(true)
     } else if (REGEX.emailRegex.test(email) == false) {
-      SHOW_TOAST(strings.toast_success_message.enter_valid_email)
+      setErrorMessage(strings.toast_success_message.enter_valid_email)
+      setmodal(true)
+
     } else if (!password) {
-      SHOW_TOAST(strings.toast_success_message.enter_password)
+      setErrorMessage(strings.toast_success_message.enter_password)
+      setmodal(true)
     }
     else {
       loginRegister()
@@ -64,28 +69,35 @@ export function Login({ route }) {
 
   function onSendOtp() {
     if (!email) {
-      SHOW_TOAST(strings.toast_success_message.enter_email)
+      setErrorMessage(strings.toast_success_message.enter_email)
+      setmodal(true)
     } else if (REGEX.emailRegex.test(email) == false) {
-      SHOW_TOAST(strings.toast_success_message.enter_valid_email)
+      setErrorMessage(strings.toast_success_message.enter_valid_email)
+      setmodal(true)
     } else if (!password) {
-      SHOW_TOAST(strings.toast_success_message.enter_password)
+      setErrorMessage(strings.toast_success_message.enter_password)
+      setmodal(true)
     }
     else if (REGEX.passwordRegex.test(password) == false) {
-      SHOW_TOAST(strings.toast_success_message.enter_valid_password)
+      setErrorMessage(strings.toast_success_message.enter_valid_password)
+      setmodal(true)
     }
     else if (!confirmPassword) {
-      SHOW_TOAST(strings.toast_success_message.enter_confirmPassword)
-
+      setErrorMessage(strings.toast_success_message.enter_confirmPassword)
+      setmodal(true)
     }
     // else if (password.length !== 8) {
     //   SHOW_TOAST(strings.toast_success_message.enter_eight_digit)
     // }
     else if (confirmPassword != password) {
-      SHOW_TOAST(strings.toast_success_message.enter_passwordmishmatch)
+      setErrorMessage(strings.toast_success_message.enter_passwordmishmatch)
+      setmodal(true)
     } else {
       sendOtpUser()
     }
   }
+
+
 
   async function CheckDetails() {
     const result = await getUserDetais({})
@@ -248,6 +260,10 @@ export function Login({ route }) {
 
   }
 
+  const handleChildData = (data) => {
+    setmodal(data)
+  }
+
   return (
     <KeyboardAwareScrollView
       style={{ backgroundColor: 'white' }}
@@ -321,6 +337,40 @@ export function Login({ route }) {
             }
           />
         )}
+
+        <View style={{ flex: 1 }}>
+          <Modal visible={modal} transparent={true}>
+            <Modall
+              getData={handleChildData}
+              text={errorMessage}
+            />
+            {/* {!email ? <Modall
+              getData={handleChildData}
+              text={strings.toast_success_message.enter_email}
+            /> : REGEX.emailRegex.test(email) == false ?
+              <Modall
+                getData={handleChildData}
+                text={(strings.toast_success_message.enter_valid_email)}
+              /> : !password ?
+                <Modall
+                  getData={handleChildData}
+                  text={(strings.toast_success_message.enter_password)}
+                /> : REGEX.passwordRegex.test(password) == false ?
+                  <Modall
+                    getData={handleChildData}
+                    text={(strings.toast_success_message.enter_valid_password)}
+                  /> : !confirmPassword ?
+                    <Modall
+                      getData={handleChildData}
+                      text={(strings.toast_success_message.enter_confirmPassword)}
+                    /> : confirmPassword != password ?
+                      <Modall
+                        getData={handleChildData}
+                        text={(strings.toast_success_message.enter_passwordmishmatch)}
+                      /> : null
+            } */}
+          </Modal>
+        </View>
         <Button
           title={data}
           style={styles.common_button_style}
@@ -377,6 +427,7 @@ export function Login({ route }) {
         </View>
       </View>
       {isLoading && <ProgressView />}
+
     </KeyboardAwareScrollView>
   );
 }

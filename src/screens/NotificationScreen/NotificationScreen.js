@@ -5,6 +5,7 @@ import ScreenName from '@/components/ScreenName';
 import { strings } from '@/localization';
 import { COLOR } from '@/theme/theme';
 import { fontFamily, fontSize } from '@/Utils/Constant';
+import { format, subDays } from 'date-fns';
 import moment from 'moment';
 
 import React from 'react';
@@ -85,7 +86,7 @@ function NotificationScreen(props) {
   const [skips, setSkips] = useState(0);
   const [numOfNotification, setNumOfNotification] = useState(0);
 
-  const GetNotifiction = async () => {
+  const GetNotifiction = async (numbers) => {
     console.log("DATA :==========================: ", data)
     params = {
       limit: 5,
@@ -95,14 +96,17 @@ function NotificationScreen(props) {
     const result = await getnotifiction(params, skip)
     const temp = result?.data?.data?.result;
     const list = temp.map((item) => {
-      const update = moment(item.createdAt).fromNow();
+      const update = item.createdAt;
+      const date = format(new Date(update), 'yyyy-MM-dd');
       const type = item.notificationType
       const index = detailist.indexOf(type)
       const name = item.users.firstName + " " + item.users.lastName
-      return { index, update, type, name, };
+      return { index, update, type, name, date };
     })
     console.log("Notifiction============ : ", list)
-    setData([...data, ...list])
+    if (data.length + list.length <= numbers) {
+      setData([...data, ...list])
+    }
 
 
     setIsLoading(false)
@@ -118,13 +122,15 @@ function NotificationScreen(props) {
     const result = await getnotifiction(params, skip)
     const numbers = result?.data?.data?.noOfNotifications
     setNumOfNotification(numbers)
-    GetNotifiction()
+    GetNotifiction(numbers)
   }
 
   useEffect(() => {
     GetNumberNotifiction()
 
   }, [])
+
+  console.log("data  ===============: ", data)
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
@@ -138,7 +144,7 @@ function NotificationScreen(props) {
             setIsLoading(true)
             setSkips(skips + 10)
             setTimeout(() => {
-              GetNotifiction()
+              GetNotifiction(numOfNotification)
             }, 10);
           }
         }}
@@ -148,27 +154,32 @@ function NotificationScreen(props) {
             {data.map((item, index) => {
               return (
                 <View key={index}>
-                  {/* <Text style={styles.date}>
-                    {notification_data[index].date}
-                  </Text> */}
+                  {index > 0 ?
+                    item.date != data[index - 1].date &&
+                    <Text style={styles.date}>
+                      {
+                        format(new Date(subDays(new Date(), 1)), 'yyyy-MM-dd') == item.date ?
+                          "Yesterday"
+                          :
+                          format(new Date(item.date), 'MMM d, yyyy')
+                      }
+                    </Text>
+                    : <Text style={styles.date}>
+                      {
+                        format(new Date(), 'yyyy-MM-dd') == item.date ?
+                          "Today"
+                          :
+                          format(new Date(item.date), 'MMM d, yyyy')
+                      }
+                    </Text>
+                  }
                   <NotificationItem
                     name={item.name}
                     index={item.index}
-                    time={item.update}
+                    time={moment(item.update).fromNow().toString()}
                   />
-                  <Divider />
-                  {/* {notification_data[index].messageList.map((item, index) => {
-                    return (
-                      <View key={index}>
-                        <NotificationItem
-                          name={item.person_name}
-                          index={item.index}
-                          time={item.time}
-                        />
-                        <Divider />
-                      </View>
-                    );
-                  })} */}
+                  {/* <Divider /> */}
+
                 </View>
               );
             })}
@@ -200,6 +211,8 @@ const styles = StyleSheet.create({
     color: COLOR.GRAY_800,
     fontFamily: fontFamily.Medium,
     fontSize: fontSize.xmedium,
+    marginTop: 20
+
   },
 });
 export default NotificationScreen;
