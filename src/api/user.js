@@ -209,12 +209,18 @@ async function getnotifiction(params, skip) {
     const result = await getRequest(url, params)
     return result
 }
+async function getReadNotifiction(params, skip) {
+    let url = WEB_SERVICE.read_notifiction
+    const result = await getRequest(url, params)
+    return result
+}
 
 
 
 
 
 export {
+    getReadNotifiction,
     getnotifiction,
     passwordVerifiction,
     setForgetPassword,

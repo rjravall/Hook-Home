@@ -1,93 +1,54 @@
-import { getnotifiction } from '@/api/user';
+import { getnotifiction, getReadNotifiction } from '@/api/user';
 import Divider from '@/components/Divider';
 import NotificationItem from '@/components/NotificationItem';
 import ScreenName from '@/components/ScreenName';
+import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { COLOR } from '@/theme/theme';
 import { fontFamily, fontSize } from '@/Utils/Constant';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { format, subDays } from 'date-fns';
 import moment from 'moment';
+import { FunctionOpenMenu } from 'native-base/lib/typescript/components/composites/Typeahead/useTypeahead/types';
 
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View, Text, ActivityIndicator } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const detailist = ["like", "dislike", "Match",]
-
-const notification_data = [
-  {
-    date: 'Today',
-    messageList: [
-      {
-        person_name: 'herry',
-        index: 1,
-        time: '1',
-      },
-      {
-        person_name: 'herry',
-        index: 0,
-        time: '1',
-      },
-      {
-        person_name: 'herry',
-        index: 1,
-      },
-    ],
-  },
-
-  {
-    date: 'Yesterday',
-    messageList: [
-      {
-        person_name: 'herry',
-        index: 2,
-        time: '1',
-      },
-      {
-        person_name: 'herry',
-        index: 0,
-        time: '1',
-      },
-      {
-        person_name: 'herry',
-        index: 2,
-        time: '3',
-      },
-    ],
-  },
-  {
-    date: '13 Jan,2023',
-    messageList: [
-      {
-        person_name: 'herry',
-        index: 1,
-        time: '1',
-      },
-      {
-        person_name: 'herry',
-        index: 2,
-        time: '1',
-      },
-      {
-        person_name: 'herry',
-        index: 0,
-        time: '3',
-      },
-    ],
-  },
-];
-
 function NotificationScreen(props) {
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState([]);
   const [skips, setSkips] = useState(0);
   const [numOfNotification, setNumOfNotification] = useState(0);
+  const [token, setTokan] = useState('');
+  const [user, setUser] = useState([]);
+
+  const getData = async () => {
+    const value = await AsyncStorage.getItem('token')
+    setTokan(value)
+    GetReadNotifiction()
+
+  }
+  // navigation.navigate(NAVIGATION.person_details)
+
+  const GetReadNotifiction = async () => {
+    params = {
+      Authorization: token
+    }
+    setIsLoading(true)
+    const result = await getReadNotifiction(params)
+    setIsLoading(false)
+  }
 
   const GetNotifiction = async (numbers) => {
-    console.log("DATA :==========================: ", data)
+    // console.log("DATA :==========================: ", data)
     params = {
       limit: 5,
       skip: 0
@@ -95,19 +56,20 @@ function NotificationScreen(props) {
     const skip = "limit=10&skip=" + skips
     const result = await getnotifiction(params, skip)
     const temp = result?.data?.data?.result;
+    // console.log("RESULT :==============================: ", temp)
     const list = temp.map((item) => {
+      const id = item.users._id
       const update = item.createdAt;
       const date = format(new Date(update), 'yyyy-MM-dd');
       const type = item.notificationType
       const index = detailist.indexOf(type)
       const name = item.users.firstName + " " + item.users.lastName
-      return { index, update, type, name, date };
+      return { index, update, type, name, date, id };
     })
-    console.log("Notifiction============ : ", list)
+    // console.log("Notifiction============ : ", list)
     if (data.length + list.length <= numbers) {
       setData([...data, ...list])
     }
-
 
     setIsLoading(false)
   }
@@ -126,9 +88,11 @@ function NotificationScreen(props) {
   }
 
   useEffect(() => {
+    console.log(token)
+    getData()
     GetNumberNotifiction()
 
-  }, [])
+  }, [navigation, isFocused])
 
   console.log("data  ===============: ", data)
 
@@ -173,11 +137,15 @@ function NotificationScreen(props) {
                       }
                     </Text>
                   }
+
                   <NotificationItem
+                    userid={item.id}
                     name={item.name}
                     index={item.index}
+                    type={item.type}
                     time={moment(item.update).fromNow().toString()}
                   />
+
                   {/* <Divider /> */}
 
                 </View>
@@ -188,7 +156,6 @@ function NotificationScreen(props) {
         {
           isLoading &&
           <ActivityIndicator
-            // size={'large'}
             color={"#E6256F"}
             style={{
               alignSelf: 'center',

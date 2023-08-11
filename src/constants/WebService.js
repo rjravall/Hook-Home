@@ -41,6 +41,7 @@ export const WEB_SERVICE = {
     send_otp: BASE_URL + '/api/v1/user/send-otp',
     setforgetpassword: BASE_URL + "/api/v1/user/forgot-password",
     passwordverifiction: BASE_URL + "/api/v1/user/verify-otp",
-    get_notification: BASE_URL + "/api/v1/notification/get-notification?"
+    get_notification: BASE_URL + "/api/v1/notification/get-notification?",
+    read_notifiction: BASE_URL + "/api/v1/notification/read-all-notification"
 
 }

@@ -43,11 +43,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { getUserProfile } from '@/api/user';
 
 function DetailScreen({ route }) {
-  const [user, setUSer] = useState(route.params.user);
+  const [user, setUSer] = useState(route?.params?.user);
   const [items, setItems] = useState([]);
   const [IsLoading, setIsLoading] = useState(true);
+  const [Info, setInfo] = useState('');
 
-  console.log("items=====================", user._id)
+
+  console.log("ROUTE ++++++++++++++++++ :", route.params)
+
 
 
   const detailist = [
@@ -160,9 +163,10 @@ function DetailScreen({ route }) {
   const getDetails = async () => {
 
     setIsLoading(true)
-    const result = await getUserProfile({}, user._id)
+    const result = await getUserProfile({}, route.params.userid)
 
     const Data = result.data.data.userMeta;
+    setInfo(result.data.data)
 
     let temp = []
 
