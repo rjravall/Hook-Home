@@ -11,6 +11,9 @@ import {
   NintendoIcon,
   GreenTickIcon,
   PersonPlaceholder,
+  CloseIcon,
+  BigLikeIcon,
+  SwipeIcon
 } from '@/assets';
 import AlbumList from '@/components/AlbumList';
 import DeatilsScreenTabView from '@/components/DeatilsScreenTabView';
@@ -37,16 +40,20 @@ import {
   Dimensions,
   StatusBar,
   Text,
+  Modal
 } from 'react-native';
 import { strings } from '@/localization';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getUserProfile } from '@/api/user';
 
+
+
 function DetailScreen({ route }) {
-  const [user, setUSer] = useState(route?.params?.user);
+  const [user, setUSer] = useState(route.params.user);
   const [items, setItems] = useState([]);
   const [IsLoading, setIsLoading] = useState(true);
   const [Info, setInfo] = useState('');
+  const [modal, setmodal] = useState(false);
 
 
   console.log("ROUTE ++++++++++++++++++ :", route.params)
@@ -163,7 +170,7 @@ function DetailScreen({ route }) {
   const getDetails = async () => {
 
     setIsLoading(true)
-    const result = await getUserProfile({}, route.params.userid)
+    const result = await getUserProfile({}, route.params.user._id)
 
     const Data = result.data.data.userMeta;
     setInfo(result.data.data)
@@ -235,9 +242,7 @@ function DetailScreen({ route }) {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1 }}
-          onPress={visible => {
-            setShowReport(true);
-          }}>
+        >
           <Image
             source={MenuIcon}
             style={{ alignSelf: 'flex-end', height: 18, width: 4 }}
@@ -251,6 +256,9 @@ function DetailScreen({ route }) {
 
     return (
       <View>
+        <Modal visible={true} transparent={true}>
+
+        </Modal>
         <StatusBar hidden={false} backgroundColor={'rgba(52, 52, 52, 0.8)'} />
         <View style={styles.render_content_container}>
           <View>
@@ -424,6 +432,56 @@ function DetailScreen({ route }) {
               }}
             />
           </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              bottom: 10
+            }}>
+            <TouchableOpacity
+              onPress={() => { console.log("dislike") }}
+              style={[
+                styles.flexCenterV,
+                {
+                  alignItems: 'flex-end',
+                },
+              ]}>
+              <View
+                style={[styles.actionButtonContainer, styles.closeIconContainer]}>
+                <Image source={CloseIcon} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => { console.log("like") }}
+
+              style={styles.flexCenterV}>
+              <View
+                style={{
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={[
+                    styles.actionButtonContainer,
+                    styles.likeIconContainer,
+                  ]}>
+                  <Image source={BigLikeIcon} />
+                </View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => { console.log("Remove") }}
+
+              style={[
+                styles.flexCenterV,
+                {
+                  alignItems: 'flex-start',
+                },
+              ]}>
+              <View
+                style={[styles.actionButtonContainer, styles.swipeIconContainer]}>
+                <Image source={SwipeIcon} />
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -498,6 +556,21 @@ const styles = StyleSheet.create({
     color: COLOR.BLACK80,
     marginTop: 8,
   },
+  swipeIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+  },
+  likeIconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+  },
+  closeIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+  },
   album_text: {
     fontFamily: fontFamily.Medium,
     fontSize: fontSize.xmedium,
@@ -561,6 +634,21 @@ const styles = StyleSheet.create({
     top: 0,
     borderTopStartRadius: 30,
     borderTopEndRadius: 30,
+  },
+  flexCenterV: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  actionButtonContainer: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    shadowColor: 'A0929A',
+    shadowOpacity: 0.25,
+    shadowRadius: 25,
+    shadowOffset: { width: 0, height: 20 },
+    borderWidth: 1,
+    borderColor: '#EFEFEF',
+    justifyContent: 'center',
   },
 });
 export default DetailScreen;

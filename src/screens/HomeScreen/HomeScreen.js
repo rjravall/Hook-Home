@@ -72,6 +72,7 @@ function HomeScreen({ route }) {
         onPress={() => {
           navigation.navigate(NAVIGATION.person_details, {
             user: user,
+            notification: 'false'
           });
         }}>
         <View

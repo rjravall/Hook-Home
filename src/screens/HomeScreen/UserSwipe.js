@@ -288,6 +288,7 @@ export default class UserSwipe extends React.Component {
           </View>
         }
       </View>
+
     );
   }
 

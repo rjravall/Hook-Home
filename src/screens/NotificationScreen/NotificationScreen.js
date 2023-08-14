@@ -39,11 +39,13 @@ function NotificationScreen(props) {
   // navigation.navigate(NAVIGATION.person_details)
 
   const GetReadNotifiction = async () => {
+    console.log("API Calling.....")
     params = {
       Authorization: token
     }
     setIsLoading(true)
     const result = await getReadNotifiction(params)
+    console.log("result :==========================: ", result)
     setIsLoading(false)
   }
 
