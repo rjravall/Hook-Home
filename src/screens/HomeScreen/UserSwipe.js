@@ -139,7 +139,6 @@ export default class UserSwipe extends React.Component {
     } else if (gestureState.dx < -120) {
       data = "dislike"
       console.log(data)
-      this.userswipe(data)
       const limitOver = await this.userswipe(data)
       // if (limitOver) {
       Animated.spring(this.position, {

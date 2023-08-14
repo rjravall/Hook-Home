@@ -1,4 +1,5 @@
 import { getnotifiction, getReadNotifiction } from '@/api/user';
+import Block from '@/components/Block';
 import Divider from '@/components/Divider';
 import NotificationItem from '@/components/NotificationItem';
 import ScreenName from '@/components/ScreenName';
@@ -16,6 +17,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Modal } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const detailist = ["like", "dislike", "Match",]

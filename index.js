@@ -3,7 +3,7 @@
  */
 
 import { AppRegistry } from 'react-native';
-import Block from '@/components/Block';
+import App from '@/App';
 import { name as appName } from './app.json';
 
-AppRegistry.registerComponent(appName, () => Block);
+AppRegistry.registerComponent(appName, () => App);

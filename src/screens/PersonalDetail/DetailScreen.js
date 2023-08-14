@@ -30,6 +30,8 @@ import { NativeBaseProvider, Slide } from 'native-base';
 import ReactNativeParallaxHeader from 'react-native-parallax-header';
 
 import React, { useRef, useState } from 'react';
+import Geocoder from 'react-native-geocoding';
+
 import {
   Image,
   StyleSheet,
@@ -45,20 +47,30 @@ import {
 import { strings } from '@/localization';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getUserProfile } from '@/api/user';
+import RBSheet from "react-native-raw-bottom-sheet";
+import Block from '@/components/Block';
 
 
 
 function DetailScreen({ route }) {
-  const [user, setUSer] = useState(route.params.user);
+  const [user, setUser] = useState(route.params.user);
   const [items, setItems] = useState([]);
   const [IsLoading, setIsLoading] = useState(true);
   const [Info, setInfo] = useState('');
   const [modal, setmodal] = useState(false);
+  const _BlockBottomSheet = useRef();
+  const [backVisible, setBackVisible] = useState(false);
+
+
 
 
   console.log("ROUTE ++++++++++++++++++ :", route.params)
 
-
+  const BackInvisible = () => {
+    setTimeout(() => {
+      setBackVisible(false);
+    }, 100);
+  }
 
   const detailist = [
     {
@@ -170,10 +182,22 @@ function DetailScreen({ route }) {
   const getDetails = async () => {
 
     setIsLoading(true)
-    const result = await getUserProfile({}, route.params.user._id)
+    const result = await getUserProfile({}, route.params.notification == 'true' ? route.params.userid : route.params.user._id)
+
+    if (route.params.notification == 'true') {
+      const loc = result.data.data.location.coordinates
+      let location = "";
+      await Geocoder.from({ lat: loc[0], lng: loc[1] })
+        .then(response => {
+          location = response.results[0].address_components[3].long_name;
+        })
+        .catch(error => console.warn(error));
+
+      setUser({ ...result.data.data, location });
+    }
 
     const Data = result.data.data.userMeta;
-    setInfo(result.data.data)
+
 
     let temp = []
 
@@ -231,16 +255,37 @@ function DetailScreen({ route }) {
 
   const HEADER_HEIGHT = 64;
 
+  const handleChildData = (data) => {
+    setmodal(data)
+  }
   const renderNavBar = () => (
     <SafeAreaView >
       <View style={[styles.navbar_container]}>
+        <RBSheet
+          ref={_BlockBottomSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "#00000050"
+            },
+            draggableIcon: {
+              backgroundColor: "#000"
+            }
+          }}
+        ></RBSheet>
         <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.goBack()}>
           <Image
             source={BackIcon}
             style={{ height: 16, width: 16, tintColor: 'white' }}
           />
         </TouchableOpacity>
+
+
+        {/* Block Modal */}
+
         <TouchableOpacity
+          onPress={() => { setmodal(true), setBackVisible(true) }}
           style={{ flex: 1 }}
         >
           <Image
@@ -248,6 +293,32 @@ function DetailScreen({ route }) {
             style={{ alignSelf: 'flex-end', height: 18, width: 4 }}
           />
         </TouchableOpacity>
+        <Slide
+          placement="bottom"
+          in={modal}
+          style={{ justifyContent: 'flex-end', }}>
+          <View style={styles.slider_container}>
+            <Title title={strings.report_Slider.title} />
+
+            <View>
+
+              <WhiteButton
+                title={strings.report_Slider.button}
+                viewStyle={{ borderColor: COLOR.GRAY_800, marginVertical: 24 }}
+                textstyle={{ color: COLOR.GRAY_800 }}
+                onPress={() => { setmodal(false), BackInvisible() }}
+              />
+
+              <WhiteButton
+                title={strings.report_Slider.button}
+                viewStyle={{ borderColor: COLOR.GRAY_800, marginVertical: 24 }}
+                textstyle={{ color: COLOR.GRAY_800 }}
+                onPress={() => { setmodal(false), BackInvisible() }}
+              />
+            </View>
+          </View>
+        </Slide>
+
       </View>
     </SafeAreaView>
   );
@@ -256,16 +327,13 @@ function DetailScreen({ route }) {
 
     return (
       <View>
-        <Modal visible={true} transparent={true}>
-
-        </Modal>
         <StatusBar hidden={false} backgroundColor={'rgba(52, 52, 52, 0.8)'} />
         <View style={styles.render_content_container}>
           <View>
             <View style={styles.userdetails_container}>
-              <Title title={user.firstName} style={{ marginHorizontal: 10 }} />
-              <Title title={user.lastName} />
-              {user.greenTick && (
+              <Title title={user?.firstName} style={{ marginHorizontal: 10 }} />
+              <Title title={user?.lastName} />
+              {user?.greenTick && (
                 <Image
                   source={GreenTickIcon}
                   style={{ height: 16.67, marginStart: 8, width: 16.67 }}
@@ -273,18 +341,18 @@ function DetailScreen({ route }) {
               )}
             </View>
             <View style={styles.user_distance_container}>
-              <Title title={user.age} style={styles.sub_title} />
+              <Title title={user?.age} style={styles.sub_title} />
               <View style={styles.circle_subtitle} />
-              <Title title={user.location} style={styles.sub_title} />
+              <Title title={user?.location} style={styles.sub_title} />
               <View style={styles.circle_subtitle} />
               <Title
-                title={user.distance}
+                title={user?.distance}
                 style={styles.sub_title}
               />
             </View>
 
             {/* About me */}
-            {user.about_me && (
+            {user?.about_me && (
               <View>
                 <Title
                   title={strings.detail_screen.about_me}
@@ -293,20 +361,20 @@ function DetailScreen({ route }) {
                     { fontFamily: fontFamily.Medium, marginTop: 8 },
                   ]}
                 />
-                <Title title={user.about_me} style={styles.about_me} />
+                <Title title={user?.about_me} style={styles.about_me} />
               </View>
             )}
           </View>
 
           {/* Tabs */}
           <View style={{ flex: 1, height: tabSectionHeight }}>
-            <DeatilsScreenTabView
+            {/* <DeatilsScreenTabView
               routes={routes}
               user_details={user}
               setHeight={height => {
                 setTabSectionHeight(height * 52);
               }}
-            />
+            /> */}
           </View>
 
 
@@ -316,7 +384,7 @@ function DetailScreen({ route }) {
               if (data.visible) {
                 return (
 
-                  <View style={{ borderBottomWidth: 1, borderColor: "#D6D6D6" }}>
+                  <View style={{ borderBottomWidth: 1, borderColor: "#D6D6D6" }} key={i}>
                     <View style={{
                       flexDirection: 'row',
                       justifyContent: 'space-between',
@@ -429,6 +497,7 @@ function DetailScreen({ route }) {
               title={strings.detail_screen.report}
               onPress={visible => {
                 setShowReport(true);
+                setBackVisible(true);
               }}
             />
           </View>
@@ -483,6 +552,7 @@ function DetailScreen({ route }) {
             </TouchableOpacity>
           </View>
         </View>
+
       </View>
     );
   };
@@ -494,7 +564,7 @@ function DetailScreen({ route }) {
         headerMaxHeight={SCREEN_HEIGHT * 0.57}
         extraScrollHeight={20}
         navbarColor={"#00000000"}
-        backgroundImage={{ uri: user.userPhotos?.publicPhotos[0] }}
+        backgroundImage={{ uri: user?.userPhotos?.publicPhotos[0] }}
         renderNavBar={renderNavBar}
         renderContent={renderContent}
         // containerStyle={{
@@ -530,17 +600,20 @@ function DetailScreen({ route }) {
             title={strings.report_Slider.button}
             viewStyle={{ borderColor: COLOR.GRAY_800, marginVertical: 24 }}
             textstyle={{ color: COLOR.GRAY_800 }}
-            onPress={() => setShowReport(false)}
+            onPress={() => { setShowReport(false), BackInvisible(); }}
           />
         </View>
       </Slide>
-      {showReport && (
+      {backVisible && (
         <TouchableOpacity
+          activeOpacity={1}
           style={[
             CommonStyle.absoluteView,
-            { backgroundColor: 'black', flex: 1, opacity: 0.6 },
+            { backgroundColor: '#00000060', flex: 1, },
           ]}
           onPress={() => {
+            BackInvisible();
+            setmodal(false)
             setShowReport(false);
           }}
         />

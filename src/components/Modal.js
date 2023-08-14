@@ -81,5 +81,6 @@ const styles = StyleSheet.create({
         tintColor: "#E6256F",//colors.primary,
         opacity: 1,
         alignSelf: 'center',
+
     },
 })
